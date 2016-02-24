@@ -1,0 +1,23 @@
+ <project>
+  <modelVersion> 4.0.0 </modelVersion>
+  <groupId> ca.uwo.csd.cs2212.TEAM11 </groupId>
+  <artifactId> TEAM11-Project </artifactId>
+  <packaging> jar </packaging>
+  <version> 1.0-SNAPSHOT </version>
+	  <build> 
+		<plugins>
+		  <plugin>
+		   <groupId> org.apache.maven.plugins </groupId>
+		   <artifactId> maven-jar-plugin </artifactId>
+		   <version>2.4 </version>
+		   <configuration>
+			<archive>
+			 <manifest>
+			  <mainClass>ca.uwo.csd.cs2212.team11.Demo</mainClass>
+			 </manifest>
+			</archive>
+		   </configuration>
+		  </plugin>
+		 </plugins>
+	</build>
+</project>
