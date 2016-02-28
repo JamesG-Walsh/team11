@@ -78,7 +78,7 @@ public class DeskTop extends JFrame{
 		
 		temp = SharedData.PATH_TO_RESOURCES + "/imgs/Settings.png";
 		ImagePanel settingsButton = new ImagePanel(temp);
-		temp = SharedData.PATH_TO_RESOURCES + "/imgs/Exit Button.png";
+		temp = SharedData.PATH_TO_RESOURCES + "/imgs/Exit_Button.png";
 		ImagePanel exitButton = new ImagePanel(temp);
 		temp = null;
 		settingsButton.addMouseListener(new MouseAdapter(){
@@ -249,7 +249,7 @@ public class DeskTop extends JFrame{
 		primaryDisplayAreas[3].add(datePanel);
 		primaryDisplayAreas[3].add(Box.createHorizontalGlue());
 		
-		temp = SharedData.PATH_TO_RESOURCES + "imgs/Add Widgit.png";
+		temp = SharedData.PATH_TO_RESOURCES + "imgs/Add_Widgit.png";
 		ImagePanel addWidgetButton = new ImagePanel(temp);
 		addWidgetButton.setAlignmentX(CENTER_ALIGNMENT); // doesn't seem to be working
 		addWidgetButton.addMouseListener(new MouseAdapter(){
