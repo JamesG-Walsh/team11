@@ -41,7 +41,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 		
-		ImagePanel backPanel = new ImagePanel(SharedData.PATH_TO_RESOURCES + "../src/main/resources/imgs/jogger.jpg"); // replace with no copyright
+		ImagePanel backPanel = new ImagePanel(SharedData.PATH_TO_RESOURCES + "imgs/jogger.jpg"); // replace with no copyright
 		JLayeredPane main = new JLayeredPane();
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
 		main.setSize(backPanel.getWidth(), backPanel.getHeight());

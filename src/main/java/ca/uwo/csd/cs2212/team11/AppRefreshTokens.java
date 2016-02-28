@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import com.github.scribejava.apis.FitbitApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.builder.*;
 import com.github.scribejava.core.oauth.OAuthService;
 import com.github.scribejava.core.model.*; //Request Verb
 import com.github.scribejava.core.oauth.OAuth20Service;
