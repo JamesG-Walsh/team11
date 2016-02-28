@@ -41,7 +41,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 		
-		ImagePanel backPanel = new ImagePanel(SharedData.PATH_TO_RESOURCES + "../src/main/resources/imgs/jogger.jpg"); // replace with no copyright
+		ImagePanel backPanel = new ImagePanel(SharedData.PATH_TO_RESOURCES + "imgs/jogger.jpg"); // replace with no copyright
 		JLayeredPane main = new JLayeredPane();
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
 		main.setSize(backPanel.getWidth(), backPanel.getHeight());
@@ -60,7 +60,7 @@ public class DeskTop extends JFrame{
 		primaryDisplayAreas[0].setLayout(new BoxLayout(primaryDisplayAreas[0], 1));
 		JPanel welcomePanel = new JPanel();
 		welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.LINE_AXIS));
-		String temp = SharedData.PATH_TO_RESOURCES + "imgs/Fitbit.png";
+		String temp = SharedData.PATH_TO_RESOURCES + "/imgs/Fitbit.png";
 		ImagePanel fitBitPic = new ImagePanel(temp);
 		temp = null;
 		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
