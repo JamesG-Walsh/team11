@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -63,6 +64,7 @@ public class DeskTop extends JFrame{
 			hello.setBackground(SharedData.SMOKE);
 			JLabel helloLabel = new JLabel("Welcome, USER!");
 			helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+			helloLabel.setForeground(new Color(255,255,255));
 			hello.add(helloLabel);
 			northPanel.add(hello);
 			northPanel.add(Box.createHorizontalGlue());
@@ -87,98 +89,96 @@ public class DeskTop extends JFrame{
 		
 			
 		westPanel = new JPanel();
-			JPanel calorButton = createNavButton(IDs.CALORIES, "C");
-			westPanel.add(calorButton);
 		westPanel.setOpaque(false);
-		JPanel caloriesButton = new JPanel();
-		caloriesButton.setBackground(SharedData.COLOR_SET[IDs.CALORIES.ordinal()]);
-		caloriesButton.add(new JLabel("C"));
-		caloriesButton.setSize(25,25);
-		caloriesButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.CALORIES);
-			}
-		});
-		westPanel.add(caloriesButton);
+		westPanel.setLayout(new GridLayout(7,2));
 
-		JPanel distanceButton = new JPanel();
-		distanceButton.setBackground(SharedData.COLOR_SET[IDs.DISTANCE.ordinal()]);
-		distanceButton.add(new JLabel("D"));
-		distanceButton.setSize(25,25);
-		distanceButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.DISTANCE);
-			}
-		});
-		westPanel.add(distanceButton);
-		
-		JPanel climbButton = new JPanel();
-		climbButton.setBackground(SharedData.COLOR_SET[IDs.CLIMB.ordinal()]);
-		climbButton.add(new JLabel("V"));
-		climbButton.setSize(25,25);
-		climbButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.CLIMB);
-			}
-		});
-		westPanel.add(climbButton);
-		
-		JPanel stepsButton = new JPanel();
-		stepsButton.setBackground(SharedData.COLOR_SET[IDs.STEPS.ordinal()]);
-		stepsButton.add(new JLabel("S"));
-		stepsButton.setSize(25,25);
-		stepsButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.STEPS);
-			}
-		});
-		westPanel.add(stepsButton);
-		
-		JPanel activeButton = new JPanel();
-		activeButton.setBackground(SharedData.COLOR_SET[IDs.ACTIVE.ordinal()]);
-		activeButton.add(new JLabel("A"));
-		activeButton.setSize(25,25);
-		activeButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.ACTIVE);
-			}
-		});
-		westPanel.add(activeButton);
-		
-		JPanel sedentaryButton = new JPanel();
-		sedentaryButton.setBackground(SharedData.COLOR_SET[IDs.SEDENTARY.ordinal()]);
-		sedentaryButton.add(new JLabel("R"));
-		sedentaryButton.setSize(25,25);
-		sedentaryButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.SEDENTARY);
-			}
-		});
-		westPanel.add(sedentaryButton);
-		
-		JPanel hRateButton = new JPanel();
-		hRateButton.setBackground(SharedData.COLOR_SET[IDs.HEART_RATE.ordinal()]);
-		hRateButton.add(new JLabel("HR"));
-		hRateButton.setSize(25,25);
-		hRateButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.HEART_RATE);
-			}
-		});
-		westPanel.add(hRateButton);
+			JPanel a = createNavButton(IDs.CALORIES, "C");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.CALORIES);
+				}
+			});
+			westPanel.add(a);
+
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.DISTANCE, "D");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.DISTANCE);
+				}
+			});
+			westPanel.add(a);
+			
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.CLIMB, "V");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.CLIMB);
+				}
+			});
+			westPanel.add(a);
+			
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.STEPS, "S");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.CLIMB);
+				}
+			});
+			westPanel.add(a);
+
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.ACTIVE, "A");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.ACTIVE);
+				}
+			});
+			westPanel.add(a);
+
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.SEDENTARY, "Sed");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.SEDENTARY);
+				}
+			});
+			westPanel.add(a);
+
+			westPanel.add(Box.createHorizontalBox());
+			
+			a = createNavButton(IDs.HEART_RATE, "HR");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.HEART_RATE);
+				}
+			});
+			westPanel.add(a);
+
+			westPanel.add(Box.createHorizontalBox());
 		
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		
 		eastPanel = new JPanel();
+		eastPanel.setOpaque(false);
+		eastPanel.setLayout(new BoxLayout(eastPanel,1));
 		
 			goalsPanel = new JPanel();
 			goalsPanel.setBackground(SharedData.SMOKE);
 			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
 			JLabel goalsTitleLabel = new JLabel("Daily Goals");
 			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+			goalsTitleLabel.setForeground(new Color(255,255,255));
 			goalsPanel.add(goalsTitleLabel);
 			goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+			goalsListLabel.setForeground(new Color(255,255,255));
 			goalsPanel.add(goalsListLabel);
+		
 		eastPanel.add(goalsPanel);
 		
 
@@ -187,9 +187,12 @@ public class DeskTop extends JFrame{
 			awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
 			JLabel awardsTitleLabel = new JLabel("Achievements");
 			awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+			awardsTitleLabel.setForeground(new Color(255,255,255));
 			awardsPanel.add(awardsTitleLabel);
 			awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+			awardsListLabel.setForeground(new Color(255,255,255));
 			awardsPanel.add(awardsListLabel);
+		
 		eastPanel.add(awardsPanel);
 		
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
@@ -202,6 +205,7 @@ public class DeskTop extends JFrame{
 		
 		
 		southPanel = new JPanel();
+		southPanel.setOpaque(false);
 		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
 		southPanel.add(Box.createHorizontalBox());
 		
@@ -210,6 +214,7 @@ public class DeskTop extends JFrame{
 			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getDateOfLastRefresh());
 			dateLabel = new JLabel(dateString);
 			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+			dateLabel.setForeground(new Color(255,255,255));
 			datePanel.add(dateLabel);
 			
 			ImagePanel refreshButton = new ImagePanel("Refresh.png");
@@ -241,12 +246,9 @@ public class DeskTop extends JFrame{
 	private JPanel createNavButton(IDs type, String tag) {
 		JPanel a = new JPanel();
 		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		a.setSize(32, 32);
+		a.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
 		a.add(new JLabel(tag));
-		a.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.CALORIES);
-			}
-		});
 		return a;
 	}
 
