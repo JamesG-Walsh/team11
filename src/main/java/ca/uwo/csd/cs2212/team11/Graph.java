@@ -2,15 +2,21 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 
 
 
 public class Graph extends javax.swing.JPanel {
 	private int[] data = Widgets.time_series;
+	
+	public Graph(){
+		super();
+	}
 	
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -36,6 +42,16 @@ public class Graph extends javax.swing.JPanel {
 		frame.add(g);
 		frame.setSize(500,200);
 		frame.setVisible(true);
-	}
+		frame.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				if(e.getButton() == MouseEvent.BUTTON1){
+					System.out.println("Left Click at " + e.getX());
+				}
+				if(e.getButton() == MouseEvent.BUTTON3){
+					System.out.println("Right Click at " + e.getX());
+				}
+			}
+		});
 
+	}
 }
