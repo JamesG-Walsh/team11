@@ -1,5 +1,12 @@
 package ca.uwo.csd.cs2212.team11;
 
+/**
+ * This class contains this user's steps taken, calories burned, and other 
+ * fitness data items, throughout and in total so far today, and the time 
+ * this data was last updated. 
+ *
+ * @author Team 11
+ */
 public class TodaysData {
 
 private int todaysCaloriesBurned;
@@ -8,6 +15,10 @@ private int todaysSteps;
 private int todaysFloors;
 private int todaysActiveMins;
 private int todaysSedentaryMins;
+private double[] timeSeriesCaloriesBurned;
+private int[] timeSeriesSteps;
+private double[] timeSeriesDistance;
+private int[] timeSeriesHeartRate;
 private String lastUpdated;
 
 
@@ -80,6 +91,23 @@ public void setWhenUpdated( String lastUpdated ) {
 	this.lastUpdated = lastUpdated;
 }
 
+public void storeTimeSeriesCaloriesBurned() {
+	
+}
+
+public void storeTimeSeriesSteps() {
+	
+}
+
+public void storeTimeSeriesDistance() {
+	
+}
+
+public void storeTimeSeriesHeartRate(){
+	
+}
+
+
 /** 
  * Gets this user's calories burned so far today.
  * 
@@ -141,6 +169,22 @@ public int getTodaysSedentaryMins() {
  */
 public String getWhenUpdated() {
 	return lastUpdated;
+}
+
+public void loadTimeSeriesCaloriesBurned() {
+	
+}
+
+public void loadTimeSeriesSteps() {
+	
+}
+
+public void loadTimeSeriesDistance() {
+	
+}
+
+public void loadTimeSeriesHeartRate(){
+	
 }
 
 }
