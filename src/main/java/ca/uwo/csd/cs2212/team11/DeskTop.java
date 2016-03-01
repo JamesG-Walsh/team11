@@ -100,7 +100,13 @@ public class DeskTop extends JFrame{
 			});
 			westPanel.add(a);
 
-			westPanel.add(Box.createHorizontalBox());
+			a = new ImagePanel("graph.png");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.CALORIES);
+				}
+			});
+			westPanel.add(a);
 			
 			a = createNavButton(IDs.DISTANCE, "D");
 			a.addMouseListener(new MouseAdapter(){
@@ -110,7 +116,13 @@ public class DeskTop extends JFrame{
 			});
 			westPanel.add(a);
 			
-			westPanel.add(Box.createHorizontalBox());
+			a = new ImagePanel("graph.png");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.DISTANCE);
+				}
+			});
+			westPanel.add(a);
 			
 			a = createNavButton(IDs.CLIMB, "V");
 			a.addMouseListener(new MouseAdapter(){
@@ -125,12 +137,18 @@ public class DeskTop extends JFrame{
 			a = createNavButton(IDs.STEPS, "S");
 			a.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CLIMB);
+					addRemoveWidget(IDs.STEPS);
 				}
 			});
 			westPanel.add(a);
 
-			westPanel.add(Box.createHorizontalBox());
+			a = new ImagePanel("graph.png");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.STEPS);
+				}
+			});
+			westPanel.add(a);
 			
 			a = createNavButton(IDs.ACTIVE, "A");
 			a.addMouseListener(new MouseAdapter(){
@@ -140,7 +158,13 @@ public class DeskTop extends JFrame{
 			});
 			westPanel.add(a);
 
-			westPanel.add(Box.createHorizontalBox());
+			a = new ImagePanel("graph.png");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.ACTIVE);
+				}
+			});
+			westPanel.add(a);
 			
 			a = createNavButton(IDs.SEDENTARY, "Sed");
 			a.addMouseListener(new MouseAdapter(){
@@ -160,8 +184,14 @@ public class DeskTop extends JFrame{
 			});
 			westPanel.add(a);
 
-			westPanel.add(Box.createHorizontalBox());
-		
+			a = new ImagePanel("graph.png");
+			a.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.HEART_RATE);
+				}
+			});
+			westPanel.add(a);
+
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		
 		eastPanel = new JPanel();
@@ -238,11 +268,16 @@ public class DeskTop extends JFrame{
 			southPanel.add(addWidgetButton);
 		
 		mainDisplay.add(southPanel, BorderLayout.SOUTH);
-		mainDisplay.setSize(backPanel.getSize());
+		mainDisplay.setSize(800, 600);
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 	}
 	
+	protected void addRemoveGraph(IDs steps) {
+		System.err.println("DeskTop.refreshData() called");
+		System.err.println("\t***Does nothing yet");
+	}
+
 	private JPanel createNavButton(IDs type, String tag) {
 		JPanel a = new JPanel();
 		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
@@ -278,7 +313,7 @@ public class DeskTop extends JFrame{
 		}
 	}
 	
-	private Date getDateOfLastRefresh(){
+	public Date getDateOfLastRefresh(){
 		return new Date();
 	}
 	
