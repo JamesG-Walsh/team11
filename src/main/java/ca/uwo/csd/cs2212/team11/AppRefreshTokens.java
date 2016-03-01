@@ -59,7 +59,11 @@ public class AppRefreshTokens
             apiKey= bufferedReader.readLine();
             apiSecret = bufferedReader.readLine();
             bufferedReader.close();
-            fileReader = new FileReader("Team11Tokens.txt");
+
+       String workingDir = System.getProperty("user.dir");
+       System.out.println("Current working directory : " + workingDir);
+            fileReader = new FileReader("./src/main/resources/Team11Tokens.txt");
+
             bufferedReader = new BufferedReader(fileReader);
                      
             accessTokenItself = bufferedReader.readLine();
@@ -190,7 +194,7 @@ public class AppRefreshTokens
         try {
             FileWriter fileWriter; 
             fileWriter =
-                    new FileWriter("Team11Tokens.txt");
+                    new FileWriter("./src/main/resources/Team11Tokens.txt");
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(accessToken.getToken());
             bufferedWriter.newLine();
