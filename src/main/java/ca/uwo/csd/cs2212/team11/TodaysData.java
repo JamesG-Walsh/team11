@@ -18,7 +18,7 @@ public TodaysData() {
 }
 
 /** 
- * Sets this user's calories so far today.
+ * Sets this user's calories burned so far today.
  * 
  * @param todaysCaloriesBurned
  */
@@ -54,7 +54,7 @@ public void setTodaysFloors( float todaysFloors ) {
 }
 
 /** 
- * Gets this user's active minutes so far today.
+ * Sets this user's active minutes so far today.
  * 
  * @param todaysActiveMins
  */
@@ -81,7 +81,7 @@ public void setWhenUpdated( float lastUpdated ) {
 }
 
 /** 
- * Sets this user's calories burned so far today.
+ * Gets this user's calories burned so far today.
  * 
  * @return todaysCaloriesBurned
  */
