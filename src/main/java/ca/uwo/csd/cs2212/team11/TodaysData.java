@@ -18,13 +18,17 @@ public TodaysData() {
 }
 
 /** 
+ * Sets this user's calories so far today.
+ * 
  * @param todaysCaloriesBurned
  */
 public void setTodaysCaloriesBurned( float todaysCaloriesBurned ) {
 	this.todaysCaloriesBurned = todaysCaloriesBurned;
 }
 
-/** 
+/**
+ * Sets this user's distance traveled so far today.
+ *  
  * @param todaysDistance
  */
 public void setTodaysDistance( float todaysDistance ) {
@@ -32,6 +36,8 @@ public void setTodaysDistance( float todaysDistance ) {
 }
 
 /** 
+ * Sets this user's steps taken so far today.
+ * 
  * @param todaysSteps
  */
 public void setTodaysSteps( float todaysSteps ) {
@@ -39,6 +45,8 @@ public void setTodaysSteps( float todaysSteps ) {
 }
 
 /** 
+ * Sets this user's floors climbed so far today.
+ * 
  * @param todaysFloors
  */
 public void setTodaysFloors( float todaysFloors ) {
@@ -46,6 +54,8 @@ public void setTodaysFloors( float todaysFloors ) {
 }
 
 /** 
+ * Gets this user's active minutes so far today.
+ * 
  * @param todaysActiveMins
  */
 public void setTodaysActiveMins( float todaysActiveMins ) {
@@ -53,6 +63,8 @@ public void setTodaysActiveMins( float todaysActiveMins ) {
 }
 
 /** 
+ * Sets this user's sedentary minutes so far today.
+ * 
  * @param todaysSedentaryMins
  */
 public void setTodaysSedentaryMins( float todaysSedentaryMins ) {
@@ -60,6 +72,8 @@ public void setTodaysSedentaryMins( float todaysSedentaryMins ) {
 }
 
 /** 
+ * Sets time of last update of this user's data.
+ * 
  * @param lastUpdated
  */
 public void setWhenUpdated( float lastUpdated ) {
@@ -67,49 +81,63 @@ public void setWhenUpdated( float lastUpdated ) {
 }
 
 /** 
- * Gets today's calories burned.
+ * Sets this user's calories burned so far today.
+ * 
+ * @return todaysCaloriesBurned
  */
 public float getTodaysCaloriesBurned() {
 	return todaysCaloriesBurned;
 }
 
 /** 
- * Gets today's distance.
+ * Gets this user's distance traveled so far today.
+ * 
+ * @return todaysDistance
  */
 public float getTodaysDistance() {
 	return todaysDistance;
 }
 
 /** 
- * Gets today's floors.
+ * Gets this user's steps taken so far today.
+ * 
+ * @return todaysSteps
  */
 public float setTodaysSteps() {
 	return todaysSteps;
 }
 
 /** 
- * Gets today's floors.
+ * Gets this user's floors climbed so far today.
+ *  
+ * @return todaysFloors
  */
 public float getTodaysFloors() {
 	return todaysFloors;
 }
 
 /** 
- * Gets today's active minutes.
+ * Gets this user's active minutes so far today.
+ * 
+ * @return todaysActiveMins 
  */
 public float getTodaysActiveMins() {
 	return todaysActiveMins;
 }
 
 /** 
- * Gets today's sedentary minutes.
+ * Gets this user's sedentary minutes so far today.
+ * 
+ * @return todaysSedentaryMins  
  */
 public float getTodaysSedentaryMins() {
 	return todaysSedentaryMins;
 }
 
 /** 
- * Gets the time of last data update.
+ * Gets time of last update of this user's data.
+ * 
+ * @return lastUpdated
  */
 public float getWhenUpdated() {
 	return lastUpdated;
