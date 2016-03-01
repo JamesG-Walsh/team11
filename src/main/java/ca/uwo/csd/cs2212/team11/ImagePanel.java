@@ -15,13 +15,18 @@ public class ImagePanel extends JPanel {
 	private int height, width;
 	
 	public ImagePanel(String source){
+		File f = new File(SharedData.PATH_TO_IMAGES + source);
+		if (!f.exists()){
+			f = new File(SharedData.ALT_PATH_TO_IMAGES + source);
+		}
 	       try {                
-	           image = ImageIO.read(new File(source));
+	           image = ImageIO.read(f);
 		        this.height = image.getHeight();
 		        this.width = image.getWidth();
 	        } catch (IOException ex) {
 	             System.err.println("File: \'" + source + "\', not found!");
 	        }
+	        this.setOpaque(false);
 	}
 	
     protected void paintComponent(Graphics g) {
