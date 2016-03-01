@@ -53,13 +53,13 @@ public class AppRefreshTokens
             // File with service credentials.
              
             FileReader fileReader =
-                    new FileReader("/Users/BethLocke/Dropbox/CS2212B_2016/Workspace/FitbitTest/src/main/resources/BethCredentials.txt");       
+                    new FileReader("Team11Credentials.txt");       
             bufferedReader = new BufferedReader(fileReader);
             clientID= bufferedReader.readLine();
             apiKey= bufferedReader.readLine();
             apiSecret = bufferedReader.readLine();
             bufferedReader.close();
-            fileReader = new FileReader("/Users/BethLocke/Dropbox/CS2212B_2016/Workspace/FitbitTest/src/main/resources/BethTokens.txt");
+            fileReader = new FileReader("Team11Tokens.txt");
             bufferedReader = new BufferedReader(fileReader);
                      
             accessTokenItself = bufferedReader.readLine();
@@ -190,7 +190,7 @@ public class AppRefreshTokens
         try {
             FileWriter fileWriter; 
             fileWriter =
-                    new FileWriter("/Users/BethLocke/Dropbox/CS2212B_2016/Workspace/FitbitTest/src/main/resources/BethTokens.txt");
+                    new FileWriter("Team11Tokens.txt");
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(accessToken.getToken());
             bufferedWriter.newLine();
