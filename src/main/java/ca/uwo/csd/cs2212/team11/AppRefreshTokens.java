@@ -177,7 +177,7 @@ public class AppRefreshTokens
                 System.out.println("HTTP response body:\n"+response.getBody());
                 break;
             case 429:
-                System.out.println("Rate limit exceeded");
+                System.out.println("Rate limit exceedgited");
                 System.out.println("HTTP response body:\n"+response.getBody());
                 break;
             default:
