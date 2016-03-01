@@ -31,7 +31,7 @@ public void setUserLoginInfo( String userID, String userPassWord ) {
 /**
  * Gets this user's ID and password.
  * 
- * @return     concatenation of userID and userPassWord, separated by a space 
+ * @return     userID and userPassWord, separated by a space 
  */
 
 public String getUserLoginInfo() {
