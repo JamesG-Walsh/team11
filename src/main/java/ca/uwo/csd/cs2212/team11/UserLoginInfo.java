@@ -31,13 +31,12 @@ public void setUserLoginInfo( String userID, String userPassWord ) {
 /**
  * Gets this user's ID and password.
  * 
- * @return userID 
- * @return userPassword
+ * @return     concatenation of userID and userPassWord, separated by a space 
  */
 
 public String getUserLoginInfo() {
 	String s = userID;
-	s = s.concat("  ");
+	s = s.concat(" ");
 	s = s.concat(userPassWord);
 	return s;
 }
