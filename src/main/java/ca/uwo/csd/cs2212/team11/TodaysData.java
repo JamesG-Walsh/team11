@@ -2,13 +2,13 @@ package ca.uwo.csd.cs2212.team11;
 
 public class TodaysData {
 
-private float todaysCaloriesBurned;
-private float todaysDistance;
-private float todaysSteps;
-private float todaysFloors;
-private float todaysActiveMins;
-private float todaysSedentaryMins;
-private float lastUpdated;
+private int todaysCaloriesBurned;
+private double todaysDistance;
+private int todaysSteps;
+private int todaysFloors;
+private int todaysActiveMins;
+private int todaysSedentaryMins;
+private String lastUpdated;
 
 
 /**
@@ -22,7 +22,7 @@ public TodaysData() {
  * 
  * @param todaysCaloriesBurned
  */
-public void setTodaysCaloriesBurned( float todaysCaloriesBurned ) {
+public void setTodaysCaloriesBurned( int todaysCaloriesBurned ) {
 	this.todaysCaloriesBurned = todaysCaloriesBurned;
 }
 
@@ -31,7 +31,7 @@ public void setTodaysCaloriesBurned( float todaysCaloriesBurned ) {
  *  
  * @param todaysDistance
  */
-public void setTodaysDistance( float todaysDistance ) {
+public void setTodaysDistance( double todaysDistance ) {
 	this.todaysDistance = todaysDistance;
 }
 
@@ -40,7 +40,7 @@ public void setTodaysDistance( float todaysDistance ) {
  * 
  * @param todaysSteps
  */
-public void setTodaysSteps( float todaysSteps ) {
+public void setTodaysSteps( int todaysSteps ) {
 	this.todaysSteps = todaysSteps;
 }
 
@@ -49,7 +49,7 @@ public void setTodaysSteps( float todaysSteps ) {
  * 
  * @param todaysFloors
  */
-public void setTodaysFloors( float todaysFloors ) {
+public void setTodaysFloors( int todaysFloors ) {
 	this.todaysFloors = todaysFloors;
 }
 
@@ -58,7 +58,7 @@ public void setTodaysFloors( float todaysFloors ) {
  * 
  * @param todaysActiveMins
  */
-public void setTodaysActiveMins( float todaysActiveMins ) {
+public void setTodaysActiveMins( int todaysActiveMins ) {
 	this.todaysActiveMins = todaysActiveMins;
 }
 
@@ -67,7 +67,7 @@ public void setTodaysActiveMins( float todaysActiveMins ) {
  * 
  * @param todaysSedentaryMins
  */
-public void setTodaysSedentaryMins( float todaysSedentaryMins ) {
+public void setTodaysSedentaryMins( int todaysSedentaryMins ) {
 	this.todaysSedentaryMins = todaysSedentaryMins;
 }
 
@@ -76,7 +76,7 @@ public void setTodaysSedentaryMins( float todaysSedentaryMins ) {
  * 
  * @param lastUpdated
  */
-public void setWhenUpdated( float lastUpdated ) {
+public void setWhenUpdated( String lastUpdated ) {
 	this.lastUpdated = lastUpdated;
 }
 
@@ -85,7 +85,7 @@ public void setWhenUpdated( float lastUpdated ) {
  * 
  * @return todaysCaloriesBurned
  */
-public float getTodaysCaloriesBurned() {
+public int getTodaysCaloriesBurned() {
 	return todaysCaloriesBurned;
 }
 
@@ -94,7 +94,7 @@ public float getTodaysCaloriesBurned() {
  * 
  * @return todaysDistance
  */
-public float getTodaysDistance() {
+public double getTodaysDistance() {
 	return todaysDistance;
 }
 
@@ -103,7 +103,7 @@ public float getTodaysDistance() {
  * 
  * @return todaysSteps
  */
-public float setTodaysSteps() {
+public int setTodaysSteps() {
 	return todaysSteps;
 }
 
@@ -112,7 +112,7 @@ public float setTodaysSteps() {
  *  
  * @return todaysFloors
  */
-public float getTodaysFloors() {
+public int getTodaysFloors() {
 	return todaysFloors;
 }
 
@@ -121,7 +121,7 @@ public float getTodaysFloors() {
  * 
  * @return todaysActiveMins 
  */
-public float getTodaysActiveMins() {
+public int getTodaysActiveMins() {
 	return todaysActiveMins;
 }
 
@@ -130,7 +130,7 @@ public float getTodaysActiveMins() {
  * 
  * @return todaysSedentaryMins  
  */
-public float getTodaysSedentaryMins() {
+public int getTodaysSedentaryMins() {
 	return todaysSedentaryMins;
 }
 
@@ -139,7 +139,7 @@ public float getTodaysSedentaryMins() {
  * 
  * @return lastUpdated
  */
-public float getWhenUpdated() {
+public String getWhenUpdated() {
 	return lastUpdated;
 }
 
