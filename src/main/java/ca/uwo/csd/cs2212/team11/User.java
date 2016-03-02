@@ -1,8 +1,6 @@
 package ca.uwo.csd.cs2212.team11;
 
-import ca.uwo.csd.cs2212.team11.UserLoginInfo;
-import ca.uwo.csd.cs2212.team11.HistoricalFitnessData;
-import ca.uwo.csd.cs2212.team11.TodaysData;
+
 /* When UserPreferences class exists: */
 /* import ca.uwo.csd.cs2212.team11.UserPreferences.*;  */
 
@@ -14,10 +12,9 @@ import ca.uwo.csd.cs2212.team11.TodaysData;
 
 public class User {
 	
-private UserLoginInfo loginInfo;
 /* private UserPreferences preferences; */
 private HistoricalFitnessData historicalData;
-private TodaysData todaysData;
+private OneDaysWorthOfData todaysData;
 	
 /**
  *  Class constructor.
@@ -25,21 +22,14 @@ private TodaysData todaysData;
 public User() {
 }
 
-/**
- * Gets this user's login information.
- * 
- * @return loginInfo
- */
-public UserLoginInfo getLoginInfo() {
-	return loginInfo;
-}
+
 
 /**
  * Gets this user's fitness data so far today.
  *
  * @return todaysData
  */
-public TodaysData getTodaysData() {
+public OneDaysWorthOfData getTodaysData() {
 	return todaysData;
 }
 
