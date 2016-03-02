@@ -14,8 +14,8 @@ public class Team11_FitBitViewer {
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
-		/*DeskTop GUI = new DeskTop();
-		GUI.setVisible(true);*/
+		DeskTop GUI = new DeskTop();
+		GUI.setVisible(true);
 		
 		HttpClient h = new HttpClient();
 		OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 1);
