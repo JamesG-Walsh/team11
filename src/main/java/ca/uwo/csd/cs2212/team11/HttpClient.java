@@ -26,7 +26,9 @@ import org.json.JSONArray;
 
 
 /**
- * Example of using access/refresh pair, and authorization credentials
+ * @author Team 11
+ * Class that contains methods for making requests to the fitbit API and returning the resultant JSONObjects
+ * Mostly copied from the AppRefreshTokens.java file that Beth Locke provied on confluence
  */
 public class HttpClient
 {
@@ -35,6 +37,13 @@ public class HttpClient
   
     public String URL;
     
+    /**
+     * public method that takes Strings to build a URL for making a request to activities/tracker for a daily total and returns the resultant JSONObject
+     * @param activity 	the activity field for the URL for the request (eg. "calories", "minutesSedentary" etc.)
+     * @param date		the date part of the URL for the request ( "yyyy-mm-dd" eg. "2016-03-25")
+     * @return jo		the JSONObject that is returned by the request
+     * @throws JSONException
+     */
     public JSONObject getSpecificDataDailyTotal(String activity, String date) throws JSONException
     {
         //read credentials from a file
@@ -244,8 +253,26 @@ public class HttpClient
         }//end try
 		return jo;
     }//end getSpecificData()
+
+/**
+     * public method that takes Strings to build a URL for making a by the minute request to activities/ and returns the resultant JSONObject
+     * @param activity 	the activity field for the URL for the request (eg. "calories", "minutesSedentary" etc.)
+     * @param date		the date part of the URL for the request ("yyyy-mm-dd" eg. "2016-03-25")
+     * @return 			the JSONObject that is returned by the request
+     * @throws JSONException
+     */
     
-    public JSONObject getSpecificDataByTheMin(String activity, String date, String interval, String startTime, String endTime) throws JSONException
+    /**
+     * public method that takes Strings to build a URL for making a by the minute request to activities/ and returns the resultant JSONObject
+     * @param activity		the activity field for the URL for the request (eg. "calories", "minutesSedentary" etc.)
+     * @param date			the date part of the URL for the request ("yyyy-mm-dd" eg. "2016-03-25")
+     * @param interval		the resolution of the data (eg "1d", "15min", "1min")
+     * @param startTime		the start of the time interval(inclusive)
+     * @param endTime		the end of the time interval (inclusive)
+     * @return				the JSONObject that is returned by the request
+     * @throws JSONException
+     */
+    public static JSONObject getSpecificDataByTheMin(String activity, String date, String interval, String startTime, String endTime) throws JSONException
     {
         //read credentials from a file
         BufferedReader bufferedReader=null;

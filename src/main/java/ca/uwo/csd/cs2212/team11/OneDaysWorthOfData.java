@@ -4,7 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-
+/**
+ * Class that contains all numerical data for the dashboard & time series displays
+ * @author Team11
+ *
+ */
 public class OneDaysWorthOfData 
 {
 	private int year;

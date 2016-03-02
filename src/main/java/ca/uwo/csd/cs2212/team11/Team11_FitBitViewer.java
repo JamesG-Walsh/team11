@@ -19,7 +19,6 @@ public class Team11_FitBitViewer {
 		
 		HttpClient h = new HttpClient();
 		OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 1);
-				
 		String startTime = "23:00";
 		String endTime = "23:59";
 		
