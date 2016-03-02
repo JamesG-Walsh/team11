@@ -7,17 +7,24 @@ import org.json.JSONArray;
 
 public class OneDaysWorthOfData 
 {
-
-	private int todaysCaloriesBurned;
-
-	private double todaysDistance;
-
-	private int todaysSteps;
-
-	private int todaysFloors;
+	private double todaysTotalCaloriesBurned;
+	private double[][] caloriesByTheMin = new double [24][60];
+	
+	private double todaysTotalDistance;
+	private double[][] distanceByTheMin = new double [24][60];
+	
+	private int todaysTotalSteps;
+	private int[][] stepsByTheMin = new int [24][60];
+	
+	private int todaysTotalFloors;
 	private int[][] floorsByTheMin = new int [24][60];
-	private int todaysActiveMins;
-	private int todaysSedentaryMins;
+	
+	private int todaysTotalActiveMins;
+	private int[][] activeMinsByTheMin = new int [24][60];
+	
+	private int todaysTotalSedentaryMins;
+	private int[][] sedentaryMinsByTheMin = new int [24][60];
+	
 	private String lastUpdated;
 
 
@@ -34,8 +41,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysCaloriesBurned
 	 */
-	public void setTodaysCaloriesBurned( int todaysCaloriesBurned ) {
-		this.todaysCaloriesBurned = todaysCaloriesBurned;
+	public void setTodaysTotalCaloriesBurned( int todaysCaloriesBurned ) {
+		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
 	}
 
 	/**
@@ -43,8 +50,8 @@ public class OneDaysWorthOfData
 	 *  
 	 * @param todaysDistance
 	 */
-	public void setTodaysDistance( double todaysDistance ) {
-		this.todaysDistance = todaysDistance;
+	public void setTodaysTotalDistance( double todaysDistance ) {
+		this.todaysTotalDistance = todaysDistance;
 	}
 
 	/** 
@@ -52,8 +59,16 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysSteps
 	 */
-	public void setTodaysSteps( int todaysSteps ) {
-		this.todaysSteps = todaysSteps;
+	public void setTodaysTotalSteps( int todaysSteps ) {
+		this.todaysTotalSteps = todaysSteps;
+	}
+
+	/**
+	 * @return the todaysTotalSteps
+	 */
+	public int getTodaysTotalSteps() {
+		int ret = this.todaysTotalSteps;
+		return ret;
 	}
 
 	/** 
@@ -61,8 +76,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysFloors
 	 */
-	public void setTodaysFloors( int todaysFloors ) {
-		this.todaysFloors = todaysFloors;
+	public void setTodaysTotalFloors( int todaysFloors ) {
+		this.todaysTotalFloors = todaysFloors;
 	}
 
 	/** 
@@ -70,8 +85,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysActiveMins
 	 */
-	public void setTodaysActiveMins( int todaysActiveMins ) {
-		this.todaysActiveMins = todaysActiveMins;
+	public void setTodaysTotalActiveMins( int todaysActiveMins ) {
+		this.todaysTotalActiveMins = todaysActiveMins;
 	}
 
 	/** 
@@ -79,8 +94,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysSedentaryMins
 	 */
-	public void setTodaysSedentaryMins( int todaysSedentaryMins ) {
-		this.todaysSedentaryMins = todaysSedentaryMins;
+	public void setTodaysTotalSedentaryMins( int todaysSedentaryMins ) {
+		this.todaysTotalSedentaryMins = todaysSedentaryMins;
 	}
 
 	/** 
@@ -97,8 +112,9 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return todaysCaloriesBurned
 	 */
-	public int getTodaysCaloriesBurned() {
-		return todaysCaloriesBurned;
+	public double getTodaysTotalCaloriesBurned() {
+		double ret = this.todaysTotalCaloriesBurned;
+		return ret;
 	}
 
 	/** 
@@ -106,17 +122,9 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return todaysDistance
 	 */
-	public double getTodaysDistance() {
-		return todaysDistance;
-	}
-
-	/** 
-	 * Gets this user's steps taken so far today.
-	 * 
-	 * @return todaysSteps
-	 */
-	public int setTodaysSteps() {
-		return todaysSteps;
+	public double getTodaysTotalDistance() {
+		double ret = this.todaysTotalDistance;
+		return ret;
 	}
 
 	/** 
@@ -124,15 +132,16 @@ public class OneDaysWorthOfData
 	 *  
 	 * @return todaysFloors
 	 */
-	public int getTodaysFloors() {
-		return todaysFloors;
+	public int getTodaysTotalFloors() {
+		int ret = this.todaysTotalFloors;
+		return ret;
 	}
 
 	/**
 	 * @return the floorsByTheMin
 	 */
 	public int[][] getFloorsByTheMin() {
-		return floorsByTheMin;
+		return this.floorsByTheMin;
 	}
 
 	/**
@@ -142,26 +151,12 @@ public class OneDaysWorthOfData
 	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
 		JSONArray ja = jo.getJSONObject("activities-floors-intraday").getJSONArray("dataset");  
-		//System.out.println("length: " + ja.length());
-		//System.out.println(ja);
-		/*for (int hour = 0, obj = 0; hour < 24 && obj < 1440; hour++)
-		{
-			for(int min=0 ; min < 60 ; min++ , obj++)
-			{
-				this.floorsByTheMin[hour][min] = ja.getJSONObject(obj).getInt("value");
-				System.out.println(ja.getJSONObject(obj).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
-			}
-		}*/
 		for (int count = 0; count < ja.length(); count++)
 		{
-			System.out.println("obj: " + count);
 			String time = ja.getJSONObject(count).getString("time");
-			System.out.println(time);
 			
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			System.out.println("hour:" + hour);
-			System.out.println("min:" + min);
 			
 			this.floorsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
 			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
@@ -174,8 +169,9 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return todaysActiveMins 
 	 */
-	public int getTodaysActiveMins() {
-		return todaysActiveMins;
+	public int getTodaysTotalActiveMins() {
+		int ret = this.todaysTotalActiveMins;
+		return ret;
 	}
 
 	/** 
@@ -183,8 +179,9 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return todaysSedentaryMins  
 	 */
-	public int getTodaysSedentaryMins() {
-		return todaysSedentaryMins;
+	public int getTodaysTotalSedentaryMins() {
+		int ret = this.todaysTotalSedentaryMins;
+		return ret;
 	}
 
 	/** 
@@ -193,7 +190,8 @@ public class OneDaysWorthOfData
 	 * @return lastUpdated
 	 */
 	public String getWhenUpdated() {
-		return lastUpdated;
+		String ret = this.lastUpdated;
+		return ret;
 	}
 	
 

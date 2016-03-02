@@ -17,12 +17,7 @@ public class Team11_FitBitViewer {
 		GUI.setVisible(true);*/
 		
 		HttpClient h = new HttpClient();
-		
-		OneDaysWorthOfData odwod = new OneDaysWorthOfData();
-		
-		odwod.setFloorsByTheMin(h.getSpecificData("floors", "2016-02-29", "1min", "00:00", "23:59"));
-		
-		
+		OneDaysWorthOfData odwod = new OneDaysWorthOfData();	
+		odwod.setFloorsByTheMin(h.getSpecificData("floors", "2016-03-01", "1min", "00:00", "23:59"));
 	}
-
 }
