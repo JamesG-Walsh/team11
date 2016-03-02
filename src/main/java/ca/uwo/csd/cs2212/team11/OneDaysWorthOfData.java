@@ -41,7 +41,7 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysCaloriesBurned
 	 */
-	public void setTodaysTotalCaloriesBurned( int todaysCaloriesBurned ) {
+	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned ) {
 		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
 	}
 
@@ -160,6 +160,22 @@ public class OneDaysWorthOfData
 			
 			this.floorsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
 			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
+			System.out.println("--------");
+		}
+	}
+	
+	public void setStepsByTheMin(JSONObject jo) throws JSONException 
+	{
+		JSONArray ja = jo.getJSONObject("activities-steps-intraday").getJSONArray("dataset");  
+		for (int count = 0; count < ja.length(); count++)
+		{
+			String time = ja.getJSONObject(count).getString("time");
+			
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(3, 5));
+			
+			this.stepsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
+			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.stepsByTheMin[hour][min]);
 			System.out.println("--------");
 		}
 	}

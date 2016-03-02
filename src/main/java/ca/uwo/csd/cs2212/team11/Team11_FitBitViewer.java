@@ -18,6 +18,6 @@ public class Team11_FitBitViewer {
 		
 		HttpClient h = new HttpClient();
 		OneDaysWorthOfData odwod = new OneDaysWorthOfData();	
-		odwod.setFloorsByTheMin(h.getSpecificData("floors", "2016-03-01", "1min", "00:00", "23:59"));
+		odwod.setStepsByTheMin(h.getSpecificData("steps", "2016-03-01", "15min", "00:00", "23:59"));
 	}
 }
