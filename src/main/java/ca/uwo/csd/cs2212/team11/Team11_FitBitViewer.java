@@ -18,13 +18,25 @@ public class Team11_FitBitViewer {
 		
 		HttpClient h = new HttpClient();
 		OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 1);
-		
-		
-		
+				
 		String startTime = "23:00";
 		String endTime = "23:59";
 		
-		h.getSpecificDataDailyTotal("floors", "2016-03-01");
+		odwod.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(h.getSpecificDataDailyTotal("floors", "2016-03-01")));
+		odwod.setTodaysTotalSteps(ResponseParser.parseDailyStepsTotal(h.getSpecificDataDailyTotal("steps", "2016-03-01")));
+		odwod.setTodaysTotalCaloriesBurned(ResponseParser.parseDailyCaloriesTotal(h.getSpecificDataDailyTotal("calories", "2016-03-01")));
+		odwod.setTodaysTotalDistance(ResponseParser.parseDailyDistanceTotal(h.getSpecificDataDailyTotal("distance", "2016-03-01")));
+		odwod.setTodaysTotalSedentaryMins(ResponseParser.parseDailySedentaryMinsTotal(h.getSpecificDataDailyTotal("minutesSedentary", "2016-03-01")));
+		
+		
+		System.out.println("\nTOTALS");
+		System.out.println("FLoors: " + odwod.getTodaysTotalFloors());
+		System.out.println("Steps: " + odwod.getTodaysTotalSteps());
+		System.out.println("Calories: " + odwod.getTodaysTotalCaloriesBurned());
+		System.out.println("Distance: " + odwod.getTodaysTotalDistance());
+		System.out.println("SedentaryMins: " + odwod.getTodaysTotalSedentaryMins());
+		
+		
 		/*
 		odwod.setStepsByTheMin(h.getSpecificDataByTheMin("steps", "2016-03-01", "1min", startTime, endTime));	
 		odwod.setCaloriesByTheMin(h.getSpecificDataByTheMin("calories", "2016-03-01", "1min", startTime, endTime));
