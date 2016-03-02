@@ -125,7 +125,7 @@ public class AppRefreshTokens
         String requestUrlPrefix = "https://api.fitbit.com/1/user/3WGW2P/";
         String requestUrl;
         //    The URL from this point is how you ask for different information
-        requestUrl = requestUrlPrefix + "activities/floors/date/2016-01-07/1d/1min/time/19:15/19:30.json";
+        requestUrl = requestUrlPrefix + "activities/floors/date/2016-01-07/1d/1min/time/00:00/23:59.json";
         // This actually generates an HTTP request from the URL
         //    -it has a header, body ect.
         OAuthRequest request = new OAuthRequest(Verb.GET, requestUrl, service);
@@ -154,10 +154,14 @@ public class AppRefreshTokens
                 System.out.println("Success!");
                 System.out.println("HTTP response body:\n"+response.getBody());
                 
-                //JSONObject jo = new JSONObject(response.getBody());
-                //System.out.println();
+                JSONObject jo = new JSONObject(response.getBody());
+                System.out.println();
+                System.out.println();
+                OneDaysWorthOfData odwod = new OneDaysWorthOfData();
+                System.out.println("Entering setter.");
+                odwod.setFloorsByTheMin(jo.getJSONObject("activities-floors-intraday").getJSONArray("dataset"));
                 
-                
+                //System.out.println(jo.getJSONArray("activities-floors").getJSONObject(0).get("dateTime"));             
                 break;
             case 400:
                 System.out.println("Bad Request - may have to talk to Beth");
