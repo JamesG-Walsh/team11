@@ -139,10 +139,15 @@ public class OneDaysWorthOfData
 	public void setFloorsByTheMin(JSONArray ja) throws JSONException 
 	{
 		System.out.println("length: " + ja.length());
-		for (int i = 0; i < ja.length(); i++)
+		for (int i = 0; i < 24; i++)
 		{
-			
-			System.out.println(ja.getJSONObject(i));
+
+			/*			System.out.println(ja.getJSONObject(i).get("value"));
+			 */			for(int j=0;j<60;j++){
+
+				 this.floorsByTheMin[i][j] = ja.getJSONObject(i).getInt("value");
+				 System.out.println(this.floorsByTheMin[i][j]);
+			 }
 		}
 	}
 
