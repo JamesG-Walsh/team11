@@ -29,6 +29,7 @@ public class Widget extends JPanel{
 		super();
 		data = getData(type);
 		this.setSize(200, 200);
+		System.out.println(this.getWidth());
 		this.setLayout(new BorderLayout(1,1));
 		this.setBackground(SharedData.COLOR_SET[type.ordinal()]);
 		this.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
@@ -95,6 +96,7 @@ public class Widget extends JPanel{
 	}
 
 	private void changeView(int i) {
+		
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
 	}
