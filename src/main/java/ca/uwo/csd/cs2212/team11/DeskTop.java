@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import java.awt.Dimension;
 
 import ca.uwo.csd.cs2212.team11.SharedData.*;
 
@@ -41,14 +42,16 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 
-		
-		ImagePanel backPanel = new ImagePanel(SharedData.PATH_TO_RESOURCES + "imgs/jogger.jpg"); // replace with no copyright
+		System.out.println(System.getProperty("user.dir"));
+
+		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		JLayeredPane main = new JLayeredPane();
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
 
 		
 		JPanel mainDisplay = new JPanel();
 		mainDisplay.setLayout(new BorderLayout(1,1));
+		mainDisplay.setPreferredSize(new Dimension(1000, 600));
 		mainDisplay.setOpaque(false);
 		mainDisplay.setVisible(true);
 		
@@ -66,7 +69,7 @@ public class DeskTop extends JFrame{
 			JPanel hello = new JPanel();
 			hello.setBackground(SharedData.SMOKE);
 			JLabel helloLabel = new JLabel("Welcome, USER!");
-			helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+			helloLabel.setFont(new Font("T ahoma", Font.PLAIN, 36));
 			helloLabel.setForeground(new Color(255,255,255));
 			hello.add(helloLabel);
 			northPanel.add(hello);
