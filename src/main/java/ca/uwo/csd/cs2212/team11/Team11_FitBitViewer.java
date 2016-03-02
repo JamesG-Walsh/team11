@@ -1,6 +1,7 @@
 package ca.uwo.csd.cs2212.team11;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Team11_FitBitViewer {
 
@@ -28,13 +29,18 @@ public class Team11_FitBitViewer {
 		odwod.setTodaysTotalDistance(ResponseParser.parseDailyDistanceTotal(h.getSpecificDataDailyTotal("distance", "2016-03-01")));
 		odwod.setTodaysTotalSedentaryMins(ResponseParser.parseDailySedentaryMinsTotal(h.getSpecificDataDailyTotal("minutesSedentary", "2016-03-01")));
 		
-		
+		JSONObject joLA = h.getSpecificDataDailyTotal("minutesLightlyActive", "2016-03-01");
+		JSONObject joFA = h.getSpecificDataDailyTotal("minutesFairlyActive", "2016-03-01");
+		JSONObject joVA = h.getSpecificDataDailyTotal("minutesVeryActive", "2016-03-01");		
+		odwod.setTodaysTotalActiveMins(ResponseParser.parseDailyActiveMinsTotal(joLA, joFA, joVA));
+				
 		System.out.println("\nTOTALS");
 		System.out.println("FLoors: " + odwod.getTodaysTotalFloors());
 		System.out.println("Steps: " + odwod.getTodaysTotalSteps());
 		System.out.println("Calories: " + odwod.getTodaysTotalCaloriesBurned());
 		System.out.println("Distance: " + odwod.getTodaysTotalDistance());
 		System.out.println("SedentaryMins: " + odwod.getTodaysTotalSedentaryMins());
+		System.out.println("ActiveMins: " + odwod.getTodaysTotalActiveMins());
 		
 		
 		/*

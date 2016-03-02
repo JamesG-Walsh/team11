@@ -33,7 +33,6 @@ public class ResponseParser
 		return ret;
 	}//end of method
 	
-	//TODO 4 methods below
 	public static double parseDailyCaloriesTotal(JSONObject jo) throws JSONException
 	{
 		String value = jo.getJSONArray("activities-tracker-calories").getJSONObject(0).getString("value");
@@ -55,12 +54,18 @@ public class ResponseParser
 		return ret;
 	}//end of method
 	
-	//public static int parseDailyActiveMinsTotal(JSONObject joLightlyActive, JSONObject joFairlyActive, JSONObject joVeryActive) throws JSONException
+	public static int parseDailyActiveMinsTotal(JSONObject joLightlyActive, JSONObject joFairlyActive, JSONObject joVeryActive) throws JSONException
 	{
-		// TODO
-		//String value = jo.getJSONArray("activities-tracker-steps").getJSONObject(0).getString("value");
-		//int ret = Integer.parseInt(value);
-		//return ret;
+		String LAvalue = joLightlyActive.getJSONArray("activities-tracker-minutesLightlyActive").getJSONObject(0).getString("value");
+		int LAMins = Integer.parseInt(LAvalue);
+		
+		String FAvalue = joFairlyActive.getJSONArray("activities-tracker-minutesFairlyActive").getJSONObject(0).getString("value");
+		int FAMins = Integer.parseInt(FAvalue);
+		
+		String VAvalue = joVeryActive.getJSONArray("activities-tracker-minutesVeryActive").getJSONObject(0).getString("value");
+		int VAMins = Integer.parseInt(VAvalue);
+		
+		return (LAMins+FAMins+VAMins);
 	}//end of method
 
 } //end of class
