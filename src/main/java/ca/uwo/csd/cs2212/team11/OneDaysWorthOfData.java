@@ -136,18 +136,18 @@ public class OneDaysWorthOfData
 	 * @param floorsByTheMin the floorsByTheMin to set
 	 * @throws JSONException 
 	 */
-	public void setFloorsByTheMin(JSONArray ja) throws JSONException 
+	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
+		JSONArray ja = jo.getJSONObject("activities-floors-intraday").getJSONArray("dataset");  
 		System.out.println("length: " + ja.length());
-		for (int i = 0; i < 24; i++)
+		System.out.println(ja);
+		for (int hour = 0, obj = 0; hour < 24 && obj < 1440; hour++)
 		{
-
-			/*			System.out.println(ja.getJSONObject(i).get("value"));
-			 */			for(int j=0;j<60;j++){
-
-				 this.floorsByTheMin[i][j] = ja.getJSONObject(i).getInt("value");
-				 System.out.println(this.floorsByTheMin[i][j]);
-			 }
+			for(int min=0;min<60;min++, obj++)
+			{
+				this.floorsByTheMin[hour][min] = ja.getJSONObject(obj).getInt("value");
+				System.out.println(ja.getJSONObject(obj).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
+			}
 		}
 	}
 

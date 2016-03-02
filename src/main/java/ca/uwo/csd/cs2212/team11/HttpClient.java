@@ -23,15 +23,21 @@ import java.net.URI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+
+
 /**
  * Example of using access/refresh pair, and authorization credentials
  */
-public class AppRefreshTokens
+public class HttpClient
 {
     private static String CALL_BACK_URI="http://localhost:8080";
     private static int CALL_BACK_PORT=8080;
   
-    public static void main( String[] args ) throws JSONException
+    public String URL;
+    
+
+    
+    public JSONObject getSpecificData(String activity, String date, String interval, String startTime, String endTime) throws JSONException
     {
         //read credentials from a file
         BufferedReader bufferedReader=null;
@@ -54,7 +60,6 @@ public class AppRefreshTokens
         String scope = "activity%20heartrate";
         try {
             // File with service credentials.
-             
             FileReader fileReader =
                     new FileReader("Team11Credentials.txt");       
             bufferedReader = new BufferedReader(fileReader);
@@ -125,7 +130,7 @@ public class AppRefreshTokens
         String requestUrlPrefix = "https://api.fitbit.com/1/user/3WGW2P/";
         String requestUrl;
         //    The URL from this point is how you ask for different information
-        requestUrl = requestUrlPrefix + "activities/floors/date/2016-01-07/1d/1min/time/00:00/23:59.json";
+        requestUrl = requestUrlPrefix + "activities/" + activity + "/date/" + date +"/1d/"+ interval +"/time/" + startTime + "/" +endTime + ".json";
         // This actually generates an HTTP request from the URL
         //    -it has a header, body ect.
         OAuthRequest request = new OAuthRequest(Verb.GET, requestUrl, service);
@@ -148,20 +153,21 @@ public class AppRefreshTokens
         System.out.println();
         System.out.println("HTTP response code: "+response.getCode());
         int statusCode = response.getCode();
-         
+        
+        JSONObject jo = null;
         switch(statusCode){
             case 200:
                 System.out.println("Success!");
                 System.out.println("HTTP response body:\n"+response.getBody());
                 
-                JSONObject jo = new JSONObject(response.getBody());
-                System.out.println();
+                jo = new JSONObject(response.getBody());
+                
+                /*System.out.println();
                 System.out.println();
                 OneDaysWorthOfData odwod = new OneDaysWorthOfData();
                 System.out.println("Entering setter.");
                 odwod.setFloorsByTheMin(jo.getJSONObject("activities-floors-intraday").getJSONArray("dataset"));
-                
-                //System.out.println(jo.getJSONArray("activities-floors").getJSONObject(0).get("dateTime"));             
+                System.out.println(jo.getJSONArray("activities-floors").getJSONObject(0).get("dateTime"));*/             
                 break;
             case 400:
                 System.out.println("Bad Request - may have to talk to Beth");
@@ -238,5 +244,6 @@ public class AppRefreshTokens
                         "Error closing file\n"+e.getMessage()); 
             }
         }//end try
+		return jo;
     }//end main
 }//end class
