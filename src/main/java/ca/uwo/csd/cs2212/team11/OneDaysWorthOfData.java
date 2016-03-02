@@ -9,8 +9,11 @@ public class OneDaysWorthOfData
 {
 
 	private int todaysCaloriesBurned;
+
 	private double todaysDistance;
+
 	private int todaysSteps;
+
 	private int todaysFloors;
 	private int[][] floorsByTheMin = new int [24][60];
 	private int todaysActiveMins;
@@ -139,15 +142,30 @@ public class OneDaysWorthOfData
 	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
 		JSONArray ja = jo.getJSONObject("activities-floors-intraday").getJSONArray("dataset");  
-		System.out.println("length: " + ja.length());
-		System.out.println(ja);
-		for (int hour = 0, obj = 0; hour < 24 && obj < 1440; hour++)
+		//System.out.println("length: " + ja.length());
+		//System.out.println(ja);
+		/*for (int hour = 0, obj = 0; hour < 24 && obj < 1440; hour++)
 		{
-			for(int min=0;min<60;min++, obj++)
+			for(int min=0 ; min < 60 ; min++ , obj++)
 			{
 				this.floorsByTheMin[hour][min] = ja.getJSONObject(obj).getInt("value");
 				System.out.println(ja.getJSONObject(obj).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
 			}
+		}*/
+		for (int count = 0; count < ja.length(); count++)
+		{
+			System.out.println("obj: " + count);
+			String time = ja.getJSONObject(count).getString("time");
+			System.out.println(time);
+			
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(3, 5));
+			System.out.println("hour:" + hour);
+			System.out.println("min:" + min);
+			
+			this.floorsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
+			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
+			System.out.println("--------");
 		}
 	}
 
@@ -177,5 +195,6 @@ public class OneDaysWorthOfData
 	public String getWhenUpdated() {
 		return lastUpdated;
 	}
+	
 
 }
