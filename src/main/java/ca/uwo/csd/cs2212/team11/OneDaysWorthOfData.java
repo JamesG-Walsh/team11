@@ -173,8 +173,6 @@ public class OneDaysWorthOfData
 			int min = Integer.parseInt(time.substring(3, 5));
 			
 			this.floorsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
-			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.floorsByTheMin[hour][min]);
-			System.out.println("--------");
 		}
 	}
 	
@@ -274,10 +272,21 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param caloriesByTheMin the caloriesByTheMin to set
+	 * @param JSONObject jo
+	 * @throws JSONException 
 	 */
-	public void setCaloriesByTheMin(double[][] caloriesByTheMin) {
-		this.caloriesByTheMin = caloriesByTheMin;
+	public void setCaloriesByTheMin(JSONObject jo) throws JSONException 
+	{
+		JSONArray ja = jo.getJSONObject("activities-calories-intraday").getJSONArray("dataset");  
+		for (int count = 0; count < ja.length(); count++)
+		{
+			String time = ja.getJSONObject(count).getString("time");
+			
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(3, 5));
+			
+			this.caloriesByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
+		}
 	}
 
 	/**
@@ -290,8 +299,18 @@ public class OneDaysWorthOfData
 	/**
 	 * @param distanceByTheMin the distanceByTheMin to set
 	 */
-	public void setDistanceByTheMin(double[][] distanceByTheMin) {
-		this.distanceByTheMin = distanceByTheMin;
+	public void setDistanceByTheMin(JSONObject jo) throws JSONException 
+	{
+		JSONArray ja = jo.getJSONObject("activities-distance-intraday").getJSONArray("dataset");  
+		for (int count = 0; count < ja.length(); count++)
+		{
+			String time = ja.getJSONObject(count).getString("time");
+			
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(3, 5));
+			
+			this.distanceByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
+		}
 	}
 
 	/**
@@ -352,6 +371,7 @@ public class OneDaysWorthOfData
 	 * @param lastUpdated the lastUpdated to set
 	 */
 	public void setLastUpdated(String lastUpdated) {
+		//TODO???
 		this.lastUpdated = lastUpdated;
 	}
 
