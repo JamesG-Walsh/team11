@@ -7,6 +7,10 @@ import org.json.JSONArray;
 
 public class OneDaysWorthOfData 
 {
+	private int year;
+	private int month;
+	private int dayOfMonth;
+	
 	private double todaysTotalCaloriesBurned;
 	private double[][] caloriesByTheMin = new double [24][60];
 	
@@ -34,6 +38,16 @@ public class OneDaysWorthOfData
 	public OneDaysWorthOfData() 
 	{
 
+	}
+	
+	/**
+	 *  Class constructor.
+	 */
+	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
+	{
+		this.year = year;
+		this.month = month;
+		this.dayOfMonth = dayOfMonth;
 	}
 
 	/** 
@@ -175,8 +189,8 @@ public class OneDaysWorthOfData
 			int min = Integer.parseInt(time.substring(3, 5));
 			
 			this.stepsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
-			System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.stepsByTheMin[hour][min]);
-			System.out.println("--------");
+			//System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.stepsByTheMin[hour][min]);
+			//System.out.println("--------");
 		}
 	}
 
@@ -208,6 +222,144 @@ public class OneDaysWorthOfData
 	public String getWhenUpdated() {
 		String ret = this.lastUpdated;
 		return ret;
+	}
+
+	/**
+	 * @return the year
+	 */
+	public int getYear() {
+		return year;
+	}
+
+	/**
+	 * @param year the year to set
+	 */
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	/**
+	 * @return the month
+	 */
+	public int getMonth() {
+		return month;
+	}
+
+	/**
+	 * @param month the month to set
+	 */
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	/**
+	 * @return the dayOfMonth
+	 */
+	public int getDayOfMonth() {
+		return dayOfMonth;
+	}
+
+	/**
+	 * @param dayOfMonth the dayOfMonth to set
+	 */
+	public void setDayOfMonth(int dayOfMonth) {
+		this.dayOfMonth = dayOfMonth;
+	}
+
+	/**
+	 * @return the caloriesByTheMin
+	 */
+	public double[][] getCaloriesByTheMin() {
+		return caloriesByTheMin;
+	}
+
+	/**
+	 * @param caloriesByTheMin the caloriesByTheMin to set
+	 */
+	public void setCaloriesByTheMin(double[][] caloriesByTheMin) {
+		this.caloriesByTheMin = caloriesByTheMin;
+	}
+
+	/**
+	 * @return the distanceByTheMin
+	 */
+	public double[][] getDistanceByTheMin() {
+		return distanceByTheMin;
+	}
+
+	/**
+	 * @param distanceByTheMin the distanceByTheMin to set
+	 */
+	public void setDistanceByTheMin(double[][] distanceByTheMin) {
+		this.distanceByTheMin = distanceByTheMin;
+	}
+
+	/**
+	 * @return the stepsByTheMin
+	 */
+	public int[][] getStepsByTheMin() {
+		return stepsByTheMin;
+	}
+
+
+	/**
+	 * @return the activeMinsByTheMin
+	 */
+	public int[][] getActiveMinsByTheMin() {
+		return activeMinsByTheMin;
+	}
+
+	/**
+	 * @param activeMinsByTheMin the activeMinsByTheMin to set
+	 */
+	public void setActiveMinsByTheMin(int[][] activeMinsByTheMin) {
+		this.activeMinsByTheMin = activeMinsByTheMin;
+	}
+
+	/**
+	 * @return the sedentaryMinsByTheMin
+	 */
+	public int[][] getSedentaryMinsByTheMin() {
+		return sedentaryMinsByTheMin;
+	}
+
+	/**
+	 * @param sedentaryMinsByTheMin the sedentaryMinsByTheMin to set
+	 * @throws JSONException 
+	 */
+	public void setSedentaryMinsByTheMin(JSONObject jo) throws JSONException 
+	{
+		JSONArray ja = jo.getJSONObject("activities-minutesSedentary-intraday").getJSONArray("dataset");  
+		for (int count = 0; count < ja.length(); count++)
+		{
+			String time = ja.getJSONObject(count).getString("time");
+			
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int min = Integer.parseInt(time.substring(3, 5));
+			
+			this.sedentaryMinsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
+		}
+	}
+
+	/**
+	 * @return the lastUpdated
+	 */
+	public String getLastUpdated() {
+		return lastUpdated;
+	}
+
+	/**
+	 * @param lastUpdated the lastUpdated to set
+	 */
+	public void setLastUpdated(String lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	/**
+	 * @param floorsByTheMin the floorsByTheMin to set
+	 */
+	public void setFloorsByTheMin(int[][] floorsByTheMin) {
+		this.floorsByTheMin = floorsByTheMin;
 	}
 	
 
