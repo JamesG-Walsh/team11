@@ -103,7 +103,7 @@ public class Widget extends JPanel{
 				changeView(0);
 				break;
 			case ACTIVE:
-				data = getData(type);
+				data = getActiveMinData(type);
 				changeView(0);
 				break;
 			case SEDENTARY:
@@ -148,5 +148,8 @@ public class Widget extends JPanel{
 	}
 	private int[] getFloorsData(IDs type) {
 		return SharedData.floors_Data;
+	}
+	private int[] getActiveMinData(IDs type) {
+		return SharedData.activeMin_Data;
 	}
 }
