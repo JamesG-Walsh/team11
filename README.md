@@ -47,15 +47,15 @@ git clone ssh://git@repo.gaul.csd.uwo.ca:7999/cs2212_w2016/team11.git
 ```
 Checkout with the Master Branch: git checkout Master
 ```
-##Compile 
+## Compile 
 ```
 Compile the program: Mvn Compile
 ```
-##Package
+## Package
 ```
 Package the jars: Mvn Package
 ```
-##Run
+## Run
 ```
 Run the jar: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
 
