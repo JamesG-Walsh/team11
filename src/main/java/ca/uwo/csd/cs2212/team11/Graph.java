@@ -10,14 +10,23 @@ import javax.swing.JFrame;
 
 
 
-
+/**
+ * Class to initialize a graph object
+ * @author Andrew Hall, Dara Amin
+ *
+ */
 public class Graph extends javax.swing.JPanel {
 	private int[] data = Widgets.time_series;
-	
+	/**
+	 * Attach all methods in JPanel to our object
+	 */
 	public Graph(){
 		super();
 	}
-	
+	/**
+	 * Paint the line graph with canned data
+	 * @param g 
+	 */
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.setColor(Color.GREEN);
@@ -35,6 +44,10 @@ public class Graph extends javax.swing.JPanel {
 		this.repaint();
 	}
 	
+	/**
+	 * For testing purposes..
+	 * @param args 
+	 */
 	public static void main (String[] args){
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

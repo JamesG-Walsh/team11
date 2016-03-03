@@ -24,7 +24,6 @@ public class Serialize implements Serializable{
 	 * @pram obj an object of the clas whose data is to be serialized
 	 * @pram fileName the file in which the data is to be saved
 	 */
-
 	public void writeObject(Object obj, String fileName){
 
 		ObjectOutputStream out = null;
@@ -46,8 +45,6 @@ public class Serialize implements Serializable{
 	 * @pram fileName the file that the method decodes
 	 * 
 	 */
-
-
   public XMLDecoder readObject(String fileName){
 
     XMLDecoder x;

@@ -23,14 +23,20 @@ import java.awt.Dimension;
 
 import ca.uwo.csd.cs2212.team11.SharedData.*;
 
-
+/**
+ * Class that will display components on a JFRAME dashboard 
+ * @author Andrew Hall
+ *
+ */
 public class DeskTop extends JFrame{
-	
+
 	private Widget[] all_widgets = new Widget[7];	
 	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
-	
+	/**
+	 * Constructor to create Desktop with all widgets hidden (for now)
+	 */
 	public DeskTop(){
 	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
@@ -280,11 +286,20 @@ public class DeskTop extends JFrame{
 		this.add(backPanel);
 	}
 	
+	/**
+	 * Will add a graphing window with data plugged in as per user event
+	 * @param steps -- Data that will be plugged into the graph for steps
+	 */
 	protected void addRemoveGraph(IDs steps) {
 		System.err.println("DeskTop.refreshData() called");
 		System.err.println("\t***Does nothing yet");
 	}
-
+	/**
+	 * Creating buttons to display different components onto the dash such as calories or distance travelled
+	 * @param type -- Label of the component (Calorie, distance...)
+	 * @param tag -- Holds value of current component
+	 * @return
+	 */
 	private JPanel createNavButton(IDs type, String tag) {
 		JPanel a = new JPanel();
 		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
@@ -293,17 +308,27 @@ public class DeskTop extends JFrame{
 		a.add(new JLabel(tag));
 		return a;
 	}
-
+	
+	/**
+	 * Button that will refresh the data -- Make request to api and store new values in all containers
+	 */
 	private void refreshData(){
 		System.err.println("DeskTop.refreshData() called");
 		System.err.println("\t***Does nothing yet");
 	}
 	
+	/**
+	 * This button will hold the current events on the buttons on the west panel -- Adding widgets 
+	 */
 	private void addWidgetPanel(){
 		System.err.println("DeskTop.addWidgetsPanel() called");
 		System.err.println("\t***Does nothing yet");
 	}
 	
+	/**
+	 * This button will remove the widget specified by parameter
+	 * @param type -- Type is the component (Calories, Distance ..etc)
+	 */
 	private void addRemoveWidget(IDs type){
 
 		if(widgetVisible[type.ordinal()] == true){
@@ -320,10 +345,17 @@ public class DeskTop extends JFrame{
 		}
 	}
 	
+	/**
+	 * This will set our last refresh label and will be called whenever the refresh button is hit
+	 * @return
+	 */
 	public Date getDateOfLastRefresh(){
 		return new Date();
 	}
 	
+	/**
+	 * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
+	 */
 	private void openSettingsPanel(){
 		System.err.println("DeskTop.openSettingsPanel() called");
 		System.err.println("\t***Does nothing yet");

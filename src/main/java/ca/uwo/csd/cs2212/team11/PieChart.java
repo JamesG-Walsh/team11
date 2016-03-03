@@ -5,11 +5,18 @@ import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
+/**
+ * PieChart is used to create a pie chart object and paint it ontop of JPanel
+ * @author James
+ *
+ */
 public class PieChart extends javax.swing.JPanel {
 	private int[] data = Widgets.time_series;
 	private int sum;
 	private int[] arc = new int[4];
-	
+	/**
+	 * Construct with canned Data
+	 */
 	public PieChart(){
 		sum = data[0]+data[1]+data[2]+data[3];
 		arc[0] = 0;
@@ -17,7 +24,9 @@ public class PieChart extends javax.swing.JPanel {
 		arc[2] = 360*data[2]/sum;
 		arc[3] = 360*data[3]/sum;
 	}
-	
+	/**
+	 * Set different portions of pie to different colors
+	 */
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.GRAY);

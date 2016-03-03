@@ -24,7 +24,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-
+/**
+ * Widgets will be a container that holds all widgets objects
+ * @author Andrew Hall
+ *
+ */
 public class Widgets extends JPanel {
 
 	private static final double METERS_PER_YARD = 0.9144;
@@ -47,7 +51,7 @@ public class Widgets extends JPanel {
 	
 	
 	/**
-	 * Class constructor
+	 * Class constructor -- Set size of container
 	 * @param type	the type of the widget
 	 */
 	public Widgets(int type) {
@@ -79,7 +83,10 @@ public class Widgets extends JPanel {
 			}
 	}
 	
-	
+	/**
+	 * Make an initial panel
+	 * @return
+	 */
 	private JPanel makePrimative(){
 		JPanel a = new JPanel();
 		a.setBackground(Color.WHITE);
@@ -156,6 +163,10 @@ public class Widgets extends JPanel {
 	}
 
 	//must be fixed to keep constant size
+	/**
+	 * Used to create carousel for different criteria in components (Daily, Record, Lifetime)
+	 * @return
+	 */
 	private JPanel makeCarousel(){
 		JPanel a = new JPanel();
 		BorderLayout layout = new BorderLayout(0,0);
@@ -224,6 +235,10 @@ public class Widgets extends JPanel {
 		return a;
 	}
 	
+	/**
+	 * Make the labels for the components
+	 * @return
+	 */
 	private JPanel makeTabbed(){
 		JPanel a = new JPanel();
 		JTabbedPane t = new JTabbedPane();
@@ -314,6 +329,10 @@ public class Widgets extends JPanel {
 		return a;
 	}
 	
+	/**
+	 * Change view will set the containers data fields for display
+	 * @param v The type of data
+	 */
 	private void changeView(int v) {
 		panel.setBackground(color_set[v*2]); // glitch in startup
 		label[8].setText(views[v]);
@@ -321,6 +340,7 @@ public class Widgets extends JPanel {
 		box[2].setText(((int)(data[currentView] / YARDS_PER_MILE * 100)) / 100.0 + " Miles");
 		box[3].setText(((int)(data[currentView] / METERS_PER_YARD * 100)) / 100.0 + " Meters");
 	}
+	
 	  /**
 	   * @return the user's goals
 	   */
@@ -331,6 +351,13 @@ public class Widgets extends JPanel {
 		return s;
 	}
 
+	/**
+	 * 
+	 * @param type
+	 * @param unit
+	 * @param metric
+	 * @return
+	 */
 	private String showValue(int type, String unit, boolean metric) {
 		String s = "";
 		if (metric == false){
@@ -351,6 +378,11 @@ public class Widgets extends JPanel {
 		this.goals = x;
 	}
 	
+	/**
+	 * 
+	 * @param set
+	 * @return
+	 */
 	private int[] get_data(int set){
 		if (set == 1) {	return Widgets.base_array;	}
 		if (set == 2) {	return Widgets.time_series;	}
