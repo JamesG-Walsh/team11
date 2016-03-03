@@ -18,6 +18,12 @@ public class Serialize implements Serializable{
 
 
 	}
+	
+	/**
+	 * serializes the data to file
+	 * @pram obj an object of the clas whose data is to be serialized
+	 * @pram fileName the file in which the data is to be saved
+	 */
 
 	public void writeObject(Object obj, String fileName){
 
@@ -34,6 +40,12 @@ public class Serialize implements Serializable{
         }
 	
   }
+	
+	/**
+	 * Decodes the binary file generated from the writeObject method above to human readable file
+	 * @pram fileName the file that the method decodes
+	 * 
+	 */
 
 
   public XMLDecoder readObject(String fileName){

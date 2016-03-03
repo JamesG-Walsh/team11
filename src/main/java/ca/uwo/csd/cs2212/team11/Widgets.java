@@ -45,6 +45,11 @@ public class Widgets extends JPanel {
 	private static int[] base_array = {1492, 55555, 987654321};
 	static int[] time_series = {126, 83, 118, 53, 80, 51, 83, 144, 98, 115, 134, 77, 129, 92, 55, 141, 149, 121, 60, 107, 109, 50, 131, 130, 122, 124, 117, 97, 61, 115, 102, 125, 92, 146, 99, 65, 140, 84, 107, 120, 69, 112, 89, 109, 83, 64, 106, 135, 104, 148} ;
 	
+	
+	/**
+	 * Class constructor
+	 * @param type	the type of the widget
+	 */
 	public Widgets(int type) {
 			super();
 //			System.err.println("Widget constructor entered");
@@ -292,7 +297,9 @@ public class Widgets extends JPanel {
 		a.add(t);
 		return a;
 	}	
-
+      /**
+       * makes a graph for time series data
+       */
 	private JPanel makeGraph(){
 		this.setSize(500, 200);
 		JPanel a = new JPanel();
@@ -314,7 +321,9 @@ public class Widgets extends JPanel {
 		box[2].setText(((int)(data[currentView] / YARDS_PER_MILE * 100)) / 100.0 + " Miles");
 		box[3].setText(((int)(data[currentView] / METERS_PER_YARD * 100)) / 100.0 + " Meters");
 	}
-	
+	  /**
+	   * @return the user's goals
+	   */
 	private String showGoals() {
 		String s = "";
 		if (this.goals < 1){	s = "No current goals";	}
@@ -333,7 +342,11 @@ public class Widgets extends JPanel {
 		}
 		return s;
 	}
-
+    
+	/**
+	 * sets the user's goals
+	 * @param x the value the goal
+	 */
 	private void setGoals(int x){
 		this.goals = x;
 	}
