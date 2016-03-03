@@ -38,7 +38,9 @@ public class Team11_FitBitViewer
 			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 1);
 			String startTime = "23:00";
 			String endTime = "23:59";
-
+			
+			try
+			{
 			odwod.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(h.getSpecificDataDailyTotal("floors", "2016-03-01")));
 			odwod.setTodaysTotalSteps(ResponseParser.parseDailyStepsTotal(h.getSpecificDataDailyTotal("steps", "2016-03-01")));
 			odwod.setTodaysTotalCaloriesBurned(ResponseParser.parseDailyCaloriesTotal(h.getSpecificDataDailyTotal("calories", "2016-03-01")));
@@ -49,7 +51,12 @@ public class Team11_FitBitViewer
 			JSONObject joFA = h.getSpecificDataDailyTotal("minutesFairlyActive", "2016-03-01");
 			JSONObject joVA = h.getSpecificDataDailyTotal("minutesVeryActive", "2016-03-01");		
 			odwod.setTodaysTotalActiveMins(ResponseParser.parseDailyActiveMinsTotal(joLA, joFA, joVA));
-
+			}
+			catch (NullPointerException e)
+			{
+				System.out.println("Null Pointer Exception when parsing server response.  Most likely will work if run again.  Will Try to figure this out for stage 3.");
+			}
+			
 			System.out.println("\nTOTALS");
 			System.out.println("FLoors: " + odwod.getTodaysTotalFloors());
 			System.out.println("Steps: " + odwod.getTodaysTotalSteps());
@@ -57,6 +64,7 @@ public class Team11_FitBitViewer
 			System.out.println("Distance: " + odwod.getTodaysTotalDistance());
 			System.out.println("SedentaryMins: " + odwod.getTodaysTotalSedentaryMins());
 			System.out.println("ActiveMins: " + odwod.getTodaysTotalActiveMins());
+			
 
 
 			/*
