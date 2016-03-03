@@ -3,18 +3,21 @@ package ca.uwo.csd.cs2212.team11;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Team11_FitBitViewer {
-
+/**
+ * COMP 2212 Group Project
+ * FitBit Viewer
+ * @author Team 11
+ * 
+ */
+public class Team11_FitBitViewer 
+{
+	public static boolean testFlag = false;
+	
 	/**
-	 * COMP 2212 Group Project
-	 * FitBit Viewer
-	 * @author Team 11 
-	 * @param args
+	 * Main method for the project	 
+	 * @param args				"test" if in test mode (passed from command line)
 	 * @throws JSONException 
 	 */
-
-
-	public static boolean testFlag = false;
 	public static void main(String[] args) throws JSONException 
 	{
 

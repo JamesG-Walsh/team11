@@ -13,6 +13,11 @@ import javax.swing.JTextField;
 
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
 
+/**
+ * Creates components that are added/removed on dashboard that contain the users activity data
+ * @author Andrew Hall
+ * 
+ */
 public class Widget extends JPanel{
 	private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
 		"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
@@ -24,17 +29,11 @@ public class Widget extends JPanel{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
-<<<<<<< HEAD
 	
 	/**
 	 * Widget class constructor
-	 * @param type the type of the widget
+	 * @param type	the type of the widget
 	 */
-=======
-	private int[] stepData;
-	
->>>>>>> 8eae3720b187c49a1403cee9f20f611d3c61f581
-
 	public Widget(IDs type){
 		super();
 		this.setSize(200, 200);
@@ -139,33 +138,58 @@ public class Widget extends JPanel{
 	/**
 	 * change view to specific data
 	 * @param i the index of a given data type
-	 */
-     
+	 */     
 	private void changeView(int i) {
 		
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
 	}
-	
+
 	/**
+	 * Get canned data for specific type of data
+	 * @param type
 	 * @return specific data for specific data type
 	 */
-
 	private int[] getData(IDs type) {
 		return SharedData.base_array;
 	}
+	
 	/*private int[] getStepsData(IDs type) {
 		return SharedData.steps_Data;
 	}*/
+	
+	/**
+	 * Get sedentary canned data
+	 * @param type -- 
+	 * @return sedentary data
+	 */
 	private int[] getSedData(IDs type) {
 		return SharedData.sedentary_Data;
 	}
+	
+	/**
+	 * Get canned distance data
+	 * @param type
+	 * @return canned distance data
+	 */
 	private int[] getDistanceData(IDs type) {
 		return SharedData.distance_Data;
 	}
+	
+	/**
+	 * Get canned floor data
+	 * @param type
+	 * @return Canned floor data
+	 */
 	private int[] getFloorsData(IDs type) {
 		return SharedData.floors_Data;
 	}
+	
+	/**
+	 * Get canned active minutes data
+	 * @param type
+	 * @return Canned active minutes data
+	 */
 	private int[] getActiveMinData(IDs type) {
 		return SharedData.activeMin_Data;
 	}

@@ -2,7 +2,11 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.Color;
 
-
+/**
+ * Canned data to be used on our GUI
+ * @author Dara, Andrew
+ *
+ */
 public final class SharedData {
 	public static enum IDs{ CALORIES, DISTANCE, CLIMB, STEPS, ACTIVE, SEDENTARY, HEART_RATE};
 	public static final Color[] COLOR_SET = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.PINK};

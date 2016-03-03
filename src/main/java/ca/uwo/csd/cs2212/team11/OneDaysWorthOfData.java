@@ -6,7 +6,7 @@ import org.json.JSONArray;
 
 /**
  * Class that contains all numerical data for the dashboard & time series displays
- * @author Alecia DeBoeck, James Walsh
+ * @author Alecia DeBoeck, James Walsh, Dara Amin, Abdi Ibrahim
  */
 public class OneDaysWorthOfData 
 {
@@ -69,7 +69,7 @@ public class OneDaysWorthOfData
 	/**
 	 * Sets this user's distance traveled so far today.
 	 *  
-	 * @param todaysDistance ditance covered today by the user
+	 * @param todaysDistance distance covered today by the user
 	 */
 	public void setTodaysTotalDistance( double todaysDistance ) {
 		this.todaysTotalDistance = todaysDistance;
@@ -78,13 +78,15 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets this user's steps taken so far today.
 	 * 
-	 * @param todaysSteps steps taken today by th user
+	 * @param todaysSteps steps taken today by the user
 	 */
 	public void setTodaysTotalSteps( int todaysSteps ) {
 		this.todaysTotalSteps = todaysSteps;
 	}
 
 	/**
+	 * Getter for total steps
+	 * 
 	 * @return the today's total Steps taken
 	 */
 	public int getTodaysTotalSteps() {
@@ -122,7 +124,7 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets time of last update of this user's data.
 	 * 
-	 * @param lastUpdated the time when user's data was last upadated
+	 * @param lastUpdated the time when user's data was last updated
 	 */
 	public void setWhenUpdated( String lastUpdated ) {
 		this.lastUpdated = lastUpdated;
@@ -168,7 +170,7 @@ public class OneDaysWorthOfData
 	/**
 	 * A method that sets the floors the user has climbed in every minute
 	 * @param floorsByTheMin 
-	 * @param jo the JSON objcect that contains the data for floors
+	 * @param jo the JSON object that contains the data for floors
 	 * 
 	 * @throws JSONException if the JSON object cannot be found          
 	 */
@@ -189,8 +191,8 @@ public class OneDaysWorthOfData
 	
 	/**
 	 * sets the steps taken by the user in every minute
-	 * @param jo	the JSON object that contains the data for steps by the minute
-	 * @throws Exception if the object cannot be found
+	 * @param jo			the JSON object that contains the data for steps by the minute
+	 * @throws Exception 	if the object cannot be found
 	 */
 	public void setStepsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -319,8 +321,8 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param distanceByTheMin the distanceByTheMin to set
 	 * sets the distance the user has walked in every minute
+	 * @param distanceByTheMin the distanceByTheMin to set
 	 * @param jo the JSON object that contains the data for Distance
 	 * @throws Exception if the object cannot be found
 	 */
@@ -339,7 +341,8 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @return the steps taken in every minute
+	 * Getter for stepsByTheMin
+	 * @return the steps taken in every minute as 2d array
 	 */
 	public int[][] getStepsByTheMin() {
 		return stepsByTheMin;

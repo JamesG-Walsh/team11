@@ -28,7 +28,7 @@ import org.json.JSONArray;
 /**
  * @author Team 11
  * Class that contains methods for making requests to the fitbit API and returning the resultant JSONObjects
- * Mostly copied from the AppRefreshTokens.java file that Beth Locke provied on confluence
+ * Mostly copied from the AppRefreshTokens.java file that Beth Locke provided on confluence
  */
 public class HttpClient
 {

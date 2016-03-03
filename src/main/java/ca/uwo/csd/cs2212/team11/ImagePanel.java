@@ -8,7 +8,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+/**
+ * Class is used to paint an image on top of Swing components
+ * @author James
+ *
+ */
 public class ImagePanel extends JPanel {
 
 	private BufferedImage image;
@@ -17,7 +21,7 @@ public class ImagePanel extends JPanel {
 	
 	/**
 	 * class constructor
-	 * 
+	 * @param source the path to the image file that will serve as the background
 	 */
 	public ImagePanel(String source){
 		File f = new File(SharedData.PATH_TO_IMAGES + source);
@@ -34,12 +38,17 @@ public class ImagePanel extends JPanel {
 	        this.setOpaque(false);
 	}
 	
+	/**
+	 * Draws the image on top of swing component
+	 * @param g	
+	 */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, null);       
     }
 
 	/**
+	 * Getter for height of the background picture
 	 * @return the height
 	 */
 	public int getHeight() {
@@ -47,12 +56,16 @@ public class ImagePanel extends JPanel {
 	}
 
 	/**
+	 * Getter for width of the picture
 	 * @return the width
 	 */
 	public int getWidth() {
 		return width;
 	}
-
+	/**
+	 * For testing purposes...
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("Testing");
