@@ -57,9 +57,12 @@ Package the jars: Mvn Package
 ```
 ## Run
 ```
-Run the jar: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
+Run the jar: 
 
-** you can also use our scripst run and runTest to the all the above
+	test: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar test
+	live: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+** you can also use our scripts run and runTest to do all of the above
 ```
 *Remember*: do *not* develop on the `master` or `dev` branches.  Instead, in
 JIRA, create a feature branch off of `dev` to do your work.  Do your
