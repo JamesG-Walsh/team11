@@ -24,6 +24,8 @@ public class Widget extends JPanel{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+	private int[] stepData;
+	
 
 	public Widget(IDs type){
 		super();
@@ -83,7 +85,32 @@ public class Widget extends JPanel{
 		});
 
 		this.add(hintLabel, BorderLayout.SOUTH);
-		changeView(0);
+		//changeView(0);
+		switch(type){
+			case CALORIES:
+				changeView(0);
+				break;
+			case DISTANCE:
+				changeView(0);
+				break;
+			case CLIMB:
+				changeView(0);
+				break;
+			case STEPS:
+				changeView(0);
+				break;
+			case ACTIVE:
+				changeView(0);
+				break;
+			case SEDENTARY:
+				changeView(0);
+				break;
+			case HEART_RATE:
+				changeView(0);
+				break;
+			default:
+				typeName = "Undefined Widget";
+		}
 		this.add(viewLabel, BorderLayout.WEST);
 		this.add(dataBox, BorderLayout.CENTER);
 		this.addMouseListener(new MouseAdapter(){
@@ -103,5 +130,8 @@ public class Widget extends JPanel{
 
 	private int[] getData(IDs type) {
 		return SharedData.base_array;
+	}
+	private int[] getStepsData(IDs type) {
+		return SharedData.steps_Data;
 	}
 }
