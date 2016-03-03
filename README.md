@@ -47,19 +47,22 @@ git clone ssh://git@repo.gaul.csd.uwo.ca:7999/cs2212_w2016/team11.git
 ```
 Checkout with the Master Branch: git checkout Master
 ```
-##Compile 
+## Compile 
 ```
 Compile the program: Mvn Compile
 ```
-##Package
+## Package
 ```
 Package the jars: Mvn Package
 ```
-##Run
+## Run
 ```
-Run the jar: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
+Run the jar: 
 
-** you can also use our scripst run and runTest to the all the above
+	test: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar test
+	live: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+** you can also use our scripts run and runTest to do all of the above
 ```
 *Remember*: do *not* develop on the `master` or `dev` branches.  Instead, in
 JIRA, create a feature branch off of `dev` to do your work.  Do your
