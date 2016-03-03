@@ -43,7 +43,27 @@ Clone your repository onto your local system:
 ```
 git clone ssh://git@repo.gaul.csd.uwo.ca:7999/cs2212_w2016/team11.git
 ```
+## Checkout as Master
+```
+Checkout with the Master Branch: git checkout Master
+```
+## Compile 
+```
+Compile the program: Mvn Compile
+```
+## Package
+```
+Package the jars: Mvn Package
+```
+## Run
+```
+Run the jar: 
 
+	test: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar test
+	live: java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+** you can also use our scripts run and runTest to do all of the above
+```
 *Remember*: do *not* develop on the `master` or `dev` branches.  Instead, in
 JIRA, create a feature branch off of `dev` to do your work.  Do your
 development on your feature branch.  Then, when you are finished with your
