@@ -6,8 +6,7 @@ import org.json.JSONArray;
 
 /**
  * Class that contains all numerical data for the dashboard & time series displays
- * @author Team11
- *
+ * @author Alecia DeBoeck, James Walsh
  */
 public class OneDaysWorthOfData 
 {
@@ -45,7 +44,10 @@ public class OneDaysWorthOfData
 	}
 	
 	/**
-	 *  Class constructor.
+	 * 
+	 * @param year
+	 * @param month
+	 * @param dayOfMonth
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
 	{

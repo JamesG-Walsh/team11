@@ -91,7 +91,7 @@ public class Widget extends JPanel{
 				changeView(0);
 				break;
 			case DISTANCE:
-				data = getData(type);
+				data = getDistanceData(type);
 				changeView(0);
 				break;
 			case CLIMB:
@@ -142,5 +142,8 @@ public class Widget extends JPanel{
 	}*/
 	private int[] getSedData(IDs type) {
 		return SharedData.sedentary_Data;
+	}
+	private int[] getDistanceData(IDs type) {
+		return SharedData.distance_Data;
 	}
 }
