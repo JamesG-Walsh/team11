@@ -14,6 +14,11 @@ public class ImagePanel extends JPanel {
 	private BufferedImage image;
 	private int height, width;
 	
+	
+	/**
+	 * class constructor
+	 * 
+	 */
 	public ImagePanel(String source){
 		File f = new File(SharedData.PATH_TO_IMAGES + source);
 		if (!f.exists()){

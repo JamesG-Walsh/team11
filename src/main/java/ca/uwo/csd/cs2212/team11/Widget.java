@@ -24,6 +24,11 @@ public class Widget extends JPanel{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+	
+	/**
+	 * Widget class constructor
+	 * @param type the type of the widget
+	 */
 
 	public Widget(IDs type){
 		super();
@@ -94,12 +99,21 @@ public class Widget extends JPanel{
 		});
 
 	}
-
+	
+	/**
+	 * change view to specific data
+	 * @param i the index of a given data type
+	 */
+     
 	private void changeView(int i) {
 		
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
 	}
+	
+	/**
+	 * @return specific data for specific data type
+	 */
 
 	private int[] getData(IDs type) {
 		return SharedData.base_array;

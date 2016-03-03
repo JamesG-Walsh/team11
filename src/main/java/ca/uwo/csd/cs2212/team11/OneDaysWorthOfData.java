@@ -46,6 +46,9 @@ public class OneDaysWorthOfData
 	
 	/**
 	 *  Class constructor.
+	 *  @pram year the current year
+	 *  @pram month the current month of the year
+	 *  @pram dayOfMonth the current day of the month
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
 	{
@@ -55,9 +58,9 @@ public class OneDaysWorthOfData
 	}
 
 	/** 
-	 * Sets this user's calories burned so far today.
+	 * a method that Sets this user's calories burned so far today.
 	 * 
-	 * @param todaysCaloriesBurned
+	 * @param todaysCaloriesBurned the calories burned today by the user
 	 */
 	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned ) {
 		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
@@ -66,7 +69,7 @@ public class OneDaysWorthOfData
 	/**
 	 * Sets this user's distance traveled so far today.
 	 *  
-	 * @param todaysDistance
+	 * @param todaysDistance ditance covered today by the user
 	 */
 	public void setTodaysTotalDistance( double todaysDistance ) {
 		this.todaysTotalDistance = todaysDistance;
@@ -75,14 +78,14 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets this user's steps taken so far today.
 	 * 
-	 * @param todaysSteps
+	 * @param todaysSteps steps taken today by th user
 	 */
 	public void setTodaysTotalSteps( int todaysSteps ) {
 		this.todaysTotalSteps = todaysSteps;
 	}
 
 	/**
-	 * @return the todaysTotalSteps
+	 * @return the today's total Steps taken
 	 */
 	public int getTodaysTotalSteps() {
 		int ret = this.todaysTotalSteps;
@@ -92,7 +95,7 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets this user's floors climbed so far today.
 	 * 
-	 * @param todaysFloors
+	 * @param todaysFloors the floors climbed today by the user
 	 */
 	public void setTodaysTotalFloors( int todaysFloors ) {
 		this.todaysTotalFloors = todaysFloors;
@@ -101,7 +104,7 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets this user's active minutes so far today.
 	 * 
-	 * @param todaysActiveMins
+	 * @param todaysActiveMins the minutes the user was active today
 	 */
 	public void setTodaysTotalActiveMins( int todaysActiveMins ) {
 		this.todaysTotalActiveMins = todaysActiveMins;
@@ -110,7 +113,7 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets this user's sedentary minutes so far today.
 	 * 
-	 * @param todaysSedentaryMins
+	 * @param todaysSedentaryMins the minutes the user was inactive today
 	 */
 	public void setTodaysTotalSedentaryMins( int todaysSedentaryMins ) {
 		this.todaysTotalSedentaryMins = todaysSedentaryMins;
@@ -119,7 +122,7 @@ public class OneDaysWorthOfData
 	/** 
 	 * Sets time of last update of this user's data.
 	 * 
-	 * @param lastUpdated
+	 * @param lastUpdated the time when user's data was last upadated
 	 */
 	public void setWhenUpdated( String lastUpdated ) {
 		this.lastUpdated = lastUpdated;
@@ -163,8 +166,11 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param floorsByTheMin the floorsByTheMin to set
-	 * @throws JSONException 
+	 * A method that sets the floors the user has climbed in every minute
+	 * @param floorsByTheMin 
+	 * @param jo the JSON objcect that contains the data for floors
+	 * 
+	 * @throws JSONException if the JSON object cannot be found          
 	 */
 	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -180,6 +186,12 @@ public class OneDaysWorthOfData
 		}
 	}
 	
+	
+	/**
+	 * sets the steps taken by the user in every minute
+	 * @param jo	the JSON object that contains the data for steps by the minute
+	 * @thorows Exception if the object cannot be found
+	 */
 	public void setStepsByTheMin(JSONObject jo) throws JSONException 
 	{
 		JSONArray ja = jo.getJSONObject("activities-steps-intraday").getJSONArray("dataset");  
@@ -234,21 +246,23 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param year the year to set
+	 * @param year 
+	 * sets the current year
 	 */
 	public void setYear(int year) {
 		this.year = year;
 	}
 
 	/**
-	 * @return the month
+	 * @return the current month
 	 */
 	public int getMonth() {
 		return month;
 	}
 
 	/**
-	 * @param month the month to set
+	 * @param month
+	 * sets the current month of the year
 	 */
 	public void setMonth(int month) {
 		this.month = month;
@@ -262,7 +276,8 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param dayOfMonth the dayOfMonth to set
+	 * @param dayOfMonth the current day of the month
+	 * sets th current day of the month
 	 */
 	public void setDayOfMonth(int dayOfMonth) {
 		this.dayOfMonth = dayOfMonth;
@@ -270,14 +285,16 @@ public class OneDaysWorthOfData
 
 	/**
 	 * @return the caloriesByTheMin
+	 * gets the calories burned in every minute
 	 */
 	public double[][] getCaloriesByTheMin() {
 		return caloriesByTheMin;
 	}
 
 	/**
-	 * @param JSONObject jo
-	 * @throws JSONException 
+	 * sets the calories that the user has burned in every minute
+	 * @param JSONObject jo	the JSON object that contains the data caloreis by the minute
+	 * @throws JSONException if the JSON object cannot be found
 	 */
 	public void setCaloriesByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -295,6 +312,7 @@ public class OneDaysWorthOfData
 
 	/**
 	 * @return the distanceByTheMin
+	 * gets the distace that the user has walked in every minute
 	 */
 	public double[][] getDistanceByTheMin() {
 		return distanceByTheMin;
@@ -302,6 +320,9 @@ public class OneDaysWorthOfData
 
 	/**
 	 * @param distanceByTheMin the distanceByTheMin to set
+	 * sets the distance the user has walked in every minute
+	 * @param jo the jason object that contains the data for Distance
+	 * @throws Exception if the objcect cannot be found
 	 */
 	public void setDistanceByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -318,7 +339,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @return the stepsByTheMin
+	 * @return the steps taken in every minute
 	 */
 	public int[][] getStepsByTheMin() {
 		return stepsByTheMin;
@@ -347,8 +368,10 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param sedentaryMinsByTheMin the sedentaryMinsByTheMin to set
-	 * @throws JSONException 
+	 * sets the minutes that the user is inactive
+	 * @param sedentaryMinsByTheMin 
+	 * @param jo the JSON object that contains the data for sedentary minutes
+	 * @throws JSONException if the the JSON object cannot be found
 	 */
 	public void setSedentaryMinsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -365,14 +388,15 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @return the lastUpdated
+	 * @return the time in which the user's data was last updated
 	 */
 	public String getLastUpdated() {
 		return lastUpdated;
 	}
 
 	/**
-	 * @param lastUpdated the lastUpdated to set
+	 * sets the time when the user's data was last updated
+	 * @param lastUpdated 
 	 */
 	public void setLastUpdated(String lastUpdated) {
 		//TODO???
@@ -380,7 +404,9 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @param floorsByTheMin the floorsByTheMin to set
+	 * sets the floors the user has climbed in every minute
+	 * Method may be used later in the development
+	 * @param floorsByTheMin 
 	 */
 	public void setFloorsByTheMin(int[][] floorsByTheMin) {
 		this.floorsByTheMin = floorsByTheMin;
