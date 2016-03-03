@@ -6,8 +6,7 @@ import org.json.JSONArray;
 
 /**
  * Class that contains all numerical data for the dashboard & time series displays
- * @author Team11
- *
+ * @author Alecia DeBoeck, James Walsh
  */
 public class OneDaysWorthOfData 
 {
@@ -46,9 +45,10 @@ public class OneDaysWorthOfData
 	
 	/**
 	 *  Class constructor.
-	 *  @pram year the current year
-	 *  @pram month the current month of the year
-	 *  @pram dayOfMonth the current day of the month
+	 *  @param year the current year
+	 *  @param month the current month of the year
+	 *  @param dayOfMonth the current day of the month
+
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
 	{
@@ -190,7 +190,7 @@ public class OneDaysWorthOfData
 	/**
 	 * sets the steps taken by the user in every minute
 	 * @param jo	the JSON object that contains the data for steps by the minute
-	 * @thorows Exception if the object cannot be found
+	 * @throws Exception if the object cannot be found
 	 */
 	public void setStepsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -277,7 +277,7 @@ public class OneDaysWorthOfData
 
 	/**
 	 * @param dayOfMonth the current day of the month
-	 * sets th current day of the month
+	 * sets the current day of the month
 	 */
 	public void setDayOfMonth(int dayOfMonth) {
 		this.dayOfMonth = dayOfMonth;
@@ -293,7 +293,7 @@ public class OneDaysWorthOfData
 
 	/**
 	 * sets the calories that the user has burned in every minute
-	 * @param JSONObject jo	the JSON object that contains the data caloreis by the minute
+	 * @param JSONObject jo	the JSON object that contains the data calories by the minute
 	 * @throws JSONException if the JSON object cannot be found
 	 */
 	public void setCaloriesByTheMin(JSONObject jo) throws JSONException 
@@ -312,7 +312,7 @@ public class OneDaysWorthOfData
 
 	/**
 	 * @return the distanceByTheMin
-	 * gets the distace that the user has walked in every minute
+	 * gets the distance that the user has walked in every minute
 	 */
 	public double[][] getDistanceByTheMin() {
 		return distanceByTheMin;
@@ -321,8 +321,8 @@ public class OneDaysWorthOfData
 	/**
 	 * @param distanceByTheMin the distanceByTheMin to set
 	 * sets the distance the user has walked in every minute
-	 * @param jo the jason object that contains the data for Distance
-	 * @throws Exception if the objcect cannot be found
+	 * @param jo the JSON object that contains the data for Distance
+	 * @throws Exception if the object cannot be found
 	 */
 	public void setDistanceByTheMin(JSONObject jo) throws JSONException 
 	{

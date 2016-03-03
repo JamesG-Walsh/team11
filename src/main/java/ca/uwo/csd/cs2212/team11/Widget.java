@@ -24,15 +24,19 @@ public class Widget extends JPanel{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+<<<<<<< HEAD
 	
 	/**
 	 * Widget class constructor
 	 * @param type the type of the widget
 	 */
+=======
+	private int[] stepData;
+	
+>>>>>>> 8eae3720b187c49a1403cee9f20f611d3c61f581
 
 	public Widget(IDs type){
 		super();
-		data = getData(type);
 		this.setSize(200, 200);
 		System.out.println(this.getWidth());
 		this.setLayout(new BorderLayout(1,1));
@@ -88,7 +92,39 @@ public class Widget extends JPanel{
 		});
 
 		this.add(hintLabel, BorderLayout.SOUTH);
-		changeView(0);
+		//changeView(0);
+		switch(type){
+			case CALORIES:
+				data = getData(type);
+				changeView(0);
+				break;
+			case DISTANCE:
+				data = getDistanceData(type);
+				changeView(0);
+				break;
+			case CLIMB:
+				data = getFloorsData(type);
+				changeView(0);
+				break;
+			case STEPS:
+				data = getData(type);
+				changeView(0);
+				break;
+			case ACTIVE:
+				data = getActiveMinData(type);
+				changeView(0);
+				break;
+			case SEDENTARY:
+				data = getSedData(type);
+				changeView(0);
+				break;
+			case HEART_RATE:
+				data = getData(type);
+				changeView(0);
+				break;
+			default:
+				typeName = "Undefined Widget";
+		}
 		this.add(viewLabel, BorderLayout.WEST);
 		this.add(dataBox, BorderLayout.CENTER);
 		this.addMouseListener(new MouseAdapter(){
@@ -117,5 +153,20 @@ public class Widget extends JPanel{
 
 	private int[] getData(IDs type) {
 		return SharedData.base_array;
+	}
+	/*private int[] getStepsData(IDs type) {
+		return SharedData.steps_Data;
+	}*/
+	private int[] getSedData(IDs type) {
+		return SharedData.sedentary_Data;
+	}
+	private int[] getDistanceData(IDs type) {
+		return SharedData.distance_Data;
+	}
+	private int[] getFloorsData(IDs type) {
+		return SharedData.floors_Data;
+	}
+	private int[] getActiveMinData(IDs type) {
+		return SharedData.activeMin_Data;
 	}
 }
