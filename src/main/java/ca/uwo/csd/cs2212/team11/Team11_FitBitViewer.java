@@ -12,8 +12,18 @@ public class Team11_FitBitViewer {
 	 * @param args
 	 * @throws JSONException 
 	 */
+
+
+	public static boolean testFlag = false;
 	public static void main(String[] args) throws JSONException 
 	{
+
+		if(args.length >= 1 && args[0].equals("test")){
+
+			System.out.println("Running in test mode ......");
+			testFlag = true;
+		}
+
 		DeskTop GUI = new DeskTop();
 		GUI.setVisible(true);
 		
