@@ -32,7 +32,8 @@ public class DeskTop extends JFrame{
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
 	
 	public DeskTop(){
-		super("Team 11 FitBit Viewer");
+	
+		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
