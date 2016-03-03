@@ -29,7 +29,6 @@ public class Widget extends JPanel{
 
 	public Widget(IDs type){
 		super();
-		data = getData(type);
 		this.setSize(200, 200);
 		System.out.println(this.getWidth());
 		this.setLayout(new BorderLayout(1,1));
@@ -88,24 +87,31 @@ public class Widget extends JPanel{
 		//changeView(0);
 		switch(type){
 			case CALORIES:
+				data = getData(type);
 				changeView(0);
 				break;
 			case DISTANCE:
+				data = getData(type);
 				changeView(0);
 				break;
 			case CLIMB:
+				data = getData(type);
 				changeView(0);
 				break;
 			case STEPS:
+				data = getData(type);
 				changeView(0);
 				break;
 			case ACTIVE:
+				data = getData(type);
 				changeView(0);
 				break;
 			case SEDENTARY:
+				data = getSedData(type);
 				changeView(0);
 				break;
 			case HEART_RATE:
+				data = getData(type);
 				changeView(0);
 				break;
 			default:
@@ -131,7 +137,10 @@ public class Widget extends JPanel{
 	private int[] getData(IDs type) {
 		return SharedData.base_array;
 	}
-	private int[] getStepsData(IDs type) {
+	/*private int[] getStepsData(IDs type) {
 		return SharedData.steps_Data;
+	}*/
+	private int[] getSedData(IDs type) {
+		return SharedData.sedentary_Data;
 	}
 }
