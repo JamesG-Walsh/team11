@@ -1,9 +1,6 @@
 package ca.uwo.csd.cs2212.team11;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -16,9 +13,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.SpringLayout;
 import java.awt.Dimension;
 
 import ca.uwo.csd.cs2212.team11.SharedData.*;
@@ -34,6 +29,10 @@ public class DeskTop extends JFrame{
 	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
+	private PieChart activeChart;
+	private boolean activeChartVisible = false;
+	private Graph[] allGraphs = new Graph[7];
+	private boolean[] graphVisible = {false, false, false, false, false, false, false};
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
@@ -48,14 +47,18 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
+		activeChart = new PieChart();
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE);
 
-		System.out.println(System.getProperty("user.dir"));
+
+//		System.out.println(System.getProperty("user.dir"));
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
-		JLayeredPane main = new JLayeredPane();
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
 
-		
 		JPanel mainDisplay = new JPanel();
 		mainDisplay.setLayout(new BorderLayout(1,1));
 		mainDisplay.setPreferredSize(new Dimension(1000, 600));
@@ -64,224 +67,26 @@ public class DeskTop extends JFrame{
 		
 
 		northPanel = new JPanel();
-		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
-		northPanel.setOpaque(false);
-
-			ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
-			fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
-			fitBitPic.setAlignmentX(Component.CENTER_ALIGNMENT);
-			northPanel.add(fitBitPic);
-			northPanel.add(Box.createHorizontalGlue());
-		
-			JPanel hello = new JPanel();
-			hello.setBackground(SharedData.SMOKE);
-			JLabel helloLabel = new JLabel("Welcome, USER!");
-			helloLabel.setFont(new Font("T ahoma", Font.PLAIN, 36));
-			helloLabel.setForeground(new Color(255,255,255));
-			hello.add(helloLabel);
-			northPanel.add(hello);
-			northPanel.add(Box.createHorizontalGlue());
-		
-			ImagePanel settingsButton = new ImagePanel("Settings.png");
-			settingsButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					openSettingsPanel();
-				}
-			});
-			northPanel.add(settingsButton);
-	
-			ImagePanel exitButton = new ImagePanel("Exit_Button.png");
-			exitButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					System.exit(0);
-				}
-			});
-			northPanel.add(exitButton);
-		
-		mainDisplay.add(northPanel, BorderLayout.NORTH);
-		
-			
-		westPanel = new JPanel();
-		westPanel.setOpaque(false);
-		westPanel.setLayout(new GridLayout(7,2));
-
-			JPanel a = createNavButton(IDs.CALORIES, "C");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CALORIES);
-				}
-			});
-			westPanel.add(a);
-
-			a = new ImagePanel("graph.png");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.CALORIES);
-				}
-			});
-			westPanel.add(a);
-			
-			a = createNavButton(IDs.DISTANCE, "D");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.DISTANCE);
-				}
-			});
-			westPanel.add(a);
-			
-			a = new ImagePanel("graph.png");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.DISTANCE);
-				}
-			});
-			westPanel.add(a);
-			
-			a = createNavButton(IDs.CLIMB, "V");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CLIMB);
-				}
-			});
-			westPanel.add(a);
-			
-			westPanel.add(Box.createHorizontalBox());
-			
-			a = createNavButton(IDs.STEPS, "S");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.STEPS);
-				}
-			});
-			westPanel.add(a);
-
-			a = new ImagePanel("graph.png");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.STEPS);
-				}
-			});
-			westPanel.add(a);
-			
-			a = createNavButton(IDs.ACTIVE, "A");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.ACTIVE);
-				}
-			});
-			westPanel.add(a);
-
-			a = new ImagePanel("graph.png");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.ACTIVE);
-				}
-			});
-			westPanel.add(a);
-			
-			a = createNavButton(IDs.SEDENTARY, "Sed");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.SEDENTARY);
-				}
-			});
-			westPanel.add(a);
-
-			westPanel.add(Box.createHorizontalBox());
-			
-			a = createNavButton(IDs.HEART_RATE, "HR");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.HEART_RATE);
-				}
-			});
-			westPanel.add(a);
-
-			a = new ImagePanel("graph.png");
-			a.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.HEART_RATE);
-				}
-			});
-			westPanel.add(a);
-
-		mainDisplay.add(westPanel, BorderLayout.WEST);
+		populateNorthPanel(northPanel);
 		
 		eastPanel = new JPanel();
-		eastPanel.setOpaque(false);
-		eastPanel.setLayout(new BoxLayout(eastPanel,1));
-		
-			goalsPanel = new JPanel();
-			goalsPanel.setBackground(SharedData.SMOKE);
-			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
-			JLabel goalsTitleLabel = new JLabel("Daily Goals");
-			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			goalsTitleLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsTitleLabel);
-			goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			goalsListLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsListLabel);
-		
-		eastPanel.add(goalsPanel);
-		
+		populateEastPanel(eastPanel);
 
-			awardsPanel = new JPanel();
-			awardsPanel.setBackground(SharedData.SMOKE);
-			awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
-			JLabel awardsTitleLabel = new JLabel("Achievements");
-			awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			awardsTitleLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsTitleLabel);
-			awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			awardsListLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsListLabel);
-		
-		eastPanel.add(awardsPanel);
-		
-		mainDisplay.add(eastPanel, BorderLayout.EAST);
+		southPanel = new JPanel();
+		populateSouthPanel(southPanel);
 
-		
-		
+		westPanel = new JPanel();
+		populateWestPanel(westPanel);
+
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(SharedData.SMOKE);
+		
+		mainDisplay.add(northPanel, BorderLayout.NORTH);
+		mainDisplay.add(eastPanel, BorderLayout.EAST);
+		mainDisplay.add(southPanel, BorderLayout.SOUTH);
+		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(widgetPanel, BorderLayout.CENTER);
 		
-		
-		southPanel = new JPanel();
-		southPanel.setOpaque(false);
-		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
-		southPanel.add(Box.createHorizontalBox());
-		
-			datePanel = new JPanel();
-			datePanel.setBackground(SharedData.SMOKE);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getDateOfLastRefresh());
-			dateLabel = new JLabel(dateString);
-			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-			dateLabel.setForeground(new Color(255,255,255));
-			datePanel.add(dateLabel);
-			
-			ImagePanel refreshButton = new ImagePanel("Refresh.png");
-			refreshButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					refreshData();
-				}
-			});
-			datePanel.add(refreshButton); // refreshButton starts disappearing after adding addWidgetButton 
-			
-			
-		southPanel.add(datePanel);
-		southPanel.add(Box.createHorizontalGlue());
-	
-			ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
-			addWidgetButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addWidgetPanel();
-				}
-			});
-			southPanel.add(addWidgetButton);
-		
-		mainDisplay.add(southPanel, BorderLayout.SOUTH);
-		mainDisplay.setSize(800, 600);
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 	}
@@ -290,23 +95,28 @@ public class DeskTop extends JFrame{
 	 * Will add a graphing window with data plugged in as per user event
 	 * @param steps -- Data that will be plugged into the graph for steps
 	 */
-	protected void addRemoveGraph(IDs steps) {
+	protected void addRemoveGraph(IDs type) {
 		System.err.println("DeskTop.refreshData() called");
 		System.err.println("\t***Does nothing yet");
-	}
-	/**
-	 * Creating buttons to display different components onto the dash such as calories or distance travelled
-	 * @param type -- Label of the component (Calorie, distance...)
-	 * @param tag -- Holds value of current component
-	 * @return
-	 */
-	private JPanel createNavButton(IDs type, String tag) {
-		JPanel a = new JPanel();
-		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
-		a.setSize(32, 32);
-		a.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
-		a.add(new JLabel(tag));
-		return a;
+		if (type == IDs.ACTIVE){
+			if(activeChartVisible == true){
+				activeChartVisible = false;
+				widgetPanel.remove(activeChart);
+			}else{
+				activeChartVisible = true;
+				widgetPanel.add(activeChart);
+			}
+		}else{
+			if(graphVisible[type.ordinal()] == true){
+				graphVisible[type.ordinal()] = false;
+				widgetPanel.remove(allGraphs[type.ordinal()]);
+			}else{
+				graphVisible[type.ordinal()] = true;
+				widgetPanel.add(allGraphs[type.ordinal()]);
+			}
+		}
+		widgetPanel.revalidate();
+		repaint();
 	}
 	
 	/**
@@ -314,14 +124,6 @@ public class DeskTop extends JFrame{
 	 */
 	private void refreshData(){
 		System.err.println("DeskTop.refreshData() called");
-		System.err.println("\t***Does nothing yet");
-	}
-	
-	/**
-	 * This button will hold the current events on the buttons on the west panel -- Adding widgets 
-	 */
-	private void addWidgetPanel(){
-		System.err.println("DeskTop.addWidgetsPanel() called");
 		System.err.println("\t***Does nothing yet");
 	}
 	
@@ -334,15 +136,13 @@ public class DeskTop extends JFrame{
 		if(widgetVisible[type.ordinal()] == true){
 			widgetVisible[type.ordinal()] = false;
 			widgetPanel.remove(all_widgets[type.ordinal()]);
-			widgetPanel.revalidate();
-			repaint();
 		}else{
 			widgetVisible[type.ordinal()] = true;
 			all_widgets[type.ordinal()].setVisible(true);
 			widgetPanel.add(all_widgets[type.ordinal()]);
-			widgetPanel.revalidate();
-			repaint();
 		}
+		widgetPanel.revalidate();
+		repaint();
 	}
 	
 	/**
@@ -360,5 +160,245 @@ public class DeskTop extends JFrame{
 		System.err.println("DeskTop.openSettingsPanel() called");
 		System.err.println("\t***Does nothing yet");
 	}
+	
+	private void populateNorthPanel(JPanel a){
+		
+		a.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
+		a.setOpaque(false);
+		
 
+		//add FitBit logo
+		
+		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
+		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
+		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
+		a.add(fitBitPic);
+		a.add(Box.createHorizontalGlue());
+
+		
+		// create the welcome to user
+		JPanel hello = new JPanel();
+		hello.setBackground(SharedData.SMOKE);
+		JLabel helloLabel = new JLabel("Welcome, USER!");
+		helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		helloLabel.setForeground(new Color(255,255,255));
+		hello.add(helloLabel);
+		a.add(hello);
+		a.add(Box.createHorizontalGlue());
+
+		//add controller buttons
+		//add settings button
+		
+		ImagePanel settingsButton = new ImagePanel("Settings.png");
+		settingsButton.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				openSettingsPanel();
+			}
+		});
+		settingsButton.setToolTipText("Click to open settings panel");
+		a.add(settingsButton);
+
+		//add exit button
+		ImagePanel exitButton = new ImagePanel("Exit_Button.png");
+		exitButton.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				System.exit(0);
+			}
+		});
+		exitButton.setToolTipText("Click to exit FitBit Viewer");
+		a.add(exitButton);
+		
+	}
+
+	private void populateSouthPanel(JPanel a){
+		a.setOpaque(false);
+		a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
+
+		//Create panel to display last update date
+			datePanel = new JPanel();
+			datePanel.setBackground(SharedData.SMOKE);
+			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getDateOfLastRefresh());
+			dateLabel = new JLabel(dateString);
+			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+			dateLabel.setForeground(new Color(255,255,255));
+			datePanel.add(dateLabel);
+			
+			ImagePanel refreshButton = new ImagePanel("Refresh.png");
+			refreshButton.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					refreshData();
+				}
+			});
+			refreshButton.setToolTipText("Click to refresh data");
+			datePanel.add(refreshButton);  
+			
+			
+		a.add(datePanel);
+		a.add(Box.createHorizontalGlue());
+	
+		// add widget button *** now redundant?????
+			ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
+			addWidgetButton.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					//addWidgetPanel();
+				}
+			});
+			addWidgetButton.setToolTipText("Click to add widget");
+			a.add(addWidgetButton);
+	}
+
+	private void populateEastPanel(JPanel a){
+		a.setOpaque(false);
+		a.setLayout(new BoxLayout(a,1));
+		
+			goalsPanel = new JPanel();
+			goalsPanel.setBackground(SharedData.SMOKE);
+			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
+			JLabel goalsTitleLabel = new JLabel("Daily Goals");
+			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+			goalsTitleLabel.setForeground(new Color(255,255,255));
+			goalsPanel.add(goalsTitleLabel);
+			goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+			goalsListLabel.setForeground(new Color(255,255,255));
+			goalsPanel.add(goalsListLabel);
+		
+		a.add(goalsPanel);
+		
+
+			awardsPanel = new JPanel();
+			awardsPanel.setBackground(SharedData.SMOKE);
+			awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
+			JLabel awardsTitleLabel = new JLabel("Achievements");
+			awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+			awardsTitleLabel.setForeground(new Color(255,255,255));
+			awardsPanel.add(awardsTitleLabel);
+			awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+			awardsListLabel.setForeground(new Color(255,255,255));
+			awardsPanel.add(awardsListLabel);
+		
+		a.add(awardsPanel);
+		
+
+	}
+
+	private void populateWestPanel(JPanel a){
+		a.setOpaque(false);
+		a.setLayout(new GridLayout(7,2));
+
+			JPanel navBtn = createNavButton(IDs.CALORIES, "C");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.CALORIES);
+				}
+			});
+			a.add(navBtn);
+
+			navBtn = new ImagePanel("graph.png");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.CALORIES);
+				}
+			});
+			a.add(navBtn);
+			
+			navBtn = createNavButton(IDs.DISTANCE, "D");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.DISTANCE);
+				}
+			});
+			a.add(navBtn);
+			
+			navBtn = new ImagePanel("graph.png");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.DISTANCE);
+				}
+			});
+			a.add(navBtn);
+			
+			navBtn = createNavButton(IDs.CLIMB, "V");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.CLIMB);
+				}
+			});
+			a.add(navBtn);
+			
+			a.add(Box.createHorizontalBox());
+			
+			navBtn = createNavButton(IDs.STEPS, "S");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.STEPS);
+				}
+			});
+			a.add(navBtn);
+
+			navBtn = new ImagePanel("graph.png");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.STEPS);
+				}
+			});
+			a.add(navBtn);
+			
+			navBtn = createNavButton(IDs.ACTIVE, "A");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.ACTIVE);
+				}
+			});
+			a.add(navBtn);
+
+			navBtn = new ImagePanel("graph.png");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.ACTIVE);
+				}
+			});
+			a.add(navBtn);
+			
+			navBtn = createNavButton(IDs.SEDENTARY, "Sed");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.SEDENTARY);
+				}
+			});
+			a.add(navBtn);
+
+			a.add(Box.createHorizontalBox());
+			
+			navBtn = createNavButton(IDs.HEART_RATE, "HR");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveWidget(IDs.HEART_RATE);
+				}
+			});
+			a.add(navBtn);
+
+			navBtn = new ImagePanel("graph.png");
+			navBtn.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					addRemoveGraph(IDs.HEART_RATE);
+				}
+			});
+			a.add(navBtn);
+	}
+
+	/**
+	 * Creating buttons to display different components onto the dash such as calories or distance travelled
+	 * @param type -- Label of the component (Calorie, distance...)
+	 * @param tag -- Holds value of current component
+	 * @return
+	 */
+	private JPanel createNavButton(IDs type, String tag) {
+		JPanel a = new JPanel();
+		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		a.setPreferredSize(new Dimension(32, 32));
+		a.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
+		a.add(new JLabel(tag));
+		return a;
+	}
+	
 }
