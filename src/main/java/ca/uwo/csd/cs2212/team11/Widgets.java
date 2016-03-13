@@ -189,9 +189,9 @@ public class Widgets extends JPanel {
 		dataPanel.setOpaque(false);
 		dataPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				/*Component source = (Component)e.getSource();
+				Component source = (Component)e.getSource();
 				source.getParent().dispatchEvent(e);
-				repaint();*/
+				
 			}
 		});
 		
@@ -199,8 +199,8 @@ public class Widgets extends JPanel {
 		box[1].setEditable(false);
 		box[1].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				/*Component source = (Component)e.getSource();
-				source.getParent().getParent().dispatchEvent(e);*/
+				Component source = (Component)e.getSource();
+				source.getParent().getParent().dispatchEvent(e);
 
 			}
 		});
@@ -210,8 +210,8 @@ public class Widgets extends JPanel {
 		box[2].setEditable(false);
 		box[2].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				/*Component source = (Component)e.getSource();
-				source.getParent().getParent().dispatchEvent(e);*/
+				Component source = (Component)e.getSource();
+				source.getParent().getParent().dispatchEvent(e);
 			}
 		});
 		dataPanel.add(box[2]);
@@ -220,9 +220,9 @@ public class Widgets extends JPanel {
 		box[3].setEditable(false);
 		box[3].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				/*Component source = (Component)e.getSource();
+				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
-				System.out.println("Here");*/
+				System.out.println("Here");
 
 			}
 		});
@@ -255,11 +255,11 @@ public class Widgets extends JPanel {
 		JPanel lifePanel = new JPanel();
 		JPanel goalsPanel = new JPanel();
 		
-		label[1] = new JLabel("D");
+		label[1] = new JLabel("Daily");
 		dailyPanel.add(label[1]);
-		label[2] = new JLabel("R");
+		label[2] = new JLabel("Record");
 		recordPanel.add(label[2]);
-		label[3] = new JLabel("L");
+		label[3] = new JLabel("Lifetime");
 		lifePanel.add(label[3]);
 		label[4] = new JLabel("Goals");
 		goalsPanel.add(label[4]);

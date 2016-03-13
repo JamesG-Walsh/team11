@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -141,9 +141,8 @@ public class DeskTop extends JFrame{
 			all_widgets[type.ordinal()].setVisible(true);
 			widgetPanel.add(all_widgets[type.ordinal()]);
 		}
-		widgetPanel.revalidate();
-
-		widgetPanel.repaint();
+		revalidate();
+		repaint();
 	}
 	
 	/**
@@ -299,6 +298,7 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.CALORIES);
 					repaint();
 				}
@@ -318,6 +318,8 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					Component source = (Component)e.getSource();
+					source.getParent().dispatchEvent(e);
 					addRemoveGraph(IDs.DISTANCE);
 					repaint();
 
@@ -350,6 +352,7 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.STEPS);
 					repaint();
 
@@ -370,7 +373,9 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.ACTIVE);
+					repaint();
 				}
 			});
 			a.add(navBtn);
@@ -391,6 +396,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.HEART_RATE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -398,7 +405,9 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.HEART_RATE);
+					repaint();
 				}
 			});
 			a.add(navBtn);

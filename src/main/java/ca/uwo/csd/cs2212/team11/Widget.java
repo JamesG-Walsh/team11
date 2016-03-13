@@ -75,7 +75,6 @@ public class Widget extends JPanel{
 			case HEART_RATE:
 				this.typeName = "Heart Rate";
 				this.units = "bpm";
-				this.maxView = 1;
 				break;
 			default:
 				typeName = "Undefined Widget";
