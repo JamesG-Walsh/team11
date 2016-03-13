@@ -1,13 +1,13 @@
 package ca.uwo.csd.cs2212.team11; 
 
 import java.awt.BorderLayout;
+import java.io.Serializable;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -31,7 +31,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall
  *
  */
-public class Widgets extends JPanel {
+public class Widgets extends JPanel implements Serializable{
 
 	private static final double METERS_PER_YARD = 0.9144;
 	private static final double YARDS_PER_MILE = 1760.0;

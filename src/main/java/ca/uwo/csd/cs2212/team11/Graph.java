@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import java.io.Serializable;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,7 +24,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall, Dara Amin
  *
  */
-public class Graph extends javax.swing.JPanel {
+public class Graph extends javax.swing.JPanel implements Serializable{
 	private int[] data;
 	private IDs type;
 	private int zoom = 1;

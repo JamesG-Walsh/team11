@@ -8,13 +8,20 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.Component;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import ca.uwo.csd.cs2212.team11.SharedData.*;
 
@@ -23,7 +30,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.*;
  * @author Andrew Hall
  *
  */
-public class DeskTop extends JFrame{
+public class DeskTop extends JFrame implements Serializable{
 
 	private Widget[] all_widgets = new Widget[7];	
 	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
@@ -33,10 +40,12 @@ public class DeskTop extends JFrame{
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
 	private boolean[] graphVisible = {false, false, false, false, false, false, false};
+	
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(){
+	public DeskTop()
+	{
 	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -52,7 +61,8 @@ public class DeskTop extends JFrame{
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS);
 		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE);
-
+        
+		
 
 //		System.out.println(System.getProperty("user.dir"));
 
@@ -91,6 +101,244 @@ public class DeskTop extends JFrame{
 		this.add(backPanel);
 	}
 	
+	/**
+	 * @return the all_widgets
+	 */
+	public Widget[] getAll_widgets() {
+		return all_widgets;
+	}
+
+	/**
+	 * @param all_widgets the all_widgets to set
+	 */
+	public void setAll_widgets(Widget[] all_widgets) {
+		this.all_widgets = all_widgets;
+	}
+
+	/**
+	 * @return the widgetVisible
+	 */
+	public boolean[] getWidgetVisible() {
+		return widgetVisible;
+	}
+
+	/**
+	 * @param widgetVisible the widgetVisible to set
+	 */
+	public void setWidgetVisible(boolean[] widgetVisible) {
+		this.widgetVisible = widgetVisible;
+	}
+
+	/**
+	 * @return the goalsPanel
+	 */
+	public JPanel getGoalsPanel() {
+		return goalsPanel;
+	}
+
+	/**
+	 * @param goalsPanel the goalsPanel to set
+	 */
+	public void setGoalsPanel(JPanel goalsPanel) {
+		this.goalsPanel = goalsPanel;
+	}
+
+	/**
+	 * @return the widgetPanel
+	 */
+	public JPanel getWidgetPanel() {
+		return widgetPanel;
+	}
+
+	/**
+	 * @param widgetPanel the widgetPanel to set
+	 */
+	public void setWidgetPanel(JPanel widgetPanel) {
+		this.widgetPanel = widgetPanel;
+	}
+
+	/**
+	 * @return the datePanel
+	 */
+	public JPanel getDatePanel() {
+		return datePanel;
+	}
+
+	/**
+	 * @param datePanel the datePanel to set
+	 */
+	public void setDatePanel(JPanel datePanel) {
+		this.datePanel = datePanel;
+	}
+
+	/**
+	 * @return the northPanel
+	 */
+	public JPanel getNorthPanel() {
+		return northPanel;
+	}
+
+	/**
+	 * @param northPanel the northPanel to set
+	 */
+	public void setNorthPanel(JPanel northPanel) {
+		this.northPanel = northPanel;
+	}
+
+	/**
+	 * @return the westPanel
+	 */
+	public JPanel getWestPanel() {
+		return westPanel;
+	}
+
+	/**
+	 * @param westPanel the westPanel to set
+	 */
+	public void setWestPanel(JPanel westPanel) {
+		this.westPanel = westPanel;
+	}
+
+	/**
+	 * @return the awardsPanel
+	 */
+	public JPanel getAwardsPanel() {
+		return awardsPanel;
+	}
+
+	/**
+	 * @param awardsPanel the awardsPanel to set
+	 */
+	public void setAwardsPanel(JPanel awardsPanel) {
+		this.awardsPanel = awardsPanel;
+	}
+
+	/**
+	 * @return the eastPanel
+	 */
+	public JPanel getEastPanel() {
+		return eastPanel;
+	}
+
+	/**
+	 * @param eastPanel the eastPanel to set
+	 */
+	public void setEastPanel(JPanel eastPanel) {
+		this.eastPanel = eastPanel;
+	}
+
+	/**
+	 * @return the southPanel
+	 */
+	public JPanel getSouthPanel() {
+		return southPanel;
+	}
+
+	/**
+	 * @param southPanel the southPanel to set
+	 */
+	public void setSouthPanel(JPanel southPanel) {
+		this.southPanel = southPanel;
+	}
+
+	/**
+	 * @return the goalsListLabel
+	 */
+	public JLabel getGoalsListLabel() {
+		return goalsListLabel;
+	}
+
+	/**
+	 * @param goalsListLabel the goalsListLabel to set
+	 */
+	public void setGoalsListLabel(JLabel goalsListLabel) {
+		this.goalsListLabel = goalsListLabel;
+	}
+
+	/**
+	 * @return the dateLabel
+	 */
+	public JLabel getDateLabel() {
+		return dateLabel;
+	}
+
+	/**
+	 * @param dateLabel the dateLabel to set
+	 */
+	public void setDateLabel(JLabel dateLabel) {
+		this.dateLabel = dateLabel;
+	}
+
+	/**
+	 * @return the awardsListLabel
+	 */
+	public JLabel getAwardsListLabel() {
+		return awardsListLabel;
+	}
+
+	/**
+	 * @param awardsListLabel the awardsListLabel to set
+	 */
+	public void setAwardsListLabel(JLabel awardsListLabel) {
+		this.awardsListLabel = awardsListLabel;
+	}
+
+	/**
+	 * @return the activeChart
+	 */
+	public PieChart getActiveChart() {
+		return activeChart;
+	}
+
+	/**
+	 * @param activeChart the activeChart to set
+	 */
+	public void setActiveChart(PieChart activeChart) {
+		this.activeChart = activeChart;
+	}
+
+	/**
+	 * @return the activeChartVisible
+	 */
+	public boolean isActiveChartVisible() {
+		return activeChartVisible;
+	}
+
+	/**
+	 * @param activeChartVisible the activeChartVisible to set
+	 */
+	public void setActiveChartVisible(boolean activeChartVisible) {
+		this.activeChartVisible = activeChartVisible;
+	}
+
+	/**
+	 * @return the allGraphs
+	 */
+	public Graph[] getAllGraphs() {
+		return allGraphs;
+	}
+
+	/**
+	 * @param allGraphs the allGraphs to set
+	 */
+	public void setAllGraphs(Graph[] allGraphs) {
+		this.allGraphs = allGraphs;
+	}
+
+	/**
+	 * @return the graphVisible
+	 */
+	public boolean[] getGraphVisible() {
+		return graphVisible;
+	}
+
+	/**
+	 * @param graphVisible the graphVisible to set
+	 */
+	public void setGraphVisible(boolean[] graphVisible) {
+		this.graphVisible = graphVisible;
+	}
+
 	/**
 	 * Will add a graphing window with data plugged in as per user event
 	 * @param steps -- Data that will be plugged into the graph for steps
@@ -290,7 +538,21 @@ public class DeskTop extends JFrame{
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.CALORIES);
 					repaint();
-
+					
+					ObjectOutputStream out;
+					try 
+					{
+						out = new ObjectOutputStream(new FileOutputStream("./src/main/resources/Desktop.config"));
+						out.writeObject(Team11_FitBitViewer.GUI);
+						out.close();
+					} catch (FileNotFoundException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					
 				}
 			});
 			a.add(navBtn);

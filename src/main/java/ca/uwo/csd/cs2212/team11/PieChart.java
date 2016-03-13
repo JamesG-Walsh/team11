@@ -1,6 +1,7 @@
 package ca.uwo.csd.cs2212.team11;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -10,7 +11,7 @@ import javax.swing.JFrame;
  * @author James
  *
  */
-public class PieChart extends javax.swing.JPanel {
+public class PieChart extends javax.swing.JPanel implements Serializable{
 	private int[] data = Widgets.time_series;
 	private int sum;
 	private int[] arc = new int[4];
