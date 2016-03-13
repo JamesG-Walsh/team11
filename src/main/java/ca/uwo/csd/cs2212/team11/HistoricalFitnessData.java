@@ -2,13 +2,10 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.util.*;
 /**
- * This class contains this user's fitness data from all past days and today, 
- * accolades earned, accumulated fitness item values (for example, total distance 
- * traveled) over the lifetime of program use, and best days for particular fitness 
+ * This class contains this user's fitness data from all past days and from today, 
+ * accolades earned, accumulated fitness item values over the lifetime of program use
+ * (for example, total distance traveled), and best days for particular fitness 
  * data items.
- * 
- * For stage 3 Will eventually include an attribute (probably a LinkedList) that contains all populated OneDaysWOrthOfData objects so that this class can be serialized and loaded upon the 
- * next run of the program.  The goal being that the program will not have to re-request data that it has already requested.
  * 
  * @author Team 11
  */
@@ -30,11 +27,12 @@ public class HistoricalFitnessData {
 	}
 	
 	/**
-	 * Class constructor with one day of historical data
+	 * Class constructor with specified initial number of days of historical data.
 	 */
-	public HistoricalFitnessData( int numdays ) {
-	/* numdays, logically, must be one */
-		allOneDays = new ArrayList(numdays);
+	public HistoricalFitnessData( int numDays ) {
+	/* numDays is number of days of data that are accumulated by user at time 
+	 * of initial FitBit profile creation */
+		allOneDays = new ArrayList(numDays);
 	}
 	
 	/** Gets total number of days of data stored for this user. 
