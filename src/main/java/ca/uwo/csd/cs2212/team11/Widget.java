@@ -19,9 +19,12 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * 
  */
 public class Widget extends JPanel{
-	private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
+	/*private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
 		"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
-		"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};
+		"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};*/
+	private static final String[] views = {"<html>Daily</html>",
+		"<html>Record</html>", 
+		"<html>Lifetime</html>"};
 	private int goals = 0;
 	private int currentView = 0;
 	private int maxView = 3;
@@ -40,6 +43,8 @@ public class Widget extends JPanel{
 		System.out.println(this.getWidth());
 		this.setLayout(new BorderLayout(1,1));
 		this.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		
+		//this.setBackground(new Color(0,0,0,0));
 		this.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
 
 		switch(type){
@@ -62,17 +67,14 @@ public class Widget extends JPanel{
 			case ACTIVE:
 				this.typeName = "Minutes of Activity";
 				this.units = "minutes";
-				this.maxView = 1;
 				break;
 			case SEDENTARY:
 				this.typeName = "Minute of Inactivity";
 				this.units = "minutes";
-				this.maxView = 1;
 				break;
 			case HEART_RATE:
 				this.typeName = "Heart Rate";
 				this.units = "bpm";
-				this.maxView = 1;
 				break;
 			default:
 				typeName = "Undefined Widget";
@@ -82,7 +84,7 @@ public class Widget extends JPanel{
 		hintLabel = new JLabel("Click Widget to Change View");
 		viewLabel = new JLabel();
 		dataBox.setEditable(false);
-		dataBox.setBackground(new Color(255, 255, 255, 100));
+		dataBox.setBackground(new Color(0, 0, 0));
 		dataBox.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
@@ -128,8 +130,17 @@ public class Widget extends JPanel{
 		this.add(dataBox, BorderLayout.CENTER);
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
+				
+				//source.getParent().repaint();
+				// source.getParent().revalidate();
+				/*dataBox.revalidate();
+				dataBox.repaint();*/
+				System.out.println("HEre");
 				currentView = (currentView + 1) % maxView;
 				changeView(currentView);
+
+				/*revalidate();
+				repaint();*/
 			}
 		});
 
@@ -141,6 +152,7 @@ public class Widget extends JPanel{
 	 */     
 	private void changeView(int i) {
 		
+		System.out.println("currentView :" + i);
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
 	}
