@@ -142,7 +142,8 @@ public class DeskTop extends JFrame{
 			widgetPanel.add(all_widgets[type.ordinal()]);
 		}
 		widgetPanel.revalidate();
-		repaint();
+
+		widgetPanel.repaint();
 	}
 	
 	/**
@@ -289,6 +290,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.CALORIES);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -297,6 +300,7 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveGraph(IDs.CALORIES);
+					repaint();
 				}
 			});
 			a.add(navBtn);
@@ -305,6 +309,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.DISTANCE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -313,6 +319,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveGraph(IDs.DISTANCE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -321,6 +329,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.CLIMB);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -331,6 +341,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.STEPS);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -339,6 +351,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveGraph(IDs.STEPS);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -347,6 +361,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.ACTIVE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -363,6 +379,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.SEDENTARY);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);

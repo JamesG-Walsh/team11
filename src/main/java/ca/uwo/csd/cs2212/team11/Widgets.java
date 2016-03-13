@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import ca.uwo.csd.cs2212.team11.SharedData.IDs;
+
 
 /**
  * Widgets will be a container that holds all widgets objects
@@ -187,8 +189,9 @@ public class Widgets extends JPanel {
 		dataPanel.setOpaque(false);
 		dataPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
+				/*Component source = (Component)e.getSource();
 				source.getParent().dispatchEvent(e);
+				repaint();*/
 			}
 		});
 		
@@ -196,8 +199,9 @@ public class Widgets extends JPanel {
 		box[1].setEditable(false);
 		box[1].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
-				source.getParent().getParent().dispatchEvent(e);
+				/*Component source = (Component)e.getSource();
+				source.getParent().getParent().dispatchEvent(e);*/
+
 			}
 		});
 		dataPanel.add(box[1]);
@@ -206,8 +210,8 @@ public class Widgets extends JPanel {
 		box[2].setEditable(false);
 		box[2].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
-				source.getParent().getParent().dispatchEvent(e);
+				/*Component source = (Component)e.getSource();
+				source.getParent().getParent().dispatchEvent(e);*/
 			}
 		});
 		dataPanel.add(box[2]);
@@ -216,8 +220,10 @@ public class Widgets extends JPanel {
 		box[3].setEditable(false);
 		box[3].addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
+				/*Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
+				System.out.println("Here");*/
+
 			}
 		});
 		dataPanel.add(box[3]);
@@ -227,8 +233,9 @@ public class Widgets extends JPanel {
 		
 		a.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				currentView = (currentView + 1) % 3;
-				changeView(currentView);
+				/*currentView = (currentView + 1) % 3;
+				changeView(currentView);*/
+				System.out.println("Here");
 			}
 		});
 		
@@ -248,11 +255,11 @@ public class Widgets extends JPanel {
 		JPanel lifePanel = new JPanel();
 		JPanel goalsPanel = new JPanel();
 		
-		label[1] = new JLabel("Daily");
+		label[1] = new JLabel("D");
 		dailyPanel.add(label[1]);
-		label[2] = new JLabel("Record");
+		label[2] = new JLabel("R");
 		recordPanel.add(label[2]);
-		label[3] = new JLabel("Lifetime");
+		label[3] = new JLabel("L");
 		lifePanel.add(label[3]);
 		label[4] = new JLabel("Goals");
 		goalsPanel.add(label[4]);
@@ -320,7 +327,7 @@ public class Widgets extends JPanel {
 		JPanel a = new JPanel();
 		a.setSize(500, 200);
 		a.setVisible(true);
-		Graph g = new Graph();
+		Graph g = new Graph(IDs.CALORIES);
 		g.setSize(500,200);
 		g.setVisible(true);
 		a.add(g);
