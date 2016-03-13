@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+
 //import com.github.scribejava.core.*;
 import com.github.scribejava.core.model.Response;
 
@@ -32,7 +33,7 @@ public class ResponseParser
 		int ret = Integer.parseInt(value);
 		return ret;
 	}//end of method
-	
+
 	/**
 	 * static method that parses a provided JSONObject for a day of steps and returns the total floors as an int
 	 * @param jo the JSONObject for the activity tracker for steps
@@ -45,7 +46,7 @@ public class ResponseParser
 		int ret = Integer.parseInt(value);
 		return ret;
 	}//end of method
-	
+
 	/**
 	 * static method that parses a provided JSONObject for a day of floors and returns the total Calories burned as a double
 	 * @param jo the JSONObject for the activity tracker for Calories burned
@@ -59,7 +60,7 @@ public class ResponseParser
 		double ret = Double.parseDouble(value);
 		return ret;
 	}//end of method
-	
+
 	/**
 	 * static method that parses a provided JSONObject for a day of floors and returns the total distance as a double
 	 * @param jo the JSONObject for the activity tracker for distance
@@ -72,7 +73,7 @@ public class ResponseParser
 		double ret = Double.parseDouble(value);
 		return ret;
 	}//end of method
-	
+
 	/**
 	 * static method that parses a provided JSONObject for a day of floors and returns the total sedentaryMins as an int
 	 * @param jo the JSONObject for the activity tracker for distance
@@ -85,7 +86,7 @@ public class ResponseParser
 		int ret = Integer.parseInt(value);
 		return ret;
 	}//end of method
-	
+
 	/**
 	 * static method that parses  3 provided JSONObjects (for the 3 types of active minutes) for a day of active minutes and returns the total active minutes as an int
 	 * @param joLightlyActive 	the JSONObject containing the lightly active minutes
@@ -98,14 +99,131 @@ public class ResponseParser
 	{
 		String LAvalue = joLightlyActive.getJSONArray("activities-tracker-minutesLightlyActive").getJSONObject(0).getString("value");
 		int LAMins = Integer.parseInt(LAvalue);
-		
+
 		String FAvalue = joFairlyActive.getJSONArray("activities-tracker-minutesFairlyActive").getJSONObject(0).getString("value");
 		int FAMins = Integer.parseInt(FAvalue);
-		
+
 		String VAvalue = joVeryActive.getJSONArray("activities-tracker-minutesVeryActive").getJSONObject(0).getString("value");
 		int VAMins = Integer.parseInt(VAvalue);
-		
+
 		return (LAMins+FAMins+VAMins);
 	}//end of method
+
+	public static int[][] parseActiveMinsByTheMin (JSONObject joLightlyActive, JSONObject joFairlyActive, JSONObject joVeryActive)
+	{
+		int[][] lightlyActiveMins = new int[24][60];
+		int[][] fairlyActiveMins = new int[24][60];
+		int[][] veryActiveMins = new int[24][60]; //create temporary containers
+		int[][] totalActiveMins = new int[24][60]; //create object to be returned
+
+		JSONArray ja = null;
+		int hour;
+		int min; 
+
+		try 
+		{
+			ja = joLightlyActive.getJSONObject("activities-minutesLightlyActive-intraday").getJSONArray("dataset"); //get the JSONArray of values
+		} 
+		catch (JSONException e) 
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < ja.length(); i++)
+		{
+			try 
+			{
+				String time = ja.getJSONObject(i).getString("time"); //get time as string
+				hour = Integer.parseInt(time.substring(0, 2));
+				min = Integer.parseInt(time.substring(3, 5)); //convert time to ints
+				lightlyActiveMins[hour][min] = Integer.parseInt(ja.getJSONObject(i).getString("value"));	//store in temp container	
+			} 
+			catch (NumberFormatException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} 
+			catch (JSONException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}	
+		}
+
+		try 
+		{
+			ja = joFairlyActive.getJSONObject("activities-minutesFairlyActive-intraday").getJSONArray("dataset");
+		} 
+		catch (JSONException e) 
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < ja.length(); i++)
+		{
+			try 
+			{
+				String time = ja.getJSONObject(i).getString("time"); //get time as string
+				hour = Integer.parseInt(time.substring(0, 2));
+				min = Integer.parseInt(time.substring(3, 5)); //convert time to ints
+				fairlyActiveMins[hour][min] = Integer.parseInt(ja.getJSONObject(i).getString("value"));	//store in temp container	
+			} 
+			catch (NumberFormatException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} 
+			catch (JSONException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}	
+		}
+		
+		try 
+		{
+			ja = joVeryActive.getJSONObject("activities-minutesVeryActive-intraday").getJSONArray("dataset");
+		} 
+		catch (JSONException e) 
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < ja.length(); i++)
+		{
+			try 
+			{
+				String time = ja.getJSONObject(i).getString("time"); //get time as string
+				hour = Integer.parseInt(time.substring(0, 2));
+				min = Integer.parseInt(time.substring(3, 5)); //convert time to ints
+				veryActiveMins[hour][min] = Integer.parseInt(ja.getJSONObject(i).getString("value"));	//store in temp container	
+			} 
+			catch (NumberFormatException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} 
+			catch (JSONException e) 
+			{
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}	
+		}
+		
+		
+		
+		for(hour = 0; hour < 24; hour++)
+		{
+			for(min = 0 ; min < 60 ; min++)
+			{
+				totalActiveMins[hour][min] = (lightlyActiveMins[hour][min] + fairlyActiveMins[hour][min] + veryActiveMins[hour][min]); //sum temp containers
+			}
+		}
+
+		return totalActiveMins;
+	}// end of parseActiveMinsByTheMin() method
 
 } //end of class

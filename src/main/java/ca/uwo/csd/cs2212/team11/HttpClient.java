@@ -44,7 +44,7 @@ public class HttpClient
      * @return jo		the JSONObject that is returned by the request
      * @throws JSONException
      */
-    public JSONObject getSpecificDataDailyTotal(String activity, String date) throws JSONException
+    public static JSONObject getSpecificDataDailyTotal(String activity, String date) throws JSONException
     {
         //read credentials from a file
         BufferedReader bufferedReader=null;
@@ -254,13 +254,6 @@ public class HttpClient
 		return jo;
     }//end getSpecificData()
 
-/**
-     * public method that takes Strings to build a URL for making a by the minute request to activities/ and returns the resultant JSONObject
-     * @param activity 	the activity field for the URL for the request (eg. "calories", "minutesSedentary" etc.)
-     * @param date		the date part of the URL for the request ("yyyy-mm-dd" eg. "2016-03-25")
-     * @return 			the JSONObject that is returned by the request
-     * @throws JSONException
-     */
     
     /**
      * public method that takes Strings to build a URL for making a by the minute request to activities/ and returns the resultant JSONObject
