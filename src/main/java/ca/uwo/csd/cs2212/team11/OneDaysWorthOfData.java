@@ -537,4 +537,40 @@ public class OneDaysWorthOfData
 		return date;
 	}
 
+	/**
+	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
+	 * 
+	 * @param odwod OneDaysWorthOfData object being compared by date to this object
+	 * @return relDate -1, 0, or 1 if this day is earlier than, the same as, or later than the input object's date
+	 */
+	public int compareTo( OneDaysWorthOfData odwod ) {
+		int relDate;
+		if (this.year < odwod.getYear())
+			relDate = -1;
+		else { 
+			if (this.year > odwod.getYear())
+				relDate = 1;
+			else { /* Days in same year */ 
+				if (this.month < odwod.getMonth())
+					relDate = -1;
+				else {
+					if (this.month > odwod.getMonth())
+						relDate = 1;
+					else { /* Days in same year and same month */
+						if (this.dayOfMonth < odwod.getDayOfMonth())
+							relDate = -1;
+						else {
+							if (this.dayOfMonth > odwod.getDayOfMonth())
+								relDate = 1;
+							else
+								relDate = 0;
+						}
+					}
+				}
+			}
+		}
+		return relDate;
+	}
+	
+
 }// end of class
