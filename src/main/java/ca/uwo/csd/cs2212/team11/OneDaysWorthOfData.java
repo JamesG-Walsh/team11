@@ -539,8 +539,8 @@ public class OneDaysWorthOfData
 	/**
 	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
 	 * 
-	 * @param odwod OneDaysWorthOfData object being compared by date to this one
-	 * @return relDate -1 if this day earlier, 0 if date the same, 1 if this day later in time
+	 * @param odwod OneDaysWorthOfData object being compared by date to this object
+	 * @return relDate -1, 0, or 1 if this day is earlier than, the same as, or later than the input object's date
 	 */
 	public int compareTo( OneDaysWorthOfData odwod ) {
 		int relDate;
