@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.Serializable;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,7 +18,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall
  * 
  */
-public class Widget extends JPanel{
+public class Widget extends JPanel implements Serializable{
 	/*private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
 		"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
 		"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};*/

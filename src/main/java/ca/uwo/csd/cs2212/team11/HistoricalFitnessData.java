@@ -19,30 +19,30 @@ public class HistoricalFitnessData {
 	private int lifetimeFloors;
 	private String[] accoladesEarned;
 	private ArrayList<OneDaysWorthOfData> allOneDays; /* Sorted list of recorded days; lower indices are earlier days */ 
+	/**
+	 * 		To do: Figure out if ArrayList initialized to size>0 such that empty elements counted in size
+	 * 		 	   and subsequent element additions leave empty spots as are- if so, affects methods to add and retrieve elements. 
+	 */
+	
 	
 	/**
 	 *  Class constructor.
 	 */
 	public HistoricalFitnessData() {
 	}
-	
-	/**
-	 * Class constructor with specified initial number of days of historical data.
-	 */
-	public HistoricalFitnessData( int numDays ) {
-	/* numDays is number of days of data that are accumulated by user at time 
-	 * of initial FitBit profile creation */
-		allOneDays = new ArrayList(numDays);
-	}
-	
-	/** Gets total number of days of data stored for this user. 
+		
+	/** 
+	 * Gets total number of days of data stored for this user. 
 	 * 
+	 * @return    Number of days that have fitness day recorded for
 	 */
 	public int getNumDays() {
 		return allOneDays.size();
 	}
-	/** Adds new day's worth of data to set of historical data
+	/** Adds given day to this user's list of days for which fitness data is recorded
 	 * 
+	 * @param odwod 	fitness data collected on one specific day
+	 * @return boolean value	true if day added, and false if day already in historical set of days  
 	 */
 	public boolean addDay( OneDaysWorthOfData odwod ){
 		/* Add day to ordered list of days */
@@ -79,15 +79,29 @@ public class HistoricalFitnessData {
 		allOneDays.add(i, odwod);
 		return true;
 	}
-	
+	/** 
+	 * Gets this user's fitness data for requested day. 
+	 * 
+	 * @param dayOfMonth	day of the month of date that want daily fitness data for  
+	 * @param month		month of date that want daily fitness data for
+	 * @param year	year of date that want daily fitness data for
+	 * @return 	One day's worth of fitness data for requested date
+	 * @exception Throw exception if no recorded fitness data for requested day
+	 */
 	/* Change method:THROW exception if day not present */
 	public OneDaysWorthOfData retrieveDay( int dayOfMonth, int month, int year ) {		
 		
-		/* To find day of interest, binary search sorted array of days */
+		/* To find day of interest, binary search sorted array of days. */
 		int size = allOneDays.size();
 		int max = size - 1;
 		int min = 0;
-		int mid = max/2;
+		int mid; 
+		/* Bias first search point to a more recent day on assumption that user more likely  
+		 * to review more recent days. This reduces average time of method; worst case time unaltered.*/
+		if ( size > 30 )
+			mid = 15;
+		else
+			mid = max/2;
 		int compare;
 		boolean found = false;
 		while (!found) {
@@ -117,6 +131,26 @@ public class HistoricalFitnessData {
 	}	
 
 	/**
+	 * Helps enable historical fitness data to persist between uses of application.
+	 * Sets all of this user's recorded fitness data by replacing it.
+	 * 
+	 * @param List of single days worth of fitness data. 
+	 */
+	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){
+		this.allOneDays = allOneDays;
+	}
+	
+	/**
+	 * Helps enable historical fitness data to persist between uses of application.
+	 * Gets all of this user's recorded fitness data.
+	 * 
+	 * @return allOneDays
+	 */
+	public ArrayList<OneDaysWorthOfData> getAllOneDays(){
+		return allOneDays;
+	}
+	
+	/**
 	 * Gets this user's longest distance traveled in one day.
 	 * 
 	 * @return bestDistance
@@ -145,6 +179,7 @@ public class HistoricalFitnessData {
 
 	/**
 	 * Gets this user's accumulated distance traveled since first started measuring.
+	 * 
 	 * @return lifetimeDistance
 	 */
 	public double getLifetimeDistance(){
@@ -153,6 +188,7 @@ public class HistoricalFitnessData {
 
 	/**
 	 * Gets this user's accumulated steps taken since first started measuring.
+	 * 
 	 * @return lifetimeSteps
 	 */
 	public double getLifetimeSteps(){
@@ -161,6 +197,7 @@ public class HistoricalFitnessData {
 
 	/**
 	 * Gets this user's accumulated floors ascended since first started measuring.
+	 * 
 	 * @return lifetimeFloors
 	 */
 	public double getLifetimeFloors(){
@@ -168,7 +205,8 @@ public class HistoricalFitnessData {
 	}
 	
 	/**
-	 * Compares a given date to the date of a given OneDaysWorthOfData object
+	 * Compares a given date to the date of a given set of daily fitness data.
+	 * 
 	 * @param dayOfMonth
 	 * @param month
 	 * @param year

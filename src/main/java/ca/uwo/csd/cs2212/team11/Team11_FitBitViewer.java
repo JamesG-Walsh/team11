@@ -1,7 +1,8 @@
 package ca.uwo.csd.cs2212.team11;
-
+import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ca.uwo.csd.cs2212.team11.DeskTop;
 
 /**
  * COMP 2212 Group Project
@@ -9,9 +10,10 @@ import org.json.JSONObject;
  * @author Team 11
  * 
  */
-public class Team11_FitBitViewer 
+public class Team11_FitBitViewer implements Serializable
 {
 	public static boolean testFlag = false;
+	public static DeskTop GUI;
 
 	/**
 	 * Main method for the project	 
@@ -20,14 +22,17 @@ public class Team11_FitBitViewer
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
+		Serialize r = new Serialize();
 
-		DeskTop GUI = new DeskTop();
+		GUI = new DeskTop();
+		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 		GUI.setVisible(true);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
 			System.out.println("Running in test mode ......");
 			testFlag = true;
+			
 		}
 		else
 		{
@@ -39,7 +44,12 @@ public class Team11_FitBitViewer
 			String startTime = "23:00";
 			String endTime = "23:59";
 
-			/*try
+			
+
+
+
+
+		/*	try
 			{
 				odwod.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(h.getSpecificDataDailyTotal("floors", "2016-03-01")));
 				odwod.setTodaysTotalSteps(ResponseParser.parseDailyStepsTotal(h.getSpecificDataDailyTotal("steps", "2016-03-01")));
@@ -70,7 +80,7 @@ public class Team11_FitBitViewer
 			odwod.setDistanceByTheMin(h.getSpecificDataByTheMin("distance", "2016-03-01", "1min", startTime, endTime));
 			odwod.setFloorsByTheMin(h.getSpecificDataByTheMin("floors", "2016-03-01", "1min", startTime, endTime));
 			odwod.setSedentaryMinsByTheMin(h.getSpecificDataByTheMin("minutesSedentary", "2016-03-01", "1min", startTime, endTime));
-			*/
+			
 			
 			odwod.populateTotals();
 			
@@ -88,7 +98,7 @@ public class Team11_FitBitViewer
 					System.out.print("\t|||" + "sedentary mins: " + odwod.getSedentaryMinsByTheMin()[hour][min]);
 					System.out.print("\t|||" + "active mins: " + odwod.getActiveMinsByTheMin()[hour][min]);
 				}
-			}
+			}*/
 		}
 	}
 }

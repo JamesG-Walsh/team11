@@ -14,8 +14,13 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JComponent;
 import java.awt.Dimension;
+import java.io.Serializable;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
+import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 import ca.uwo.csd.cs2212.team11.SharedData.*;
 
 /**
@@ -23,10 +28,10 @@ import ca.uwo.csd.cs2212.team11.SharedData.*;
  * @author Andrew Hall
  *
  */
-public class DeskTop extends JFrame{
-
-	private Widget[] all_widgets = new Widget[7];	
-	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
+public class DeskTop extends JFrame implements Serializable  
+{
+	public static Widget[] all_widgets = new Widget[7];	
+	public static boolean[] widgetVisible; /*= {false, false,false, false, false, false, false};*/
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
 	private PieChart activeChart;
@@ -36,10 +41,31 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
+
+	public Widget[] getwidgetVisible(){
+		return this.all_widgets;
+	}
+	public void setWidgetVisible(Widget[] w){
+		//Serialize r = new Serialize();
+		//this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/wdigetVisible.xml").readObject();
+		System.out.println(this.widgetVisible[1]);
+;
+	}
+
 	public DeskTop(){
-	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		Serialize r = new Serialize();
+		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/wdigetVisible.xml").readObject();
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+			Serialize writeTo = new Serialize();
+			writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/wdigetVisible.xml");
+			System.exit(0);
+            }
+        });
+
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
 		all_widgets[IDs.CLIMB.ordinal()] = new Widget(IDs.CLIMB);
@@ -47,6 +73,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
+
 		activeChart = new PieChart();
 		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
@@ -80,15 +107,25 @@ public class DeskTop extends JFrame{
 
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(SharedData.SMOKE);
+
+		addRemoveWidget(IDs.CALORIES);
+		addRemoveWidget(IDs.CLIMB);
+		addRemoveWidget(IDs.ACTIVE);
+		addRemoveWidget(IDs.HEART_RATE);
+		addRemoveWidget(IDs.STEPS);
+		addRemoveWidget(IDs.SEDENTARY);
+		addRemoveWidget(IDs.DISTANCE);
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
 		mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(widgetPanel, BorderLayout.CENTER);
-		
+
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
+
+
 	}
 	
 	/**
@@ -280,6 +317,7 @@ public class DeskTop extends JFrame{
 		
 
 	}
+
 
 	private void populateWestPanel(JPanel a){
 		a.setOpaque(false);

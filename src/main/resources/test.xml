@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_71" class="java.beans.XMLDecoder">
+ <object class="ca.uwo.csd.cs2212.team11.DeskTop" id="DeskTop0">
+  <void property="visible">
+   <boolean>true</boolean>
+  </void>
+  <void property="contentPane">
+   <void property="size">
+    <object class="java.awt.Dimension" id="Dimension0">
+     <void class="java.awt.Dimension" method="getField">
+      <string>width</string>
+      <void method="set">
+       <object idref="Dimension0"/>
+       <int>1340</int>
+      </void>
+     </void>
+     <void class="java.awt.Dimension" method="getField">
+      <string>height</string>
+      <void method="set">
+       <object idref="Dimension0"/>
+       <int>630</int>
+      </void>
+     </void>
+    </object>
+   </void>
+  </void>
+  <void id="Dimension1" property="minimumSize">
+   <void class="java.awt.Dimension" method="getField">
+    <string>width</string>
+    <void method="set">
+     <object idref="Dimension1"/>
+     <int>331</int>
+    </void>
+   </void>
+   <void class="java.awt.Dimension" method="getField">
+    <string>height</string>
+    <void method="set">
+     <object idref="Dimension1"/>
+     <int>426</int>
+    </void>
+   </void>
+  </void>
+  <void property="minimumSize">
+   <object idref="Dimension1"/>
+  </void>
+  <void property="name">
+   <string>frame0</string>
+  </void>
+ </object>
+</java>
