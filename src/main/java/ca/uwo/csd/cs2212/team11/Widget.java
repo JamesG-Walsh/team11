@@ -3,10 +3,12 @@ package ca.uwo.csd.cs2212.team11;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,6 +34,7 @@ public class Widget extends JPanel implements Serializable{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+	Color backColor;
 	
 	/**
 	 * Widget class constructor
@@ -39,13 +42,14 @@ public class Widget extends JPanel implements Serializable{
 	 */
 	public Widget(IDs type){
 		super();
-		this.setSize(200, 200);
-		System.out.println(this.getWidth());
-		this.setLayout(new BorderLayout(1,1));
-		this.setBackground(SharedData.COLOR_SET[type.ordinal()]);
-		
-		//this.setBackground(new Color(0,0,0,0));
-		this.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
+
+		JPanel content = new JPanel();
+		this.setLayout(new BoxLayout(this, 1));
+		this.setPreferredSize(new Dimension(150, 150));
+		content.setLayout(new BorderLayout(1,1));
+		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		content.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
+		this.add(content);
 
 		switch(type){
 			case CALORIES:
@@ -80,11 +84,12 @@ public class Widget extends JPanel implements Serializable{
 				typeName = "Undefined Widget";
 		}
 		
-		this.add(new JLabel(typeName), BorderLayout.NORTH);
-		hintLabel = new JLabel("Click Widget to Change View");
+		content.add(new JLabel(typeName), BorderLayout.NORTH);
+		hintLabel = new JLabel("Click to Change View");
 		viewLabel = new JLabel();
 		dataBox.setEditable(false);
-		dataBox.setBackground(new Color(0, 0, 0));
+
+		dataBox.setOpaque(false);
 		dataBox.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
@@ -92,7 +97,7 @@ public class Widget extends JPanel implements Serializable{
 			}
 		});
 
-		this.add(hintLabel, BorderLayout.SOUTH);
+		content.add(hintLabel, BorderLayout.SOUTH);
 		//changeView(0);
 		switch(type){
 			case CALORIES:
@@ -126,9 +131,9 @@ public class Widget extends JPanel implements Serializable{
 			default:
 				typeName = "Undefined Widget";
 		}
-		this.add(viewLabel, BorderLayout.WEST);
-		this.add(dataBox, BorderLayout.CENTER);
-		this.addMouseListener(new MouseAdapter(){
+		content.add(viewLabel, BorderLayout.WEST);
+		content.add(dataBox, BorderLayout.CENTER);
+		content.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				
 				//source.getParent().repaint();
@@ -146,6 +151,7 @@ public class Widget extends JPanel implements Serializable{
 
 	}
 	
+
 	/**
 	 * change view to specific data
 	 * @param i the index of a given data type
@@ -166,9 +172,9 @@ public class Widget extends JPanel implements Serializable{
 		return SharedData.base_array;
 	}
 	
-	/*private int[] getStepsData(IDs type) {
+	private int[] getStepsData(IDs type) {
 		return SharedData.steps_Data;
-	}*/
+	}
 	
 	/**
 	 * Get sedentary canned data
