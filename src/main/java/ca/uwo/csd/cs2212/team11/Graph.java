@@ -2,6 +2,7 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -62,7 +63,8 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
-		this.setSize(450, 200);
+		this.setPreferredSize(new Dimension(450, 200));
+		this.setMinimumSize(new Dimension(450, 200));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		

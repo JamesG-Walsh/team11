@@ -14,7 +14,12 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+<<<<<<< HEAD
 import javax.swing.JComponent;
+=======
+import javax.swing.JScrollPane;
+
+>>>>>>> bugfix/graph_collision
 import java.awt.Dimension;
 import java.io.Serializable;
 import java.awt.event.WindowListener;
@@ -28,6 +33,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.*;
  * @author Andrew Hall
  *
  */
+
 public class DeskTop extends JFrame implements Serializable  
 {
 	public static Widget[] all_widgets = new Widget[7];	
@@ -108,6 +114,7 @@ public class DeskTop extends JFrame implements Serializable
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(SharedData.SMOKE);
 
+		/*Initialize components as per user's config*/
 		addRemoveWidget(IDs.CALORIES);
 		addRemoveWidget(IDs.CLIMB);
 		addRemoveWidget(IDs.ACTIVE);
@@ -115,13 +122,17 @@ public class DeskTop extends JFrame implements Serializable
 		addRemoveWidget(IDs.STEPS);
 		addRemoveWidget(IDs.SEDENTARY);
 		addRemoveWidget(IDs.DISTANCE);
+
+
+		centerPanel = new JPanel();
+		populateCenterPanel(centerPanel);
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
 		mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
-		mainDisplay.add(widgetPanel, BorderLayout.CENTER);
-
+		mainDisplay.add(centerPanel, BorderLayout.CENTER);
+		
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 
@@ -138,21 +149,21 @@ public class DeskTop extends JFrame implements Serializable
 		if (type == IDs.ACTIVE){
 			if(activeChartVisible == true){
 				activeChartVisible = false;
-				widgetPanel.remove(activeChart);
+				graphPanel.remove(activeChart);
 			}else{
 				activeChartVisible = true;
-				widgetPanel.add(activeChart);
+				graphPanel.add(activeChart);
 			}
 		}else{
 			if(graphVisible[type.ordinal()] == true){
 				graphVisible[type.ordinal()] = false;
-				widgetPanel.remove(allGraphs[type.ordinal()]);
+				graphPanel.remove(allGraphs[type.ordinal()]);
 			}else{
 				graphVisible[type.ordinal()] = true;
-				widgetPanel.add(allGraphs[type.ordinal()]);
+				graphPanel.add(allGraphs[type.ordinal()]);
 			}
 		}
-		widgetPanel.revalidate();
+		graphPanel.revalidate();
 		repaint();
 	}
 	
@@ -451,6 +462,19 @@ public class DeskTop extends JFrame implements Serializable
 			a.add(navBtn);
 	}
 
+	private void populateCenterPanel(JPanel a){
+		a.setLayout(new BoxLayout(a, 1));
+		a.setOpaque(false);
+
+		widgetPanel = new JPanel();
+		widgetPanel.setBackground(SharedData.SMOKE);
+		a.add(widgetPanel);
+
+		graphPanel = new JPanel();
+		graphPanel.setBackground(SharedData.SMOKE);
+		a.add(graphPanel);
+	}
+	
 	/**
 	 * Creating buttons to display different components onto the dash such as calories or distance travelled
 	 * @param type -- Label of the component (Calorie, distance...)
