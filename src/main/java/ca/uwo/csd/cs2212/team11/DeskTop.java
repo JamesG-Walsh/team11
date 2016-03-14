@@ -14,12 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-import javax.swing.JComponent;
-=======
 import javax.swing.JScrollPane;
-
->>>>>>> bugfix/graph_collision
 import java.awt.Dimension;
 import java.io.Serializable;
 import java.awt.event.WindowListener;
@@ -38,7 +33,7 @@ public class DeskTop extends JFrame implements Serializable
 {
 	public static Widget[] all_widgets = new Widget[7];	
 	public static boolean[] widgetVisible; /*= {false, false,false, false, false, false, false};*/
-	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel;
+	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel, centerPanel, graphPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
 	private PieChart activeChart;
 	private boolean activeChartVisible = false;
@@ -48,26 +43,16 @@ public class DeskTop extends JFrame implements Serializable
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
 
-	public Widget[] getwidgetVisible(){
-		return this.all_widgets;
-	}
-	public void setWidgetVisible(Widget[] w){
-		//Serialize r = new Serialize();
-		//this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/wdigetVisible.xml").readObject();
-		System.out.println(this.widgetVisible[1]);
-;
-	}
-
 	public DeskTop(){
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Serialize r = new Serialize();
-		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/wdigetVisible.xml").readObject();
+		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
             public void windowClosing(java.awt.event.WindowEvent e) {
 			Serialize writeTo = new Serialize();
-			writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/wdigetVisible.xml");
+			writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
 			System.exit(0);
             }
         });
@@ -114,18 +99,19 @@ public class DeskTop extends JFrame implements Serializable
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(SharedData.SMOKE);
 
-		/*Initialize components as per user's config*/
-		addRemoveWidget(IDs.CALORIES);
-		addRemoveWidget(IDs.CLIMB);
-		addRemoveWidget(IDs.ACTIVE);
-		addRemoveWidget(IDs.HEART_RATE);
-		addRemoveWidget(IDs.STEPS);
-		addRemoveWidget(IDs.SEDENTARY);
-		addRemoveWidget(IDs.DISTANCE);
-
 
 		centerPanel = new JPanel();
 		populateCenterPanel(centerPanel);
+
+
+		/*Initialize components as per user's config*/
+		configToUsersPref(IDs.CALORIES);
+		configToUsersPref(IDs.CLIMB);
+		configToUsersPref(IDs.ACTIVE);
+		configToUsersPref(IDs.HEART_RATE);
+		configToUsersPref(IDs.STEPS);
+		configToUsersPref(IDs.SEDENTARY);
+		configToUsersPref(IDs.DISTANCE);
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
@@ -186,6 +172,21 @@ public class DeskTop extends JFrame implements Serializable
 			widgetPanel.remove(all_widgets[type.ordinal()]);
 		}else{
 			widgetVisible[type.ordinal()] = true;
+			all_widgets[type.ordinal()].setVisible(true);
+			widgetPanel.add(all_widgets[type.ordinal()]);
+		}
+		revalidate();
+		repaint();
+	}
+		/**
+	 * This button will remove the widget specified by parameter
+	 * @param type -- Type is the component (Calories, Distance ..etc)
+	 */
+	private void configToUsersPref(IDs type){
+
+		if(widgetVisible[type.ordinal()] == false){
+			widgetPanel.remove(all_widgets[type.ordinal()]);
+		}else{
 			all_widgets[type.ordinal()].setVisible(true);
 			widgetPanel.add(all_widgets[type.ordinal()]);
 		}
