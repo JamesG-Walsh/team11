@@ -10,7 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.io.Serializable;
 
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
 
@@ -19,7 +18,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall
  * 
  */
-public class Widget extends JPanel implements Serializable{
+public class Widget extends JPanel{
 	/*private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
 		"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
 		"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};*/
@@ -93,17 +92,12 @@ public class Widget extends JPanel implements Serializable{
 			}
 		});
 
-		/*GET DATA*/
-		OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016,3,13);
-        odwod.populateTotals();
-        
 		this.add(hintLabel, BorderLayout.SOUTH);
 		//changeView(0);
 		switch(type){
 			case CALORIES:
 				data = getData(type);
-				//changeView(0);
-				dataBox.setText(odwod.getTodaysTotalCaloriesBurned() + " " + this.units);
+				changeView(0);
 				break;
 			case DISTANCE:
 				data = getDistanceData(type);

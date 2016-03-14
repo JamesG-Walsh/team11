@@ -473,7 +473,7 @@ public class OneDaysWorthOfData
 		{
 			System.out.println(npe.getMessage());
 		}
-		//this.setTotalsFullyPopulated(true); //TODO this is best handled by calling method I think
+		this.setTotalsFullyPopulated(true);
 	}
 
 	/**
@@ -536,7 +536,6 @@ public class OneDaysWorthOfData
 		
 		return date;
 	}
-
 	/**
 	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
 	 * 
