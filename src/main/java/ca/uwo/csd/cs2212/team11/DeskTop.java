@@ -104,14 +104,14 @@ public class DeskTop extends JFrame implements Serializable
 		populateCenterPanel(centerPanel);
 
 
-		/*Initialize components as per user's config*/
-		configToUsersPref(IDs.CALORIES);
-		configToUsersPref(IDs.CLIMB);
-		configToUsersPref(IDs.ACTIVE);
-		configToUsersPref(IDs.HEART_RATE);
-		configToUsersPref(IDs.STEPS);
-		configToUsersPref(IDs.SEDENTARY);
-		configToUsersPref(IDs.DISTANCE);
+		/*Visiblity of Widget save by user from last save*/
+		configWidgetVisibilityToUsersPref(IDs.CALORIES);
+		configWidgetVisibilityToUsersPref(IDs.CLIMB);
+		configWidgetVisibilityToUsersPref(IDs.ACTIVE);
+		configWidgetVisibilityToUsersPref(IDs.HEART_RATE);
+		configWidgetVisibilityToUsersPref(IDs.STEPS);
+		configWidgetVisibilityToUsersPref(IDs.SEDENTARY);
+		configWidgetVisibilityToUsersPref(IDs.DISTANCE);
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
@@ -182,7 +182,7 @@ public class DeskTop extends JFrame implements Serializable
 	 * This button will remove the widget specified by parameter
 	 * @param type -- Type is the component (Calories, Distance ..etc)
 	 */
-	private void configToUsersPref(IDs type){
+	private void configWidgetVisibilityToUsersPref(IDs type){
 
 		if(widgetVisible[type.ordinal()] == false){
 			widgetPanel.remove(all_widgets[type.ordinal()]);
