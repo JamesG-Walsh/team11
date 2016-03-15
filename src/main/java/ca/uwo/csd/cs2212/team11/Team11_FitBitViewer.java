@@ -40,12 +40,14 @@ public class Team11_FitBitViewer implements Serializable
 			System.out.println("Running in live mode.....");
 
 		
-			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 13);
-			String startTime = "23:00";
-			String endTime = "23:59";
+			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 15);
+			
+			odwod.populateTotals();
+			odwod.populateAllMins();
 
 			
-
+			//String startTime = "23:00";
+			//String endTime = "23:59";
 
 
 

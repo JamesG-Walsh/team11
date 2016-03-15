@@ -31,6 +31,8 @@ public class OneDaysWorthOfData
 
 	private int todaysTotalSedentaryMins;
 	private int[][] sedentaryMinsByTheMin = new int [24][60];
+	
+	private int[][] heartRateByTheMin = new int [24][60];
 
 	private String lastUpdated;
 
@@ -42,7 +44,7 @@ public class OneDaysWorthOfData
 	 */
 	public OneDaysWorthOfData() 
 	{
-
+		
 	}
 
 	/**
@@ -446,6 +448,20 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * @return the heartRateByTheMin
+	 */
+	public int[][] getHeartRateByTheMin() {
+		return heartRateByTheMin;
+	}
+
+	/**
+	 * @param heartRateByTheMin the heartRateByTheMin to set
+	 */
+	public void setHeartRateByTheMin(int[][] heartRateByTheMin) {
+		this.heartRateByTheMin = heartRateByTheMin;
+	}
+
+	/**
 	 * 
 	 */
 	public void populateTotals()
@@ -495,6 +511,8 @@ public class OneDaysWorthOfData
 			JSONObject joFA = HttpClient.getSpecificDataByTheMin("minutesFairlyActive", date, "1min", "00:00", "23:59");
 			JSONObject joVA = HttpClient.getSpecificDataByTheMin("minutesVeryActive", date, "1min", "00:00", "23:59");		
 			this.setActiveMinsByTheMin(ResponseParser.parseActiveMinsByTheMin(joLA, joFA, joVA));
+			
+			HttpClient.getHeartRateZones(date);
 
 			//TODO ResponseParser methods for minute setters(excluding activeMins which is done already) (optional but nice)
 		}
