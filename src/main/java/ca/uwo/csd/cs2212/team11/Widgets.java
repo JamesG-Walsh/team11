@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import ca.uwo.csd.cs2212.team11.SharedData.IDs;
+
 
 /**
  * Widgets will be a container that holds all widgets objects
@@ -189,6 +191,7 @@ public class Widgets extends JPanel {
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().dispatchEvent(e);
+				
 			}
 		});
 		
@@ -198,6 +201,7 @@ public class Widgets extends JPanel {
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
+
 			}
 		});
 		dataPanel.add(box[1]);
@@ -218,6 +222,8 @@ public class Widgets extends JPanel {
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
+				System.out.println("Here");
+
 			}
 		});
 		dataPanel.add(box[3]);
@@ -227,8 +233,9 @@ public class Widgets extends JPanel {
 		
 		a.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				currentView = (currentView + 1) % 3;
-				changeView(currentView);
+				/*currentView = (currentView + 1) % 3;
+				changeView(currentView);*/
+				System.out.println("Here");
 			}
 		});
 		
@@ -320,7 +327,7 @@ public class Widgets extends JPanel {
 		JPanel a = new JPanel();
 		a.setSize(500, 200);
 		a.setVisible(true);
-		Graph g = new Graph();
+		Graph g = new Graph(IDs.CALORIES);
 		g.setSize(500,200);
 		g.setVisible(true);
 		a.add(g);
