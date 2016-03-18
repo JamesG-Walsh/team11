@@ -3,6 +3,8 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ca.uwo.csd.cs2212.team11.DeskTop;
+import ca.uwo.csd.cs2212.team11.OneDaysWorthOfData;
+
 
 /**
  * COMP 2212 Group Project
@@ -14,6 +16,8 @@ public class Team11_FitBitViewer implements Serializable
 {
 	public static boolean testFlag = false;
 	public static DeskTop GUI;
+	public static OneDaysWorthOfData odwod;
+	public static HistoricalFitnessData hfd;
 
 	/**
 	 * Main method for the project	 
@@ -24,9 +28,9 @@ public class Team11_FitBitViewer implements Serializable
 	{
 		Serialize r = new Serialize();
 
-		//GUI = new DeskTop();
+		GUI = new DeskTop();
 		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-		//GUI.setVisible(true);
+		GUI.setVisible(true);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
@@ -39,8 +43,15 @@ public class Team11_FitBitViewer implements Serializable
 			System.out.println("Running in live mode.....");
 
 			User usr = new User();
-			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+
+			hfd = usr.getHistoricalFitnessData();
+			odwod = hfd.retrieveDay(2016, 3, 17);
+			odwod.populateTotals();
+
+
 			hfd.populateLifetimeAndBestDays();
+
+
 			
 			System.out.println(hfd.getLifetimeAndBestDays());
 			

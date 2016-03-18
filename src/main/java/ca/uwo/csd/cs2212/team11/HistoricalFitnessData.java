@@ -17,6 +17,8 @@ public class HistoricalFitnessData
 	private double bestDistance;
 	private int bestSteps;
 	private double bestFloors;
+	private double bestCalories;
+	private double lifetimeCalories;
 	private double lifetimeDistance;
 	private int lifetimeSteps;
 	private double lifetimeFloors;
@@ -160,6 +162,10 @@ public class HistoricalFitnessData
 	 * 
 	 * @return bestDistance
 	 */
+	public double getBestCalories() {
+		return bestCalories;
+	}
+
 	public double getBestDistance() {
 		return bestDistance;
 	}
@@ -187,6 +193,10 @@ public class HistoricalFitnessData
 	 * 
 	 * @return lifetimeDistance
 	 */
+	public double getLifetimeCalories(){
+		return lifetimeCalories;
+	}
+
 	public double getLifetimeDistance(){
 		return lifetimeDistance;
 	}
