@@ -39,9 +39,14 @@ public class Team11_FitBitViewer implements Serializable
 
 			System.out.println("Running in live mode.....");
 
-		
-			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
-			HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
+			User usr = new User();
+			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+			hfd.populateLifetimeAndBestDays();
+			
+			System.out.println(hfd.getLifetimeAndBestDays());
+			
+			//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
+			//HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
 			
 			//String startTime = "23:00";
 			//String endTime = "23:59";
@@ -51,8 +56,8 @@ public class Team11_FitBitViewer implements Serializable
 			
 			//System.out.println(odwod.toString(true));
 			
-			hrdod.populate();
-			System.out.println(hrdod.toString());
+			//hrdod.populate();
+			//System.out.println(hrdod.toString());
 
 			
 

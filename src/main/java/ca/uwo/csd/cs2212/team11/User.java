@@ -10,47 +10,48 @@ package ca.uwo.csd.cs2212.team11;
  * @author Team 11
  */
 
-public class User {
-	
-/* private UserPreferences preferences; */
-private HistoricalFitnessData historicalData;
-private OneDaysWorthOfData todaysData;
-	
-/**
- *  Class constructor.
- */
-public User() {
-}
+public class User 
+{
 
+	/* private UserPreferences preferences; */
+	private HistoricalFitnessData historicalData;
+	private OneDaysWorthOfData todaysData;
 
+	/**
+	 *  Class constructor.
+	 */
+	public User() 
+	{
+		historicalData = new HistoricalFitnessData();
+	}
 
-/**
- * Gets this user's fitness data so far today.
- *
- * @return todaysData
- */
-public OneDaysWorthOfData getTodaysData() {
-	return todaysData;
-}
+	/**
+	 * Gets this user's fitness data so far today.
+	 *
+	 * @return todaysData
+	 */
+	public OneDaysWorthOfData getTodaysData() {
+		return todaysData;
+	}
 
-/**
- * Gets this user's fitness data from all past days and today.
- * 
- * @return historicalData
- */
-public HistoricalFitnessData getHistoricalFitnessData(){
-	return historicalData;
-}
+	/**
+	 * Gets this user's fitness data from all past days and today.
+	 * 
+	 * @return historicalData
+	 */
+	public HistoricalFitnessData getHistoricalFitnessData(){
+		return historicalData;
+	}
 
-/**
- * Gets this user's fitness goals and application configuration preferences.
- * 
- * @return preferences
- */
-/*
+	/**
+	 * Gets this user's fitness goals and application configuration preferences.
+	 * 
+	 * @return preferences
+	 */
+	/*
 public UserPreferences getPreferences() {
 	return preferences;
 }
-*/
+	 */
 
 }
