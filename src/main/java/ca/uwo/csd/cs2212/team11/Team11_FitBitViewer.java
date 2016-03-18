@@ -27,8 +27,10 @@ public class Team11_FitBitViewer implements Serializable
 	public static void main(String[] args) throws JSONException 
 	{
 		Serialize r = new Serialize();
-
 		GUI = new DeskTop();
+		User usr = new User();
+		
+		//GUI = new DeskTop(usr);
 		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 		GUI.setVisible(true);
 
@@ -41,19 +43,19 @@ public class Team11_FitBitViewer implements Serializable
 		else
 		{
 			System.out.println("Running in live mode.....");
-
 			User usr = new User();
 
 			hfd = usr.getHistoricalFitnessData();
 			odwod = hfd.retrieveDay(2016, 3, 17);
 			odwod.populateTotals();
 
-
 			hfd.populateLifetimeAndBestDays();
 
 
 			
-			System.out.println(hfd.getLifetimeAndBestDays());
+			System.out.println(hfd.lifetimeAndBestDaysToString());
+			
+			//System.out.println(hfd.getLifetimeAndBestDays());
 			
 			//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
 			//HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();

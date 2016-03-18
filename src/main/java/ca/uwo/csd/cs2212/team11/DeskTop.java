@@ -6,8 +6,10 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.awt.Component;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import java.awt.Dimension;
 import java.io.Serializable;
 import java.awt.event.WindowListener;
@@ -39,11 +42,15 @@ public class DeskTop extends JFrame implements Serializable
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
 	private boolean[] graphVisible = {false, false, false, false, false, false, false};
+	
+	private Calendar workingDate;
+	
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
 
-	public DeskTop(){
+	public DeskTop(User usr)
+	{
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Serialize r = new Serialize();
@@ -66,10 +73,11 @@ public class DeskTop extends JFrame implements Serializable
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 
 		activeChart = new PieChart();
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE);
+		this.setWorkingDate();
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, usr, this.getWorkingDate());
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, usr, this.getWorkingDate());
 
 
 //		System.out.println(System.getProperty("user.dir"));
@@ -198,8 +206,17 @@ public class DeskTop extends JFrame implements Serializable
 	 * This will set our last refresh label and will be called whenever the refresh button is hit
 	 * @return
 	 */
-	public Date getDateOfLastRefresh(){
-		return new Date();
+	public Calendar getWorkingDate()
+	{		
+		return this.workingDate;
+	}
+	
+	public void setWorkingDate()
+	{
+	//	Calendar cal = Calendar.getInstance();
+	//	cal.setTime(javaSqlDate);
+		this.workingDate = Calendar.getInstance() ;
+		workingDate.setTime(new Date());
 	}
 	
 	/**
@@ -266,7 +283,7 @@ public class DeskTop extends JFrame implements Serializable
 		//Create panel to display last update date
 			datePanel = new JPanel();
 			datePanel.setBackground(SharedData.SMOKE);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getDateOfLastRefresh());
+			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
 			dateLabel = new JLabel(dateString);
 			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
 			dateLabel.setForeground(new Color(255,255,255));

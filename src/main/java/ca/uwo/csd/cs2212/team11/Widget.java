@@ -102,12 +102,12 @@ public class Widget extends JPanel implements Serializable{
 		switch(type){
 			case CALORIES:
 				if(Team11_FitBitViewer.testFlag){
-					data = getData(type);
-					changeView(0);
+					//data = getData(type);
+					//changeView(0);
 
 				}else{
 
-					//changeViewLive(0);
+					//changeViewLive(0, CALORIES);
 				}
 				
 				break;
@@ -120,8 +120,14 @@ public class Widget extends JPanel implements Serializable{
 				changeView(0);
 				break;
 			case STEPS:
-				data = getData(type);
-				changeView(0);
+				if(Team11_FitBitViewer.testFlag){
+					data = getData(type);
+					changeView(0);
+
+				}else{
+
+					changeViewLive(0, STEPS);
+				}
 				break;
 			case ACTIVE:
 				data = getActiveMinData(type);
@@ -173,22 +179,6 @@ public class Widget extends JPanel implements Serializable{
 	private void changeViewLive(int i, IDs type){
 		String convert;
 		switch(type){
-						case CALORIES:
-								if(i==0){ //Get day calorie
-									convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalCaloriesBurned());
-									dataBox.setText(convert);
-									viewLabel.setText(Widget.views[i]);
-
-								}else if(i==1){ //Get Best Day calorie
-									convert = String.valueOf(Team11_FitBitViewer.hfd.getBestCalories());
-									dataBox.setText(convert);
-									viewLabel.setText(Widget.views[i]);
-
-								}else if(i==2){
-									convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeCalories());
-									dataBox.setText(convert);
-									viewLabel.setText(Widget.views[i]);
-								}
 						case STEPS: 
 								if(i==0){ //Get day calorie
 									convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
@@ -196,12 +186,12 @@ public class Widget extends JPanel implements Serializable{
 									viewLabel.setText(Widget.views[i]);
 
 								}else if(i==1){ //Get Best Day calorie
-									convert = String.valueOf(Team11_FitBitViewer.hfd.getBest());
+									convert = String.valueOf(Team11_FitBitViewer.hfd.getBestStepsValue());
 									dataBox.setText(convert);
 									viewLabel.setText(Widget.views[i]);
 
 								}else if(i==2){
-									convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeCalories());
+									convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeSteps());
 									dataBox.setText(convert);
 									viewLabel.setText(Widget.views[i]);
 								}

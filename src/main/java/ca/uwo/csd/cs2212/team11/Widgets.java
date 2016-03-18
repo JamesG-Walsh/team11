@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -23,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
 
 
@@ -318,7 +321,8 @@ public class Widgets extends JPanel {
 		t.addTab("Goals", icon, goalsPanel);
 		a.add(t);
 		return a;
-	}	
+	}
+	
       /**
        * makes a graph for time series data
        */
@@ -327,7 +331,7 @@ public class Widgets extends JPanel {
 		JPanel a = new JPanel();
 		a.setSize(500, 200);
 		a.setVisible(true);
-		Graph g = new Graph(IDs.CALORIES);
+		Graph g = new Graph(IDs.CALORIES,new User(), Calendar.getInstance());
 		g.setSize(500,200);
 		g.setVisible(true);
 		a.add(g);

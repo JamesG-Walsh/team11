@@ -53,7 +53,6 @@ public class OneDaysWorthOfData
 	 *  @param year the current year
 	 *  @param month the current month of the year
 	 *  @param dayOfMonth the current day of the month
-
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
 	{
@@ -502,7 +501,7 @@ public class OneDaysWorthOfData
 			JSONObject joVA = HttpClient.getSpecificDataByTheMin("minutesVeryActive", date, "1min", "00:00", "23:59");		
 			this.setActiveMinsByTheMin(ResponseParser.parseActiveMinsByTheMin(joLA, joFA, joVA));
 
-			System.out.println(HttpClient.getHeartRateZones(date).toString(2));
+			//System.out.println(HttpClient.getHeartRateZones(date).toString(2));
 
 			//TODO ResponseParser methods for minute setters(excluding activeMins which is done already) (optional but nice)
 		}
