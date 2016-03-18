@@ -47,26 +47,11 @@ public class Graph extends javax.swing.JPanel implements Serializable
 			case CALORIES:
 				data = normalizeData(SharedData.dummyCalories);
 				break;
-			case CALORIES_CUM:
-				data = SharedData.dummyCalories;
-				dataToCumulative();
-				data = normalizeData( data ); 
-				break;
 			case STEPS:
 				data = normalizeData(SharedData.dummySteps);	
 				break;
-			case STEPS_CUM:
-				data = SharedData.dummySteps;
-				dataToCumulative();
-				data = normalizeData( data );
-				break;		
 			case DISTANCE:
 				data = normalizeData(SharedData.dummyDistance);
-				break;
-			case DISTANCE_CUM:
-				data = SharedData.dummyDistance;
-				dataToCumulative();
-				data = normalizeData( data );
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
