@@ -25,8 +25,10 @@ public class Team11_FitBitViewer implements Serializable
 		Serialize r = new Serialize();
 
 		GUI = new DeskTop();
-		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 		GUI.setVisible(true);
+
+		Accolades acc = new Accolades();
+		acc.recievedAccolade(GUI);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
