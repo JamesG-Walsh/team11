@@ -46,9 +46,10 @@ public class HeartRateDayOfData
 	 */
 	public void populate() 
 	{
+		
 		try 
 		{
-			JSONObject jo = HttpClient.getHeartRateZones(this.date);
+			JSONObject jo = HttpClient.getHeartRateZones(this.date); // make server request and get the resulting JSONObject
 			JSONObject activitiesHeart;
 			activitiesHeart = jo.getJSONArray("activities-heart").getJSONObject(0).getJSONObject("value");
 			
@@ -70,8 +71,19 @@ public class HeartRateDayOfData
 			
 			this.peakZoneMaximum = ja.getJSONObject(3).getInt("max");
 			this.peakZoneMinimum = ja.getJSONObject(3).getInt("min");
-			this.peakZoneMinutes = ja.getJSONObject(3).getInt("minutes");
+			this.peakZoneMinutes = ja.getJSONObject(3).getInt("minutes"); //set the zone boundaries and record the total mins in each zone
 			
+			ja = jo.getJSONObject("activities-heart-intraday").getJSONArray("dataset"); //now get the by the minute data
+			int hour;
+			int min;
+			JSONObject dataPoint;
+			for(int i = 0; i < ja.length(); i++) //loop through all minutes
+			{
+				dataPoint = ja.getJSONObject(i);
+				hour = Integer.parseInt(dataPoint.getString("time").substring(0, 2));
+				min = Integer.parseInt(dataPoint.getString("time").substring(3, 5));
+				this.heartRateByTheMin[hour][min] = dataPoint.getInt("value");			//store the value for the current min in the 2D array
+			}
 		}
 		catch (JSONException e1) 
 		{
@@ -91,8 +103,17 @@ public class HeartRateDayOfData
 		str = str.concat("\nCardio\t\tMinimum:" + this.getCardioZoneMinimum() + "\tMaximum:" + this.getCardioZoneMaximum() + "\tMinutes:" + this.getCardioZoneMinutes());
 		str = str.concat("\nPeak\t\tMinimum:" + this.getPeakZoneMinimum() + "\tMaximum:" + this.getPeakZoneMaximum() + "\tMinutes:" + this.getPeakZoneMinutes());
 		
+		str = str.concat("\n");
 		
-		//TODO min array
+		for (int hour = 0 ; hour < 24; hour++)
+		{
+			for(int min = 0; min < 60; min++)
+			{
+				str = str.concat("\n" + hour + ":" + min + "\t heart rate: " + this.heartRateByTheMin[hour][min]);
+			}
+		}
+		str = str.concat("\nEnd of Heart Rate Data\n");
+		
 		return str;
 	}
 
