@@ -32,8 +32,18 @@ public class OneDaysWorthOfData
 	private int todaysTotalSedentaryMins;
 	private int[][] sedentaryMinsByTheMin = new int [24][60];
 	
+	
+	private int OutofRangeZoneMin;
+	private int OutofRangeZoneMax;
+	private int fatBurnZoneMin;
+	private int fatBurnZoneMax;
+	private int cardioZoneMin;
+	private int cardioZoneMax;
+	private int peakZoneMin;
+	private int peakZoneMax;
 	private int[][] heartRateByTheMin = new int [24][60];
-
+	private int restingHeartRate;
+	
 	private String lastUpdated;
 
 	private boolean totalsFullyPopulated;
@@ -59,6 +69,8 @@ public class OneDaysWorthOfData
 		this.year = year;
 		this.month = month;
 		this.dayOfMonth = dayOfMonth;
+		
+		//TODO Set all int[][] arrays to null? initialize here?
 	}
 
 	/** 
@@ -448,6 +460,141 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * @return the outofRangeZoneMin
+	 */
+	public int getOutofRangeZoneMin() {
+		return OutofRangeZoneMin;
+	}
+
+	/**
+	 * @param outofRangeZoneMin the outofRangeZoneMin to set
+	 */
+	public void setOutofRangeZoneMin(int outofRangeZoneMin) {
+		OutofRangeZoneMin = outofRangeZoneMin;
+	}
+
+	/**
+	 * @return the outofRangeZoneMax
+	 */
+	public int getOutofRangeZoneMax() {
+		return OutofRangeZoneMax;
+	}
+
+	/**
+	 * @param outofRangeZoneMax the outofRangeZoneMax to set
+	 */
+	public void setOutofRangeZoneMax(int outofRangeZoneMax) {
+		OutofRangeZoneMax = outofRangeZoneMax;
+	}
+
+	/**
+	 * @return the fatBurnZoneMin
+	 */
+	public int getFatBurnZoneMin() {
+		return fatBurnZoneMin;
+	}
+
+	/**
+	 * @param fatBurnZoneMin the fatBurnZoneMin to set
+	 */
+	public void setFatBurnZoneMin(int fatBurnZoneMin) {
+		this.fatBurnZoneMin = fatBurnZoneMin;
+	}
+
+	/**
+	 * @return the fatBurnZoneMax
+	 */
+	public int getFatBurnZoneMax() {
+		return fatBurnZoneMax;
+	}
+
+	/**
+	 * @param fatBurnZoneMax the fatBurnZoneMax to set
+	 */
+	public void setFatBurnZoneMax(int fatBurnZoneMax) {
+		this.fatBurnZoneMax = fatBurnZoneMax;
+	}
+
+	/**
+	 * @return the cardioZoneMin
+	 */
+	public int getCardioZoneMin() {
+		return cardioZoneMin;
+	}
+
+	/**
+	 * @param cardioZoneMin the cardioZoneMin to set
+	 */
+	public void setCardioZoneMin(int cardioZoneMin) {
+		this.cardioZoneMin = cardioZoneMin;
+	}
+
+	/**
+	 * @return the cardioZoneMax
+	 */
+	public int getCardioZoneMax() {
+		return cardioZoneMax;
+	}
+
+	/**
+	 * @param cardioZoneMax the cardioZoneMax to set
+	 */
+	public void setCardioZoneMax(int cardioZoneMax) {
+		this.cardioZoneMax = cardioZoneMax;
+	}
+
+	/**
+	 * @return the peakZoneMin
+	 */
+	public int getPeakZoneMin() {
+		return peakZoneMin;
+	}
+
+	/**
+	 * @param peakZoneMin the peakZoneMin to set
+	 */
+	public void setPeakZoneMin(int peakZoneMin) {
+		this.peakZoneMin = peakZoneMin;
+	}
+
+	/**
+	 * @return the peakZoneMax
+	 */
+	public int getPeakZoneMax() {
+		return peakZoneMax;
+	}
+
+	/**
+	 * @param peakZoneMax the peakZoneMax to set
+	 */
+	public void setPeakZoneMax(int peakZoneMax) {
+		this.peakZoneMax = peakZoneMax;
+	}
+
+	/**
+	 * @return the restingHeartRate
+	 */
+	public int getRestingHeartRate() {
+		return restingHeartRate;
+	}
+
+	/**
+	 * @param restingHeartRate the restingHeartRate to set
+	 */
+	public void setRestingHeartRate(JSONObject jo) 
+	{
+		try 
+		{
+			this.restingHeartRate = jo.getJSONArray("activities-heart").getJSONObject(0).getJSONObject("value").getInt("restingHeartRate");
+		}
+		catch (JSONException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * @return the heartRateByTheMin
 	 */
 	public int[][] getHeartRateByTheMin() {
@@ -480,6 +627,7 @@ public class OneDaysWorthOfData
 			JSONObject joFA = HttpClient.getSpecificDataDailyTotal("minutesFairlyActive", date);
 			JSONObject joVA = HttpClient.getSpecificDataDailyTotal("minutesVeryActive", date);		
 			this.setTodaysTotalActiveMins(ResponseParser.parseDailyActiveMinsTotal(joLA, joFA, joVA));
+			
 		}
 		catch (JSONException je)
 		{
@@ -512,7 +660,9 @@ public class OneDaysWorthOfData
 			JSONObject joVA = HttpClient.getSpecificDataByTheMin("minutesVeryActive", date, "1min", "00:00", "23:59");		
 			this.setActiveMinsByTheMin(ResponseParser.parseActiveMinsByTheMin(joLA, joFA, joVA));
 			
-			HttpClient.getHeartRateZones(date);
+			System.out.println(HttpClient.getHeartRateZones(date).toString(2));
+			
+			this.setRestingHeartRate(HttpClient.getHeartRateZones(date));
 
 			//TODO ResponseParser methods for minute setters(excluding activeMins which is done already) (optional but nice)
 		}
@@ -527,6 +677,8 @@ public class OneDaysWorthOfData
 		
 		this.setByTheMinsFullyPopulated(true);
 	}
+	
+	
 	
 	private String buildDateAsString()
 	{
@@ -554,6 +706,7 @@ public class OneDaysWorthOfData
 		
 		return date;
 	}
+	
 	/**
 	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
 	 * 
@@ -589,5 +742,25 @@ public class OneDaysWorthOfData
 		return relDate;
 	}
 	
+	public String toString(boolean includeMins)
+	{
+		String str = "\nTOTALS\n\n";
+		
+		str = str.concat("Floors:\t\t\t" + this.getTodaysTotalFloors());
+		str = str.concat("\nSteps:\t\t\t" + this.getTodaysTotalSteps());
+		str = str.concat("\nCalories:\t\t" + this.getTodaysTotalCaloriesBurned());
+		str = str.concat("\nDistance:\t\t" + this.getTodaysTotalDistance());
+		str = str.concat("\nSedentaryMins:\t\t" + this.getTodaysTotalSedentaryMins());
+		str = str.concat("\nActiveMins:\t\t" + this.getTodaysTotalActiveMins());
+		
+		str = str.concat("\n\nResting Heart Rate:\t" + this.getRestingHeartRate());
+		
+		if(includeMins)
+		{
+			//concat mins
+		}
+		
+		return str;
+	}
 
 }// end of class

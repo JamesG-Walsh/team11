@@ -24,9 +24,9 @@ public class Team11_FitBitViewer implements Serializable
 	{
 		Serialize r = new Serialize();
 
-		GUI = new DeskTop();
+		//GUI = new DeskTop();
 		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-		GUI.setVisible(true);
+		//GUI.setVisible(true);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
@@ -40,10 +40,12 @@ public class Team11_FitBitViewer implements Serializable
 			System.out.println("Running in live mode.....");
 
 		
-			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 15);
+			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
 			
 			odwod.populateTotals();
 			odwod.populateAllMins();
+			
+			System.out.println(odwod.toString(true));
 
 			
 			//String startTime = "23:00";

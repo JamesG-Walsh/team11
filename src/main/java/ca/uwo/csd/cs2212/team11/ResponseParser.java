@@ -14,7 +14,7 @@ import com.github.scribejava.core.model.Response;
 //import org.apache.http.util.EntityUtils;
 
 /**
- * @author James Walsh
+ * @author James Walsh, Dara Amin, Abdi Ibrahim
  *	Class with static methods that take JSON Objects as parameters and return the numerical values within
  */
 
@@ -225,5 +225,25 @@ public class ResponseParser
 
 		return totalActiveMins;
 	}// end of parseActiveMinsByTheMin() method
+	
+//	/**
+//	 * 
+//	 * @param jo
+//	 * @return returns an integer array containing 9 integers which are indexed 0: resting heart rate, 1: Out of Range min, 2: Out of Range max,
+//	 * 3: Fat Burn min,4: Fat Burn max, 5: Cardio min,6: Cardio max,7: Peak min,8: Peak max
+//	 */
+//	public static int[] parseHeartRateZoneBoundaries(JSONObject jo)
+//	{
+//		int[] heartRateZoneBoundaries = new int[24][60]; //create object to be returned
+//
+//		JSONArray ja = null;
+//		int hour;
+//		int min; 
+//		
+//		jo.
+//		return null;
+//	}
+	
+	
 
 } //end of class

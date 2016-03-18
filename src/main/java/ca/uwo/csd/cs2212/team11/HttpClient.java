@@ -477,7 +477,7 @@ public class HttpClient
     
     /**
      * 
-     * @param date
+     * @param date		String formatted as yyyy-mm-dd
      * @return
      * @throws JSONException 
      */
