@@ -36,7 +36,6 @@ public class Team11_FitBitViewer implements Serializable
 		}
 		else
 		{
-
 			System.out.println("Running in live mode.....");
 
 			User usr = new User();

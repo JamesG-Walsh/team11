@@ -14,7 +14,6 @@ import org.json.JSONObject;
  */
 public class HistoricalFitnessData 
 {
-
 	private double bestDistance;
 	private int bestSteps;
 	private double bestFloors;
@@ -246,11 +245,19 @@ public class HistoricalFitnessData
 		try 
 		{
 			JSONObject jo = HttpClient.getLifetimeAndBestDays();
-			JSONObject lifetimeTotals = jo.getJSONObject("lifetime").getJSONObject("total");
+			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
 			
-			this.lifetimeDistance = lifetimeTotals.getDouble("distance");
-			this.lifetimeFloors = lifetimeTotals.getDouble("floors");
-			this.lifetimeSteps = lifetimeTotals.getInt("steps");
+			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
+			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
+			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
+			
+			JSONObject bestDaysJSON = jo.getJSONObject("best").getJSONObject("total");
+			
+			System.out.println(bestDaysJSON.toString(1));
+			
+			this.bestDistance = bestDaysJSON.getJSONObject("distance").getDouble("value");
+//	TODO	this.bestFloors = 
+//			this.bestSteps = 
 		} 
 		catch (JSONException e) 
 		{
