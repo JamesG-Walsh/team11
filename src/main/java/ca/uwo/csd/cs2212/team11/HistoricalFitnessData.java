@@ -52,6 +52,12 @@ public class HistoricalFitnessData
 	public boolean addDay( OneDaysWorthOfData odwod ){
 		/* Add day to ordered list of days */
 		int i = allOneDays.size() - 1;
+		
+		if ( i < 0 ) {
+			allOneDays.add(odwod);
+			return true;
+		}
+		
 		boolean foundPos = false;
 		int compare;
 		while (!foundPos) {
@@ -113,7 +119,9 @@ public class HistoricalFitnessData
 			/* If date is not among recorded historical days */
 			if ((mid < 0) || (mid > (size - 1))) {
 				/* throw error, instead? */
-				return null;
+				OneDaysWorthOfData odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
+				this.addDay(odwod);
+				return odwod;
 			}			
 			compare = compareDate(dayOfMonth, month, year, allOneDays.get(mid));
 			/* If desired date is earlier than date at index i */

@@ -10,6 +10,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -26,11 +28,12 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  */
 public class Graph extends javax.swing.JPanel implements Serializable
 {
-	private int[] data;
+	private double[] data = new double[1440];
 	private IDs type;
 	private int zoom = 1;
 	private int offset = 0;
 	private int spread = 4;
+	private int step;
 	private int twentyFive, fifty, seventyFive;
 	private int legend = 400;
 	private JPanel paintPanel;
@@ -38,20 +41,50 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	/**
 	 * Attach all methods in JPanel to our object
 	 */
-	public Graph(IDs type){
+	public Graph(IDs type, User usr, Calendar workingDate)
+	{
 		this.type = type;
-		switch(type){
+		
+		int year = workingDate.get(Calendar.YEAR);
+		int month = (workingDate.get(Calendar.MONTH) + 1);
+		int dayOfMonth = workingDate.get(Calendar.DAY_OF_MONTH);
+		
+		System.out.println("");
+		
+		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(dayOfMonth, month, year);
+		//odwod.populateAllMins();
+		
+		switch(type)
+		{
 			case HEART_RATE:
-				data = SharedData.time_series;
+						
+				step = 16/zoom;				
+				HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
+				hrdod.populate();
+				
+				int[][] twoDArray = hrdod.getHeartRateByTheMin();
+				
+				for (int hour = 0, minOfDay = 0; hour < 24; hour ++)
+				{
+					for(int min = 0; min < 60 && minOfDay < 1440 ; min++, minOfDay++)
+					{
+						System.out.println("hour: " + hour + "\tmin: " + min + "\tminOfDay: " + minOfDay);
+						data[minOfDay] = twoDArray[hour][min];
+						System.out.print("\tvalue: " + data[minOfDay]);
+					}
+				}
+				
+				System.out.println(hrdod.toString());
+								
 				break;
 			case CALORIES:
-				data = normalizeData(SharedData.dummyCalories);
+				//data = normalizeData(SharedData.dummyCalories);
 				break;
 			case STEPS:
-				data = normalizeData(SharedData.dummySteps);	
+				//data = normalizeData(SharedData.dummySteps);	
 				break;
 			case DISTANCE:
-				data = normalizeData(SharedData.dummyDistance);
+				//data = normalizeData(SharedData.dummyDistance);
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
@@ -81,12 +114,14 @@ public class Graph extends javax.swing.JPanel implements Serializable
 					if (zoom < 16){
 						updateOffset(e.getX(), zoom * 2);
 						zoom = zoom * 2;
+						step= 16/zoom;
 					}
 				}
 				if(e.getButton() == MouseEvent.BUTTON3){
 					if (zoom > 1){
 						updateOffset(e.getX(), zoom / 2);
 						zoom = zoom / 2;
+						step = 16/zoom;
 					}
 				}
 			}
@@ -98,36 +133,37 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	 * For testing purposes..
 	 * @param args 
 	 */
-	public static void main (String[] args){
-		JFrame frame = new JFrame();
+	public static void main (String[] args)
+	{
+		/*JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Graph g = new Graph(IDs.HEART_RATE);
 		frame.add(g);
 		frame.setSize(500,200);
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 
 	}
 	
 	private void paintHRGraph(Graphics g){
 		paintHRVerticleScale(g);
 		g.setColor(Color.RED);
-		for(int i = 0; i < data.length -1; i++){
+		for(int i = 0; i < data.length - (step + 1) ; i+= step){
 			if ((i * spread * zoom) + offset < 0) {	continue;	}
-			if (((i+1) * spread * zoom) + offset > 384) {	break;	}
+			if (((i) * spread * zoom /step) + offset > 384) {	break;	}
 			
-			g.drawLine((i * spread * zoom) + offset, data[i], ((i+1) * spread * zoom) + offset, data[i+1]);
+			g.drawLine((i * spread * zoom /step) + offset, (int)data[i], ((i+step) * spread * zoom/step) + offset, (int)data[i+step]);
 			if ((i % 12) == 0 || ((zoom >= 8) && (i%4 == 0))){
 				g.setColor(Color.GRAY);
-				g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 150);
+				g.drawLine((i * spread * zoom/step) + offset, 200, (i * spread * zoom/step) + offset, 150);
 				String time = String.format("%02d:00", i/4);
-				g.drawString(time, (i*zoom*spread)+offset - 15, 195);
+				g.drawString(time, (i*zoom*spread/step)+offset - 15, 195);
 				if ((i % 48) == 0){
 					g.setColor(Color.BLACK);
-					g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 0);
+					g.drawLine((i * spread * zoom/step) + offset, 200, (i * spread * zoom/step) + offset, 0);
 				}
 				g.setColor(Color.RED);
 			}
-			g.drawLine((i * spread * zoom) + offset, data[i], ((i+1) * spread * zoom) + offset, data[i+1]);
+			g.drawLine((i * spread * zoom / step) + offset, (int)data[i], ((i+1) * spread * zoom /step) + offset, (int)data[i+1]);
 		}
 		g.setColor(Color.BLACK);
 		g.drawLine(384, 200, 384, 0);
@@ -210,7 +246,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 				}
 				g.setColor(Color.RED);
 			}
-			g.drawLine((i * spread * zoom) + offset, data[i], ((i+1) * spread * zoom) + offset, data[i+1]);
+			g.drawLine((i * spread * zoom) + offset,(int) data[i], ((i+1) * spread * zoom) + offset, (int)data[i+1]);
 		}
 		g.setColor(Color.BLACK);
 		g.drawLine(384, 200, 384, 0);
@@ -246,6 +282,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	private int getUsersMaxHR(){
 		return 180;
 	}
+	
 	/**
 	 * Converts per-minute fitness data to total-so-far fitness data for graphical display.
 	 */ 
@@ -253,11 +290,11 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		int numPoints = data.length;
 		if ( numPoints > 0 ) {
 			int[] dataCum = new int[numPoints]; /* cumulative values of data */
-			dataCum[0] = data[0];
+			dataCum[0] = (int)data[0];
 			for ( int i = 1; i < numPoints; i++) {
-				dataCum[i] = dataCum[i-1] + data[i];
+				dataCum[i] = dataCum[i-1] + (int)data[i];
 			}
-			data = dataCum; 
+	//		data = (double[])dataCum; 
 		}
 	}
 }
