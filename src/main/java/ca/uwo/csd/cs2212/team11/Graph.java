@@ -33,6 +33,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	private int spread = 4;
 	private int twentyFive, fifty, seventyFive;
 	private int legend = 400;
+	private JPanel paintPanel;
 
 	/**
 	 * Attach all methods in JPanel to our object
@@ -77,10 +78,16 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		mouseListenerPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				if(e.getButton() == MouseEvent.BUTTON1){
-					System.out.println("Left Click at " + e.getX());
+					if (zoom < 16){
+						updateOffset(e.getX(), zoom * 2);
+						zoom = zoom * 2;
+					}
 				}
 				if(e.getButton() == MouseEvent.BUTTON3){
-					System.out.println("Right Click at " + e.getX());
+					if (zoom > 1){
+						updateOffset(e.getX(), zoom / 2);
+						zoom = zoom / 2;
+					}
 				}
 			}
 		});
@@ -105,8 +112,11 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		paintHRVerticleScale(g);
 		g.setColor(Color.RED);
 		for(int i = 0; i < data.length -1; i++){
+			if ((i * spread * zoom) + offset < 0) {	continue;	}
+			if (((i+1) * spread * zoom) + offset > 384) {	break;	}
+			
 			g.drawLine((i * spread * zoom) + offset, data[i], ((i+1) * spread * zoom) + offset, data[i+1]);
-			if ((i % 12) == 0){
+			if ((i % 12) == 0 || ((zoom >= 8) && (i%4 == 0))){
 				g.setColor(Color.GRAY);
 				g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 150);
 				String time = String.format("%02d:00", i/4);
@@ -129,7 +139,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
         
 		Graphics2D g2d = (Graphics2D) g.create();
 
-        Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         
         //draw 68 bpm (base healthy resting HR)
         g2d.setColor(Color.CYAN);
@@ -168,7 +178,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
         
 		Graphics2D g2d = (Graphics2D) g.create();
 
-        Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         
         //draw scale lines at 25, 50 and 75%
         g2d.setColor(Color.CYAN);
@@ -187,7 +197,9 @@ public class Graph extends javax.swing.JPanel implements Serializable
         
 		g.setColor(Color.RED);
 		for(int i = 0; i < data.length -1; i++){
-			if ((i % 12) == 0){
+			if ((i * spread * zoom) + offset < 0) {	continue;	}
+			if (((i+1) * spread * zoom) + offset > 384) {	break;	}
+			if ((i % 12) == 0 || ((zoom >= 8) && (i%4 == 0))){
 				g.setColor(Color.GRAY);
 				g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 150);
 				String time = String.format("%02d:00", i/4);
@@ -217,6 +229,18 @@ public class Graph extends javax.swing.JPanel implements Serializable
 			array[i] = (int)Math.round(array[i] / maxVal * 200);
 		}
 		return array;
+	}
+	
+	private void updateOffset(int x, int newZoom){
+		// find which data point is at center of zoom rounds down
+		int element = (int) ((x - this.offset) / (this.spread * this.zoom));
+		this.offset = 192 - (element * this.spread * newZoom);
+		
+		//keep offset to either start or end at an edge
+		if (this.offset > 0) { this.offset = 0;	}
+		if ((this.offset + (data.length * this.spread * newZoom)) < 384){
+			this.offset = 384 - (data.length * this.spread * newZoom);
+		}
 	}
 	
 	private int getUsersMaxHR(){
