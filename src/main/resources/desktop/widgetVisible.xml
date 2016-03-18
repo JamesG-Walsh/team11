@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_71" class="java.beans.XMLDecoder">
+<java version="1.8.0_20" class="java.beans.XMLDecoder">
  <array class="boolean" length="7">
   <void index="0">
    <boolean>true</boolean>
@@ -7,7 +7,13 @@
   <void index="1">
    <boolean>true</boolean>
   </void>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
   <void index="3">
+   <boolean>true</boolean>
+  </void>
+  <void index="4">
    <boolean>true</boolean>
   </void>
   <void index="5">
