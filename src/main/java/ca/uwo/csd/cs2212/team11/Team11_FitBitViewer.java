@@ -28,7 +28,7 @@ public class Team11_FitBitViewer implements Serializable
 		GUI.setVisible(true);
 
 		Accolades acc = new Accolades();
-		acc.recievedAccolade(GUI);
+		acc.recievedAccoladePopup(GUI, acc.MILLY_IMG);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
