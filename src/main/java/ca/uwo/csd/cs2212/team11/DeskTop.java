@@ -7,15 +7,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import java.awt.Dimension;
+import java.io.Serializable;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 
+import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 import ca.uwo.csd.cs2212.team11.SharedData.*;
 
 /**
@@ -23,11 +28,12 @@ import ca.uwo.csd.cs2212.team11.SharedData.*;
  * @author Andrew Hall
  *
  */
-public class DeskTop extends JFrame{
 
-	private Widget[] all_widgets = new Widget[7];	
-	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
-	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel;
+public class DeskTop extends JFrame implements Serializable  
+{
+	public static Widget[] all_widgets = new Widget[7];	
+	public static boolean[] widgetVisible; /*= {false, false,false, false, false, false, false};*/
+	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel, centerPanel, graphPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
 	private PieChart activeChart;
 	private boolean activeChartVisible = false;
@@ -36,10 +42,21 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
+
 	public DeskTop(){
-	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		Serialize r = new Serialize();
+		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+			Serialize writeTo = new Serialize();
+			writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
+			System.exit(0);
+            }
+        });
+
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
 		all_widgets[IDs.CLIMB.ordinal()] = new Widget(IDs.CLIMB);
@@ -47,6 +64,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
+
 		activeChart = new PieChart();
 		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
@@ -80,15 +98,31 @@ public class DeskTop extends JFrame{
 
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(SharedData.SMOKE);
+
+
+		centerPanel = new JPanel();
+		populateCenterPanel(centerPanel);
+
+
+		/*Visiblity of Widget save by user from last save*/
+		configWidgetVisibilityToUsersPref(IDs.CALORIES);
+		configWidgetVisibilityToUsersPref(IDs.CLIMB);
+		configWidgetVisibilityToUsersPref(IDs.ACTIVE);
+		configWidgetVisibilityToUsersPref(IDs.HEART_RATE);
+		configWidgetVisibilityToUsersPref(IDs.STEPS);
+		configWidgetVisibilityToUsersPref(IDs.SEDENTARY);
+		configWidgetVisibilityToUsersPref(IDs.DISTANCE);
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
 		mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
-		mainDisplay.add(widgetPanel, BorderLayout.CENTER);
+		mainDisplay.add(centerPanel, BorderLayout.CENTER);
 		
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
+
+
 	}
 	
 	/**
@@ -101,21 +135,21 @@ public class DeskTop extends JFrame{
 		if (type == IDs.ACTIVE){
 			if(activeChartVisible == true){
 				activeChartVisible = false;
-				widgetPanel.remove(activeChart);
+				graphPanel.remove(activeChart);
 			}else{
 				activeChartVisible = true;
-				widgetPanel.add(activeChart);
+				graphPanel.add(activeChart);
 			}
 		}else{
 			if(graphVisible[type.ordinal()] == true){
 				graphVisible[type.ordinal()] = false;
-				widgetPanel.remove(allGraphs[type.ordinal()]);
+				graphPanel.remove(allGraphs[type.ordinal()]);
 			}else{
 				graphVisible[type.ordinal()] = true;
-				widgetPanel.add(allGraphs[type.ordinal()]);
+				graphPanel.add(allGraphs[type.ordinal()]);
 			}
 		}
-		widgetPanel.revalidate();
+		graphPanel.revalidate();
 		repaint();
 	}
 	
@@ -141,7 +175,22 @@ public class DeskTop extends JFrame{
 			all_widgets[type.ordinal()].setVisible(true);
 			widgetPanel.add(all_widgets[type.ordinal()]);
 		}
-		widgetPanel.revalidate();
+		revalidate();
+		repaint();
+	}
+		/**
+	 * This button will remove the widget specified by parameter
+	 * @param type -- Type is the component (Calories, Distance ..etc)
+	 */
+	private void configWidgetVisibilityToUsersPref(IDs type){
+
+		if(widgetVisible[type.ordinal()] == false){
+			widgetPanel.remove(all_widgets[type.ordinal()]);
+		}else{
+			all_widgets[type.ordinal()].setVisible(true);
+			widgetPanel.add(all_widgets[type.ordinal()]);
+		}
+		revalidate();
 		repaint();
 	}
 	
@@ -281,6 +330,7 @@ public class DeskTop extends JFrame{
 
 	}
 
+
 	private void populateWestPanel(JPanel a){
 		a.setOpaque(false);
 		a.setLayout(new GridLayout(7,2));
@@ -289,6 +339,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.CALORIES);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -296,7 +348,9 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.CALORIES);
+					repaint();
 				}
 			});
 			a.add(navBtn);
@@ -305,6 +359,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.DISTANCE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -312,7 +368,11 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					Component source = (Component)e.getSource();
+					source.getParent().dispatchEvent(e);
 					addRemoveGraph(IDs.DISTANCE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -321,6 +381,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.CLIMB);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -331,6 +393,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.STEPS);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -338,7 +402,10 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.STEPS);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -347,6 +414,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.ACTIVE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -354,7 +423,9 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.ACTIVE);
+					repaint();
 				}
 			});
 			a.add(navBtn);
@@ -363,6 +434,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.SEDENTARY);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -373,6 +446,8 @@ public class DeskTop extends JFrame{
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					addRemoveWidget(IDs.HEART_RATE);
+					repaint();
+
 				}
 			});
 			a.add(navBtn);
@@ -380,12 +455,27 @@ public class DeskTop extends JFrame{
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
+					
 					addRemoveGraph(IDs.HEART_RATE);
+					repaint();
 				}
 			});
 			a.add(navBtn);
 	}
 
+	private void populateCenterPanel(JPanel a){
+		a.setLayout(new BoxLayout(a, 1));
+		a.setOpaque(false);
+
+		widgetPanel = new JPanel();
+		widgetPanel.setBackground(SharedData.SMOKE);
+		a.add(widgetPanel);
+
+		graphPanel = new JPanel();
+		graphPanel.setBackground(SharedData.SMOKE);
+		a.add(graphPanel);
+	}
+	
 	/**
 	 * Creating buttons to display different components onto the dash such as calories or distance travelled
 	 * @param type -- Label of the component (Calorie, distance...)
