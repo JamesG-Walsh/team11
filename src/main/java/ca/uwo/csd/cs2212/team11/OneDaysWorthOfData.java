@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.util.Date;
+
 /**
  * Class that contains all numerical data for the dashboard & time series displays
  * @author Alecia DeBoeck, James Walsh, Dara Amin, Abdi Ibrahim
@@ -32,19 +34,9 @@ public class OneDaysWorthOfData
 	private int todaysTotalSedentaryMins;
 	private int[][] sedentaryMinsByTheMin = new int [24][60];
 	
-	
-	private int OutofRangeZoneMin;
-	private int OutofRangeZoneMax;
-	private int fatBurnZoneMin;
-	private int fatBurnZoneMax;
-	private int cardioZoneMin;
-	private int cardioZoneMax;
-	private int peakZoneMin;
-	private int peakZoneMax;
-	private int[][] heartRateByTheMin = new int [24][60];
-	private int restingHeartRate;
-	
-	private String lastUpdated;
+	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
+
+	private Date lastUpdated;
 
 	private boolean totalsFullyPopulated;
 	private boolean byTheMinsFullyPopulated;
@@ -54,7 +46,6 @@ public class OneDaysWorthOfData
 	 */
 	public OneDaysWorthOfData() 
 	{
-		
 	}
 
 	/**
@@ -70,6 +61,7 @@ public class OneDaysWorthOfData
 		this.month = month;
 		this.dayOfMonth = dayOfMonth;
 		
+		this.hrdod = new HeartRateDayOfData(this.buildDateAsString()); // create separate sub-container for heart rate data
 		//TODO Set all int[][] arrays to null? initialize here?
 	}
 
@@ -135,15 +127,6 @@ public class OneDaysWorthOfData
 	 */
 	public void setTodaysTotalSedentaryMins( int todaysSedentaryMins ) {
 		this.todaysTotalSedentaryMins = todaysSedentaryMins;
-	}
-
-	/** 
-	 * Sets time of last update of this user's data.
-	 * 
-	 * @param lastUpdated the time when user's data was last updated
-	 */
-	public void setWhenUpdated( String lastUpdated ) {
-		this.lastUpdated = lastUpdated;
 	}
 
 	/** 
@@ -251,8 +234,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return lastUpdated
 	 */
-	public String getWhenUpdated() {
-		String ret = this.lastUpdated;
+	public Date getWhenUpdated() {
+		Date ret = this.lastUpdated;
 		return ret;
 	}
 
@@ -407,17 +390,24 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @return the time in which the user's data was last updated
+	 * @return the hrdod
 	 */
-	public String getLastUpdated() {
-		return lastUpdated;
+	public HeartRateDayOfData getHeartRateDayOfData() {
+		return hrdod;
+	}
+
+	/**
+	 * @param hrdod the hrdod to set
+	 */
+	public void setHrdod(HeartRateDayOfData hrdod) {
+		this.hrdod = hrdod;
 	}
 
 	/**
 	 * sets the time when the user's data was last updated
 	 * @param lastUpdated 
 	 */
-	public void setLastUpdated(String lastUpdated) {
+	public void setLastUpdated(Date lastUpdated) {
 		//TODO???
 		this.lastUpdated = lastUpdated;
 	}
@@ -459,154 +449,6 @@ public class OneDaysWorthOfData
 		this.byTheMinsFullyPopulated = byTheMinsFullyPopulated;
 	}
 
-	/**
-	 * @return the outofRangeZoneMin
-	 */
-	public int getOutofRangeZoneMin() {
-		return OutofRangeZoneMin;
-	}
-
-	/**
-	 * @param outofRangeZoneMin the outofRangeZoneMin to set
-	 */
-	public void setOutofRangeZoneMin(int outofRangeZoneMin) {
-		OutofRangeZoneMin = outofRangeZoneMin;
-	}
-
-	/**
-	 * @return the outofRangeZoneMax
-	 */
-	public int getOutofRangeZoneMax() {
-		return OutofRangeZoneMax;
-	}
-
-	/**
-	 * @param outofRangeZoneMax the outofRangeZoneMax to set
-	 */
-	public void setOutofRangeZoneMax(int outofRangeZoneMax) {
-		OutofRangeZoneMax = outofRangeZoneMax;
-	}
-
-	/**
-	 * @return the fatBurnZoneMin
-	 */
-	public int getFatBurnZoneMin() {
-		return fatBurnZoneMin;
-	}
-
-	/**
-	 * @param fatBurnZoneMin the fatBurnZoneMin to set
-	 */
-	public void setFatBurnZoneMin(int fatBurnZoneMin) {
-		this.fatBurnZoneMin = fatBurnZoneMin;
-	}
-
-	/**
-	 * @return the fatBurnZoneMax
-	 */
-	public int getFatBurnZoneMax() {
-		return fatBurnZoneMax;
-	}
-
-	/**
-	 * @param fatBurnZoneMax the fatBurnZoneMax to set
-	 */
-	public void setFatBurnZoneMax(int fatBurnZoneMax) {
-		this.fatBurnZoneMax = fatBurnZoneMax;
-	}
-
-	/**
-	 * @return the cardioZoneMin
-	 */
-	public int getCardioZoneMin() {
-		return cardioZoneMin;
-	}
-
-	/**
-	 * @param cardioZoneMin the cardioZoneMin to set
-	 */
-	public void setCardioZoneMin(int cardioZoneMin) {
-		this.cardioZoneMin = cardioZoneMin;
-	}
-
-	/**
-	 * @return the cardioZoneMax
-	 */
-	public int getCardioZoneMax() {
-		return cardioZoneMax;
-	}
-
-	/**
-	 * @param cardioZoneMax the cardioZoneMax to set
-	 */
-	public void setCardioZoneMax(int cardioZoneMax) {
-		this.cardioZoneMax = cardioZoneMax;
-	}
-
-	/**
-	 * @return the peakZoneMin
-	 */
-	public int getPeakZoneMin() {
-		return peakZoneMin;
-	}
-
-	/**
-	 * @param peakZoneMin the peakZoneMin to set
-	 */
-	public void setPeakZoneMin(int peakZoneMin) {
-		this.peakZoneMin = peakZoneMin;
-	}
-
-	/**
-	 * @return the peakZoneMax
-	 */
-	public int getPeakZoneMax() {
-		return peakZoneMax;
-	}
-
-	/**
-	 * @param peakZoneMax the peakZoneMax to set
-	 */
-	public void setPeakZoneMax(int peakZoneMax) {
-		this.peakZoneMax = peakZoneMax;
-	}
-
-	/**
-	 * @return the restingHeartRate
-	 */
-	public int getRestingHeartRate() {
-		return restingHeartRate;
-	}
-
-	/**
-	 * @param restingHeartRate the restingHeartRate to set
-	 */
-	public void setRestingHeartRate(JSONObject jo) 
-	{
-		try 
-		{
-			this.restingHeartRate = jo.getJSONArray("activities-heart").getJSONObject(0).getJSONObject("value").getInt("restingHeartRate");
-		}
-		catch (JSONException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @return the heartRateByTheMin
-	 */
-	public int[][] getHeartRateByTheMin() {
-		return heartRateByTheMin;
-	}
-
-	/**
-	 * @param heartRateByTheMin the heartRateByTheMin to set
-	 */
-	public void setHeartRateByTheMin(int[][] heartRateByTheMin) {
-		this.heartRateByTheMin = heartRateByTheMin;
-	}
 
 	/**
 	 * 
@@ -614,7 +456,7 @@ public class OneDaysWorthOfData
 	public void populateTotals()
 	{
 		String date = this.buildDateAsString();
-		
+
 		try
 		{
 			this.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(HttpClient.getSpecificDataDailyTotal("floors", date)));
@@ -627,7 +469,7 @@ public class OneDaysWorthOfData
 			JSONObject joFA = HttpClient.getSpecificDataDailyTotal("minutesFairlyActive", date);
 			JSONObject joVA = HttpClient.getSpecificDataDailyTotal("minutesVeryActive", date);		
 			this.setTodaysTotalActiveMins(ResponseParser.parseDailyActiveMinsTotal(joLA, joFA, joVA));
-			
+
 		}
 		catch (JSONException je)
 		{
@@ -659,10 +501,8 @@ public class OneDaysWorthOfData
 			JSONObject joFA = HttpClient.getSpecificDataByTheMin("minutesFairlyActive", date, "1min", "00:00", "23:59");
 			JSONObject joVA = HttpClient.getSpecificDataByTheMin("minutesVeryActive", date, "1min", "00:00", "23:59");		
 			this.setActiveMinsByTheMin(ResponseParser.parseActiveMinsByTheMin(joLA, joFA, joVA));
-			
+
 			System.out.println(HttpClient.getHeartRateZones(date).toString(2));
-			
-			this.setRestingHeartRate(HttpClient.getHeartRateZones(date));
 
 			//TODO ResponseParser methods for minute setters(excluding activeMins which is done already) (optional but nice)
 		}
@@ -674,19 +514,19 @@ public class OneDaysWorthOfData
 		{
 			System.out.println(npe.getMessage());
 		}
-		
+
 		this.setByTheMinsFullyPopulated(true);
 	}
-	
-	
-	
+
+
+
 	private String buildDateAsString()
 	{
 		Integer yearObj = new Integer(year);
 		Integer monthObj = new Integer(month);
 		Integer dayObj = new Integer(dayOfMonth); //get the day of this object
 		String date;
-		
+
 		if(dayOfMonth<10 && month <10)
 		{
 			date = (yearObj.toString() + "-0" + monthObj.toString() + "-0" + dayObj.toString());
@@ -703,10 +543,10 @@ public class OneDaysWorthOfData
 		{
 			date = (yearObj.toString() + "-" + monthObj.toString() + "-" + dayObj.toString()); //format date string properly for URL
 		}
-		
+
 		return date;
 	}
-	
+
 	/**
 	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
 	 * 
@@ -741,25 +581,23 @@ public class OneDaysWorthOfData
 		}
 		return relDate;
 	}
-	
+
 	public String toString(boolean includeMins)
 	{
 		String str = "\nTOTALS\n\n";
-		
+
 		str = str.concat("Floors:\t\t\t" + this.getTodaysTotalFloors());
 		str = str.concat("\nSteps:\t\t\t" + this.getTodaysTotalSteps());
 		str = str.concat("\nCalories:\t\t" + this.getTodaysTotalCaloriesBurned());
 		str = str.concat("\nDistance:\t\t" + this.getTodaysTotalDistance());
 		str = str.concat("\nSedentaryMins:\t\t" + this.getTodaysTotalSedentaryMins());
 		str = str.concat("\nActiveMins:\t\t" + this.getTodaysTotalActiveMins());
-		
-		str = str.concat("\n\nResting Heart Rate:\t" + this.getRestingHeartRate());
-		
+
 		if(includeMins)
 		{
 			//concat mins
 		}
-		
+
 		return str;
 	}
 

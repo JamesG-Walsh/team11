@@ -41,15 +41,21 @@ public class Team11_FitBitViewer implements Serializable
 
 		
 			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
-			
-			odwod.populateTotals();
-			odwod.populateAllMins();
-			
-			System.out.println(odwod.toString(true));
-
+			HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
 			
 			//String startTime = "23:00";
 			//String endTime = "23:59";
+			
+			//odwod.populateTotals();
+			//odwod.populateAllMins();
+			
+			//System.out.println(odwod.toString(true));
+			
+			hrdod.populate();
+			System.out.println(hrdod.toString());
+
+			
+
 
 
 
@@ -103,6 +109,6 @@ public class Team11_FitBitViewer implements Serializable
 					System.out.print("\t|||" + "active mins: " + odwod.getActiveMinsByTheMin()[hour][min]);
 				}
 			}*/
-		}
-	}
-}
+		}//end of live run (no argument passed in command line)
+	}//end of main method
+}//end of class
