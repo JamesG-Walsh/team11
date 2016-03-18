@@ -24,9 +24,9 @@ public class Team11_FitBitViewer implements Serializable
 	{
 		Serialize r = new Serialize();
 
-		GUI = new DeskTop();
+		//GUI = new DeskTop();
 		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-		GUI.setVisible(true);
+		//GUI.setVisible(true);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
@@ -36,13 +36,27 @@ public class Team11_FitBitViewer implements Serializable
 		}
 		else
 		{
-
 			System.out.println("Running in live mode.....");
 
-		
-			OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 13);
-			String startTime = "23:00";
-			String endTime = "23:59";
+			User usr = new User();
+			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+			hfd.populateLifetimeAndBestDays();
+			
+			System.out.println(hfd.getLifetimeAndBestDays());
+			
+			//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
+			//HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
+			
+			//String startTime = "23:00";
+			//String endTime = "23:59";
+			
+			//odwod.populateTotals();
+			//odwod.populateAllMins();
+			
+			//System.out.println(odwod.toString(true));
+			
+			//hrdod.populate();
+			//System.out.println(hrdod.toString());
 
 			
 
@@ -99,6 +113,6 @@ public class Team11_FitBitViewer implements Serializable
 					System.out.print("\t|||" + "active mins: " + odwod.getActiveMinsByTheMin()[hour][min]);
 				}
 			}*/
-		}
-	}
-}
+		}//end of live run (no argument passed in command line)
+	}//end of main method
+}//end of class

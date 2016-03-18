@@ -47,11 +47,26 @@ public class Graph extends javax.swing.JPanel implements Serializable
 			case CALORIES:
 				data = normalizeData(SharedData.dummyCalories);
 				break;
-			case STEPS:
-				data = normalizeData(SharedData.dummySteps);
+			case CALORIES_CUM:
+				data = SharedData.dummyCalories;
+				dataToCumulative();
+				data = normalizeData( data ); 
 				break;
+			case STEPS:
+				data = normalizeData(SharedData.dummySteps);	
+				break;
+			case STEPS_CUM:
+				data = SharedData.dummySteps;
+				dataToCumulative();
+				data = normalizeData( data );
+				break;		
 			case DISTANCE:
 				data = normalizeData(SharedData.dummyDistance);
+				break;
+			case DISTANCE_CUM:
+				data = SharedData.dummyDistance;
+				dataToCumulative();
+				data = normalizeData( data );
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
@@ -245,5 +260,19 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	
 	private int getUsersMaxHR(){
 		return 180;
+	}
+	/**
+	 * Converts per-minute fitness data to total-so-far fitness data for graphical display.
+	 */ 
+	private void dataToCumulative() {
+		int numPoints = data.length;
+		if ( numPoints > 0 ) {
+			int[] dataCum = new int[numPoints]; /* cumulative values of data */
+			dataCum[0] = data[0];
+			for ( int i = 1; i < numPoints; i++) {
+				dataCum[i] = dataCum[i-1] + data[i];
+			}
+			data = dataCum; 
+		}
 	}
 }

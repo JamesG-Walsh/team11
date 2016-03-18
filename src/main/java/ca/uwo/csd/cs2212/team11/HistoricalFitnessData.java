@@ -1,6 +1,9 @@
 package ca.uwo.csd.cs2212.team11;
 
 import java.util.*;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 /**
  * This class contains this user's fitness data from all past days and from today, 
  * accolades earned, accumulated fitness item values over the lifetime of program use
@@ -9,28 +12,30 @@ import java.util.*;
  * 
  * @author Team 11
  */
-public class HistoricalFitnessData {
-	
+public class HistoricalFitnessData 
+{
 	private double bestDistance;
 	private int bestSteps;
-	private int bestFloors;
+	private double bestFloors;
 	private double lifetimeDistance;
 	private int lifetimeSteps;
-	private int lifetimeFloors;
+	private double lifetimeFloors;
 	private String[] accoladesEarned;
 	private ArrayList<OneDaysWorthOfData> allOneDays; /* Sorted list of recorded days; lower indices are earlier days */ 
 	/**
 	 * 		To do: Figure out if ArrayList initialized to size>0 such that empty elements counted in size
 	 * 		 	   and subsequent element additions leave empty spots as are- if so, affects methods to add and retrieve elements. 
 	 */
-	
-	
+
+
 	/**
 	 *  Class constructor.
 	 */
-	public HistoricalFitnessData() {
+	public HistoricalFitnessData() 
+	{
+		allOneDays = new ArrayList<OneDaysWorthOfData>();
 	}
-		
+
 	/** 
 	 * Gets total number of days of data stored for this user. 
 	 * 
@@ -90,7 +95,7 @@ public class HistoricalFitnessData {
 	 */
 	/* Change method:THROW exception if day not present */
 	public OneDaysWorthOfData retrieveDay( int dayOfMonth, int month, int year ) {		
-		
+
 		/* To find day of interest, binary search sorted array of days. */
 		int size = allOneDays.size();
 		int max = size - 1;
@@ -139,7 +144,7 @@ public class HistoricalFitnessData {
 	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){
 		this.allOneDays = allOneDays;
 	}
-	
+
 	/**
 	 * Helps enable historical fitness data to persist between uses of application.
 	 * Gets all of this user's recorded fitness data.
@@ -149,7 +154,7 @@ public class HistoricalFitnessData {
 	public ArrayList<OneDaysWorthOfData> getAllOneDays(){
 		return allOneDays;
 	}
-	
+
 	/**
 	 * Gets this user's longest distance traveled in one day.
 	 * 
@@ -173,7 +178,7 @@ public class HistoricalFitnessData {
 	 * 
 	 * @return bestFloors
 	 */
-	public int getBestFloors() {
+	public double getBestFloors() {
 		return bestFloors;
 	}
 
@@ -203,7 +208,7 @@ public class HistoricalFitnessData {
 	public double getLifetimeFloors(){
 		return lifetimeFloors;
 	}
-	
+
 	/**
 	 * Compares a given date to the date of a given set of daily fitness data.
 	 * 
@@ -215,7 +220,7 @@ public class HistoricalFitnessData {
 	 * 				same as, or later than date of OneDaysWorthOfData object
 	 */
 	private int compareDate( int dayOfMonth, int month, int year, OneDaysWorthOfData odwod ) {
-		
+
 		/* Compare years of the dates */
 		if ( year < odwod.getYear() )
 			return -1;
@@ -234,4 +239,40 @@ public class HistoricalFitnessData {
 		/* Dates are the same */
 		return 0;
 	}
-}
+
+	public void populateLifetimeAndBestDays()
+	{
+		try 
+		{
+			JSONObject jo = HttpClient.getLifetimeAndBestDays();
+			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
+			
+			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
+			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
+			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
+			
+			JSONObject bestDaysJSON = jo.getJSONObject("best").getJSONObject("total");
+			
+			System.out.println(bestDaysJSON.toString(1));
+			
+			this.bestDistance = bestDaysJSON.getJSONObject("distance").getDouble("value");
+//	TODO	this.bestFloors = 
+//			this.bestSteps = 
+		} 
+		catch (JSONException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String getLifetimeAndBestDays()
+	{
+		String str = "Lifetime totals\n";
+		
+		str = str.concat("Distance: " + this.getLifetimeDistance() + "\tFloors: " + this.getLifetimeFloors() + "\tSteps: " + this.getLifetimeSteps());
+		
+		return str;
+	}
+
+}//end of class
