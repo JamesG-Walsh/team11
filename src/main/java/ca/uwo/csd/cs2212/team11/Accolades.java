@@ -23,6 +23,39 @@ public class Accolades {
 
 	}
 
+	public void checkAccolades(JFrame j, HistoricalFitnessData hfd){
+
+			double val;
+
+			val = 1000000;
+			if(val == (double) 1000000) {
+
+				recievedAccoladePopup(j, MILLY_IMG);
+			}
+			val = hfd.getBestFloors();
+			if(val == (double) 1000000) {
+
+				recievedAccoladePopup(j, MILLY_IMG);
+			}
+			val = hfd.getLifetimeDistance();
+			if(val == (double) 1000000) {
+
+				recievedAccoladePopup(j, MILLY_IMG);
+			}
+			val = hfd.getLifetimeSteps();
+			if(val == (double) 1000000) {
+
+				recievedAccoladePopup(j, MILLY_IMG);
+			}
+			val = hfd.getLifetimeFloors();
+			if(val == (double) 1000000) {
+
+				recievedAccoladePopup(j, MILLY_IMG);
+			}
+
+
+	}
+
 	public void recievedAccoladePopup(JFrame j, String img){
 
 
