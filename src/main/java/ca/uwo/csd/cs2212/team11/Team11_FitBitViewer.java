@@ -26,9 +26,9 @@ public class Team11_FitBitViewer implements Serializable
 		
 		User usr = new User();
 		
-		GUI = new DeskTop(usr);
+		//GUI = new DeskTop(usr);
 		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-		GUI.setVisible(true);
+		//GUI.setVisible(true);
 
 		if(args.length >= 1 && args[0].equals("test")){
 
@@ -43,7 +43,9 @@ public class Team11_FitBitViewer implements Serializable
 			
 			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 			
-			//hfd.populateLifetimeAndBestDays();
+			hfd.populateLifetimeAndBestDays();
+			
+			System.out.println(hfd.lifetimeAndBestDaysToString());
 			
 			//System.out.println(hfd.getLifetimeAndBestDays());
 			

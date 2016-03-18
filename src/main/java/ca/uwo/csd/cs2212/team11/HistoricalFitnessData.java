@@ -14,13 +14,21 @@ import org.json.JSONObject;
  */
 public class HistoricalFitnessData 
 {
-	private double bestDistance;
-	private int bestSteps;
-	private double bestFloors;
+	private double bestDistanceValue;
+	private String bestDistanceDate;
+	
+	private int bestStepsValue;
+	private String bestStepsDate;
+	
+	private double bestFloorsValue;
+	private String bestFloorsDate;
+	
 	private double lifetimeDistance;
 	private int lifetimeSteps;
 	private double lifetimeFloors;
+	
 	private String[] accoladesEarned;
+	
 	private ArrayList<OneDaysWorthOfData> allOneDays; /* Sorted list of recorded days; lower indices are earlier days */ 
 	/**
 	 * 		To do: Figure out if ArrayList initialized to size>0 such that empty elements counted in size
@@ -168,8 +176,8 @@ public class HistoricalFitnessData
 	 * 
 	 * @return bestDistance
 	 */
-	public double getBestDistance() {
-		return bestDistance;
+	public double getBestDistanceValue() {
+		return bestDistanceValue;
 	}
 
 	/**
@@ -177,8 +185,8 @@ public class HistoricalFitnessData
 	 * 
 	 * @return bestSteps
 	 */
-	public int getBestSteps() {
-		return bestSteps;
+	public int getBestStepsValue() {
+		return bestStepsValue;
 	}
 
 	/**
@@ -186,8 +194,8 @@ public class HistoricalFitnessData
 	 * 
 	 * @return bestFloors
 	 */
-	public double getBestFloors() {
-		return bestFloors;
+	public double getBestFloorsValue() {
+		return bestFloorsValue;
 	}
 
 	/**
@@ -215,6 +223,27 @@ public class HistoricalFitnessData
 	 */
 	public double getLifetimeFloors(){
 		return lifetimeFloors;
+	}
+
+	/**
+	 * @return the bestDistanceDate
+	 */
+	public String getBestDistanceDate() {
+		return bestDistanceDate;
+	}
+
+	/**
+	 * @return the bestStepsDate
+	 */
+	public String getBestStepsDate() {
+		return bestStepsDate;
+	}
+
+	/**
+	 * @return the bestFloorsDate
+	 */
+	public String getBestFloorsDate() {
+		return bestFloorsDate;
 	}
 
 	/**
@@ -263,9 +292,14 @@ public class HistoricalFitnessData
 			
 			System.out.println(bestDaysJSON.toString(1));
 			
-			this.bestDistance = bestDaysJSON.getJSONObject("distance").getDouble("value");
-//	TODO	this.bestFloors = 
-//			this.bestSteps = 
+			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
+			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");
+			
+			this.bestFloorsValue = bestDaysJSON.getJSONObject("floors").getDouble("value");
+			this.bestFloorsDate = bestDaysJSON.getJSONObject("floors").getString("date");
+			
+			this.bestStepsValue = bestDaysJSON.getJSONObject("steps").getInt("value");
+			this.bestStepsDate = bestDaysJSON.getJSONObject("steps").getString("date");
 		} 
 		catch (JSONException e) 
 		{
@@ -274,11 +308,13 @@ public class HistoricalFitnessData
 		}
 	}
 	
-	public String getLifetimeAndBestDays()
+	public String lifetimeAndBestDaysToString()
 	{
-		String str = "Lifetime totals\n";
+		String str = "\nLifetime totals\n";
+		str = str.concat("Distance: " + this.getLifetimeDistance() + "\t\tFloors: " + this.getLifetimeFloors() + "\t\t\tSteps: " + this.getLifetimeSteps());
 		
-		str = str.concat("Distance: " + this.getLifetimeDistance() + "\tFloors: " + this.getLifetimeFloors() + "\tSteps: " + this.getLifetimeSteps());
+		str = str.concat("\nBest Days\n");
+		str = str.concat("Distance: " + this.getBestDistanceValue() + ", " + this.getBestDistanceDate() + "\tFloors: " + this.getBestFloorsValue() + ", " + this.getBestFloorsDate() + "\tSteps: " + this.getBestStepsValue() + ", " + this.getBestStepsDate());
 		
 		return str;
 	}
