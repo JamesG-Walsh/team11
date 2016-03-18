@@ -14,13 +14,15 @@ import org.json.JSONObject;
  */
 public class HistoricalFitnessData 
 {
-	private double lifetimeCalories;
 	private double bestDistanceValue;
 	private String bestDistanceDate;
+
 	private int bestStepsValue;
 	private String bestStepsDate;
+	
 	private double bestFloorsValue;
 	private String bestFloorsDate;
+	
 	private double lifetimeDistance;
 	private int lifetimeSteps;
 	private double lifetimeFloors;
@@ -202,9 +204,6 @@ public class HistoricalFitnessData
 	 * 
 	 * @return lifetimeDistance
 	 */
-	public double getLifetimeCalories(){
-		return lifetimeCalories;
-	}
 
 	public double getLifetimeDistance(){
 		return lifetimeDistance;

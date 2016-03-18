@@ -54,7 +54,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(dayOfMonth, month, year);
 		//odwod.populateAllMins();
 		
-		switch(type)
+		/*switch(type)
 		{
 			case HEART_RATE:
 						
@@ -88,7 +88,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
-		}
+		}*/
 	}
 	/**
 	 * Paint the line graph with canned data

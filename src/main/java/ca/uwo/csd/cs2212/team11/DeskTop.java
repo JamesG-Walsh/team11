@@ -72,12 +72,18 @@ public class DeskTop extends JFrame implements Serializable
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 
+		System.out.println("Here");
+
 		activeChart = new PieChart();
 		this.setWorkingDate();
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
+		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, usr, this.getWorkingDate());
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, usr, this.getWorkingDate());
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, usr, this.getWorkingDate());*/
+
+		System.out.println("Here");
+
+		
 
 
 //		System.out.println(System.getProperty("user.dir"));

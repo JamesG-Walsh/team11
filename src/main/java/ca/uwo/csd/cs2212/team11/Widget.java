@@ -34,6 +34,8 @@ public class Widget extends JPanel implements Serializable{
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+	private IDs typeLive;
+
 	Color backColor;
 	
 	/**
@@ -43,6 +45,8 @@ public class Widget extends JPanel implements Serializable{
 	public Widget(IDs type){
 		super();
 
+		typeLive = type;
+		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
 		this.setPreferredSize(new Dimension(150, 150));
@@ -101,19 +105,17 @@ public class Widget extends JPanel implements Serializable{
 		//changeView(0);
 		switch(type){
 			case CALORIES:
-				if(Team11_FitBitViewer.testFlag){
-					//data = getData(type);
-					//changeView(0);
-
-				}else{
-
-					//changeViewLive(0, CALORIES);
-				}
-				
+				data = getData(type);
+				changeView(0);
 				break;
 			case DISTANCE:
-				data = getDistanceData(type);
-				changeView(0);
+				if(Team11_FitBitViewer.testFlag){
+					data = getDistanceData(type);
+					changeView(0);
+				}else{
+					changeViewLive(0, type);
+
+				}
 				break;
 			case CLIMB:
 				data = getFloorsData(type);
@@ -122,12 +124,12 @@ public class Widget extends JPanel implements Serializable{
 			case STEPS:
 				if(Team11_FitBitViewer.testFlag){
 					data = getData(type);
-					changeView(0);
-
+					changeView(0);	
 				}else{
+					changeViewLive(0, type);
 
-					changeViewLive(0, STEPS);
 				}
+					
 				break;
 			case ACTIVE:
 				data = getActiveMinData(type);
@@ -153,9 +155,15 @@ public class Widget extends JPanel implements Serializable{
 				// source.getParent().revalidate();
 				/*dataBox.revalidate();
 				dataBox.repaint();*/
-				System.out.println("HEre");
-				currentView = (currentView + 1) % maxView;
-				changeView(currentView);
+				if(Team11_FitBitViewer.testFlag){
+
+					currentView = (currentView + 1) % maxView;
+					changeView(currentView);
+				}else{
+
+					currentView = (currentView + 1) % maxView;
+					changeViewLive(currentView, typeLive);
+				}
 
 				/*revalidate();
 				repaint();*/
@@ -180,18 +188,38 @@ public class Widget extends JPanel implements Serializable{
 		String convert;
 		switch(type){
 						case STEPS: 
+								System.out.print("Getting steps...");
 								if(i==0){ //Get day calorie
 									convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
+									System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
 									dataBox.setText(convert);
 									viewLabel.setText(Widget.views[i]);
 
 								}else if(i==1){ //Get Best Day calorie
 									convert = String.valueOf(Team11_FitBitViewer.hfd.getBestStepsValue());
+									System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
+
 									dataBox.setText(convert);
 									viewLabel.setText(Widget.views[i]);
 
 								}else if(i==2){
 									convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeSteps());
+									dataBox.setText(convert);
+									viewLabel.setText(Widget.views[i]);
+								}
+						case DISTANCE: 
+								if(i==0){ //Get day calorie
+									convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalDistance());
+									dataBox.setText(convert);
+									viewLabel.setText(Widget.views[i]);
+
+								}else if(i==1){ //Get Best Day calorie
+									convert = String.valueOf(Team11_FitBitViewer.hfd.getBestDistanceValue());
+									dataBox.setText(convert);
+									viewLabel.setText(Widget.views[i]);
+
+								}else if(i==2){
+									convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeDistance());
 									dataBox.setText(convert);
 									viewLabel.setText(Widget.views[i]);
 								}
