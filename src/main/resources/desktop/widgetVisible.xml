@@ -4,26 +4,10 @@
   <void index="2">
    <boolean>true</boolean>
   </void>
-<<<<<<< HEAD
-  <void index="1">
-   <boolean>true</boolean>
-  </void>
-  <void index="2">
-   <boolean>true</boolean>
-  </void>
-  <void index="3">
-   <boolean>true</boolean>
-  </void>
-  <void index="4">
-   <boolean>true</boolean>
-  </void>
-  <void index="5">
-=======
   <void index="4">
    <boolean>true</boolean>
   </void>
   <void index="6">
->>>>>>> feature/accolades
    <boolean>true</boolean>
   </void>
  </array>

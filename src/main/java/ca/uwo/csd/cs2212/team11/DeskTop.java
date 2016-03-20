@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 import java.awt.Dimension;
 import java.io.Serializable;
@@ -295,7 +296,7 @@ public class DeskTop extends JFrame implements Serializable
 			dateLabel.setForeground(new Color(255,255,255));
 			datePanel.add(dateLabel);
 			
-			ImagePanel refreshButton = new ImagePanel("Refresh.png");
+			JButton refreshButton = new JButton("Refresh Data");
 			refreshButton.addMouseListener(new MouseAdapter(){
 				public void mouseClicked(MouseEvent e){
 					refreshData();

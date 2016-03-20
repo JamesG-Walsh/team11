@@ -32,7 +32,7 @@ public class Accolades {
 
 				recievedAccoladePopup(j, MILLY_IMG);
 			}
-			val = hfd.getBestFloors();
+			val = hfd.getBestFloorsValue();
 			if(val == (double) 1000000) {
 
 				recievedAccoladePopup(j, MILLY_IMG);
