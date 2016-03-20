@@ -53,7 +53,7 @@ public class HeartRateDayOfData
 			JSONObject activitiesHeart;
 			activitiesHeart = jo.getJSONArray("activities-heart").getJSONObject(0).getJSONObject("value");
 			
-			this.restingHeartRate = activitiesHeart.getInt("restingHeartRate"); //set the resting heart rate
+			//this.restingHeartRate = activitiesHeart.getInt("restingHeartRate"); //set the resting heart rate //TODO  why is this not in the JSON?
 			
 			JSONArray ja = activitiesHeart.getJSONArray("heartRateZones"); //get array of heart rate zones
 			
@@ -297,6 +297,13 @@ public class HeartRateDayOfData
 	 */
 	public void setPeakZoneMinutes(int peakZoneMinutes) {
 		this.peakZoneMinutes = peakZoneMinutes;
+	}
+
+	/**
+	 * @return the heartRateByTheMin
+	 */
+	public int[][] getHeartRateByTheMin() {
+		return heartRateByTheMin;
 	}
 	
 }//end of class
