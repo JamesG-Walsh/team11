@@ -87,6 +87,10 @@ public class DeskTop extends JFrame implements Serializable
 
 		System.out.println("Here");
 
+		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+		//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(20, 3, 2016 );
+		//odwod.populateTotals();
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.DISTANCE);
@@ -143,6 +147,8 @@ public class DeskTop extends JFrame implements Serializable
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(centerPanel, BorderLayout.CENTER);
 
+		//refreshData();
+
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 
@@ -198,21 +204,21 @@ public class DeskTop extends JFrame implements Serializable
 			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(20, 3, 2016 );
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(20, 1, 2016 );
 			odwod.populateTotals();
 			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
-			Widget w = new Widget(usr, time);
 			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
 			hfd.lifetimeAndBestDaysToString();
-			w.changeViewLive(hfd, time, 0, IDs.CALORIES);
-			w.changeViewLive(hfd, time, 0, IDs.CLIMB);
-			w.changeViewLive(hfd, time, 0, IDs.ACTIVE);
-			w.changeViewLive(hfd, time, 0, IDs.HEART_RATE);
-			w.changeViewLive(hfd, time, 0, IDs.STEPS);
-			w.changeViewLive(hfd, time, 0, IDs.SEDENTARY);
-			w.changeViewLive(hfd, time, 0, IDs.DISTANCE);
+
+			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
+			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
+			this.all_widgets[IDs.ACTIVE.ordinal()].changeViewLive(hfd, time, 0, IDs.ACTIVE);
+			this.all_widgets[IDs.HEART_RATE.ordinal()].changeViewLive(hfd, time, 0, IDs.HEART_RATE);
+			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
+			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
+			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
 		}
 	}
 

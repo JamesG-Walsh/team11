@@ -215,10 +215,10 @@ public class Widget extends JPanel implements Serializable{
 
 	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
 		System.out.println(cal.DAY_OF_MONTH + " " + cal.MONTH + " "+ cal.YEAR);
-		OneDaysWorthOfData odwod = hfd.retrieve2(18, 3, 2016);
+		OneDaysWorthOfData odwod = hfd.retrieve2(cal.DAY_OF_MONTH, cal.MONTH, cal.YEAR);
 		System.out.println("Inside CVL...\n" + odwod.toString(false));
 		System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
-		
+		System.out.println("i = " + i);
 				switch(type){
 						case STEPS: 
 									System.out.print("Getting steps...");
@@ -261,6 +261,8 @@ public class Widget extends JPanel implements Serializable{
 						case CLIMB: 
 									if(i==0){ //Get day calorie
 										String convert = String.valueOf(odwod.getTodaysTotalFloors());
+										System.out.println("CONVERT:- " + convert);
+										System.out.println("ODWOD TOTAL FLOORS - " + odwod.getTodaysTotalFloors());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 		

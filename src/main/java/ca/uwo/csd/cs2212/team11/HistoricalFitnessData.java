@@ -154,6 +154,7 @@ public class HistoricalFitnessData
 	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
 		System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
+		System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
 		Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
 		OneDaysWorthOfData odwod = null;
 
@@ -167,17 +168,16 @@ public class HistoricalFitnessData
 			}
 		}
 		
-		if (odwod == null)
-		{
+	
 			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
 			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
 			odwod.populateTotals();
 			this.addDay(odwod);
 			System.out.print("  New Size is " + this.getAllOneDays().size() + "\n");
-		}
-		System.out.println(odwod.toString(false));
-		System.out.println("Returning from retrieve2");
-		return odwod;
+			System.out.println(odwod.toString(false));
+			System.out.println("Returning from retrieve2");
+
+			return odwod;
 	}
 
 	/**
