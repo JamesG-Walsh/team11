@@ -89,7 +89,8 @@ public class DeskTop extends JFrame implements Serializable
 
 		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 		//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
-		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(20, 3, 2016 );
+
+		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(1, 3, 2016 );
 		//odwod.populateTotals();
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
@@ -197,14 +198,21 @@ public class DeskTop extends JFrame implements Serializable
 		else
 		{
 			System.out.println("Starting live call of refreshData();");
-			Calendar time = this.getWorkingDate();
+			this.setWorkingDate();
+			Calendar time =  Calendar.getInstance();
+			Date date = new Date(116, 02, 3);
+   			time.setTime(date);
 
 			System.out.println( time.DAY_OF_MONTH + (time.MONTH + 1) + time.YEAR );
 
 			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(20, 1, 2016 );
+			int year = time.get(Calendar.YEAR);
+			int month = time.get(Calendar.MONTH);
+			int day = time.get(Calendar.DAY_OF_MONTH);
+
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month +1, year );
 			odwod.populateTotals();
 			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
@@ -266,10 +274,11 @@ public class DeskTop extends JFrame implements Serializable
 
 	public void setWorkingDate()
 	{
-		//	Calendar cal = Calendar.getInstance();
+		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
-		this.workingDate = Calendar.getInstance() ;
-		workingDate.setTime(new Date());
+		this.workingDate = Calendar.getInstance();
+		Date date = new Date(116, 02, 1);
+   		this.workingDate.setTime(date);
 	}
 
 	/**
