@@ -27,7 +27,9 @@ public class Team11_FitBitViewer implements Serializable
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
+
 		
+
 
 		if(args.length >= 1 && args[0].equals("test")){
 
@@ -37,11 +39,12 @@ public class Team11_FitBitViewer implements Serializable
 			GUI = new DeskTop(usrs);
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
-			
+			Accolades acc = new Accolades();
+			acc.checkAccolades(GUI, hfd);
 		}
 		else
 		{
-
+			HistoricalFitnessData hfd = new HistoricalFitnessData();
 			System.out.println("Running in live mode.....");
 			User usrs = new User();
 
@@ -55,9 +58,8 @@ public class Team11_FitBitViewer implements Serializable
 			GUI = new DeskTop(usrs);
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
-
-
-			
+			Accolades acc = new Accolades();
+			acc.checkAccolades(GUI, hfd);
 			System.out.println(hfd.lifetimeAndBestDaysToString());
 			
 			//System.out.println(hfd.getLifetimeAndBestDays());
