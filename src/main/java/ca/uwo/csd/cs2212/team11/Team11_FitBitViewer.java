@@ -18,7 +18,7 @@ public class Team11_FitBitViewer implements Serializable
 	public static boolean testFlag = false;
 	public static DeskTop GUI;
 	public static OneDaysWorthOfData odwod;
-	static HistoricalFitnessData hfd;
+	public static HistoricalFitnessData hfd;
 
 	/**
 	 * Main method for the project	 
@@ -43,24 +43,24 @@ public class Team11_FitBitViewer implements Serializable
 		}
 		else
 		{
-			HistoricalFitnessData hfd = new HistoricalFitnessData();
+			hfd = new HistoricalFitnessData();
 			System.out.println("Running in live mode.....");
 			
 			User usrs = new User();
 
 			hfd = usrs.getHistoricalFitnessData();
-			odwod = hfd.retrieveDay(17, 3, 2016);
+			odwod = hfd.retrieveDay(3, 3, 2016);
 			odwod.populateTotals();
 
 			hfd.populateLifetimeAndBestDays();
 			
-			System.out.println(odwod.toString(false));
+			//System.out.println(odwod.toString(false));
 			//GUI = new DeskTop();			
 			GUI = new DeskTop();
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
-			Accolades acc = new Accolades();
-			acc.checkAccolades(GUI, hfd);
+			//Accolades acc = new Accolades();
+			//acc.checkAccolades(GUI, hfd);
 			System.out.println(hfd.lifetimeAndBestDaysToString());
 			
 			//System.out.println(hfd.getLifetimeAndBestDays());

@@ -455,6 +455,7 @@ public class OneDaysWorthOfData
 	public void populateTotals()
 	{
 		String date = this.buildDateAsString();
+		System.out.println("date string for populateTotals() : "+ date);
 
 		try
 		{

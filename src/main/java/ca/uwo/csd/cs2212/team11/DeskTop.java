@@ -66,14 +66,14 @@ public class DeskTop extends JFrame implements Serializable
 			}
 		});
 
-		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
+		/*all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
 		all_widgets[IDs.CLIMB.ordinal()] = new Widget(IDs.CLIMB);
 		all_widgets[IDs.STEPS.ordinal()] = new Widget(IDs.STEPS);
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
-
+*/
 		System.out.println("Here");
 
 		activeChart = new PieChart();
@@ -88,7 +88,13 @@ public class DeskTop extends JFrame implements Serializable
 		System.out.println("Here");
 
 
-
+		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
+		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.DISTANCE);
+		all_widgets[IDs.CLIMB.ordinal()] = new Widget(usr, getWorkingDate(),IDs.CLIMB);
+		all_widgets[IDs.STEPS.ordinal()] = new Widget(usr, getWorkingDate(),IDs.STEPS);
+		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.ACTIVE);
+		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(usr, getWorkingDate(),IDs.SEDENTARY);
+		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
 
 		//		System.out.println(System.getProperty("user.dir"));
 
@@ -185,7 +191,7 @@ public class DeskTop extends JFrame implements Serializable
 	else
 	{
 
-		/*JAMES SHIT*/
+		
 
 		Calendar time = this.getWorkingDate();
 
@@ -195,16 +201,18 @@ public class DeskTop extends JFrame implements Serializable
 		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 		//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 		
-		usr.getHistoricalFitnessData().retrieveDay( 19,3,2016 ).populateTotals();
-		
-		//Widget w = new Widget();
-		//w.changeViewLive(0, IDs.CALORIES);
-		//w.changeViewLive(0, IDs.CLIMB);
-		//w.changeViewLive(0, IDs.ACTIVE);
-		//w.changeViewLive(0, IDs.HEART_RATE);
-		//w.changeViewLive(0, IDs.STEPS);
-		//w.changeViewLive(0, IDs.SEDENTARY);
-		//w.changeViewLive(0, IDs.DISTANCE);
+		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(19, 2, 2016 );
+		odwod.populateTotals();
+		System.out.println("Inside refreshData()...\n" + odwod.toString(false));
+
+		Widget w = new Widget(usr, time);
+		w.changeViewLive(usr, time, 0, IDs.CALORIES);
+		w.changeViewLive(usr, time, 0, IDs.CLIMB);
+		w.changeViewLive(usr, time, 0, IDs.ACTIVE);
+		w.changeViewLive(usr, time, 0, IDs.HEART_RATE);
+		w.changeViewLive(usr, time, 0, IDs.STEPS);
+		w.changeViewLive(usr, time, 0, IDs.SEDENTARY);
+		w.changeViewLive(usr, time, 0, IDs.DISTANCE);
 
 
 	}
