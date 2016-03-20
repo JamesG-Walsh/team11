@@ -157,7 +157,7 @@ public class HistoricalFitnessData
 	 * 
 	 * @param List of single days worth of fitness data. 
 	 */
-	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){
+	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){ //TODO why is this public method needed? for serialization?
 		this.allOneDays = allOneDays;
 	}
 

@@ -46,11 +46,12 @@ public class DeskTop extends JFrame implements Serializable
 	
 	private Calendar workingDate;
 	
+	private User usr;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
 
-	public DeskTop(User usr)
+	public DeskTop()
 	{
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -77,6 +78,8 @@ public class DeskTop extends JFrame implements Serializable
 
 		activeChart = new PieChart();
 		this.setWorkingDate();
+		
+		usr = new User();
 		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, usr, this.getWorkingDate());
@@ -137,7 +140,7 @@ public class DeskTop extends JFrame implements Serializable
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 
-
+		
 	}
 	
 	/**
@@ -171,9 +174,17 @@ public class DeskTop extends JFrame implements Serializable
 	/**
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
-	private void refreshData(){
+	private void refreshData()
+	{
 		System.err.println("DeskTop.refreshData() called");
-		System.err.println("\t***Does nothing yet");
+		
+		Calendar time = this.getWorkingDate();
+		
+		
+		System.out.println( time.DAY_OF_MONTH + (time.MONTH + 1) + time.YEAR );
+		
+		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+		usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 	}
 	
 	/**

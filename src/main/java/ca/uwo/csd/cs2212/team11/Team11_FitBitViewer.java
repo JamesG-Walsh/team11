@@ -35,8 +35,7 @@ public class Team11_FitBitViewer implements Serializable
 
 			System.out.println("Running in test mode ......");
 			testFlag = true;
-			User usrs = new User();
-			GUI = new DeskTop(usrs);
+			GUI = new DeskTop();
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
 			Accolades acc = new Accolades();
@@ -46,6 +45,7 @@ public class Team11_FitBitViewer implements Serializable
 		{
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
 			System.out.println("Running in live mode.....");
+			
 			User usrs = new User();
 
 			hfd = usrs.getHistoricalFitnessData();
@@ -53,9 +53,10 @@ public class Team11_FitBitViewer implements Serializable
 			odwod.populateTotals();
 
 			hfd.populateLifetimeAndBestDays();
+			
 			System.out.println(odwod.toString(false));
 			//GUI = new DeskTop();			
-			GUI = new DeskTop(usrs);
+			GUI = new DeskTop();
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
 			Accolades acc = new Accolades();
