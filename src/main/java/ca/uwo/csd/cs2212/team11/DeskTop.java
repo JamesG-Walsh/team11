@@ -43,9 +43,9 @@ public class DeskTop extends JFrame implements Serializable
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
 	private boolean[] graphVisible = {false, false, false, false, false, false, false};
-	
+
 	private Calendar workingDate;
-	
+
 	private User usr;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
@@ -59,12 +59,12 @@ public class DeskTop extends JFrame implements Serializable
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-			Serialize writeTo = new Serialize();
-			writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
-			System.exit(0);
-            }
-        });
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				Serialize writeTo = new Serialize();
+				writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
+				System.exit(0);
+			}
+		});
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
@@ -78,7 +78,7 @@ public class DeskTop extends JFrame implements Serializable
 
 		activeChart = new PieChart();
 		this.setWorkingDate();
-		
+
 		usr = new User();
 		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
@@ -87,10 +87,10 @@ public class DeskTop extends JFrame implements Serializable
 
 		System.out.println("Here");
 
-		
 
 
-//		System.out.println(System.getProperty("user.dir"));
+
+		//		System.out.println(System.getProperty("user.dir"));
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
@@ -100,11 +100,11 @@ public class DeskTop extends JFrame implements Serializable
 		mainDisplay.setPreferredSize(new Dimension(1000, 600));
 		mainDisplay.setOpaque(false);
 		mainDisplay.setVisible(true);
-		
+
 
 		northPanel = new JPanel();
 		populateNorthPanel(northPanel);
-		
+
 		eastPanel = new JPanel();
 		populateEastPanel(eastPanel);
 
@@ -130,19 +130,19 @@ public class DeskTop extends JFrame implements Serializable
 		configWidgetVisibilityToUsersPref(IDs.STEPS);
 		configWidgetVisibilityToUsersPref(IDs.SEDENTARY);
 		configWidgetVisibilityToUsersPref(IDs.DISTANCE);
-		
+
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
 		mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(centerPanel, BorderLayout.CENTER);
-		
+
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 
-		
+
 	}
-	
+
 	/**
 	 * Will add a graphing window with data plugged in as per user event
 	 * @param steps -- Data that will be plugged into the graph for steps
@@ -170,360 +170,385 @@ public class DeskTop extends JFrame implements Serializable
 		graphPanel.revalidate();
 		repaint();
 	}
-	
+
 	/**
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
-	private void refreshData()
+	private void refreshData(){
+
+	if(Team11_FitBitViewer.testFlag)
 	{
+
 		System.err.println("DeskTop.refreshData() called");
-		
-		Calendar time = this.getWorkingDate();
-		
-		
-		System.out.println( time.DAY_OF_MONTH + (time.MONTH + 1) + time.YEAR );
-		
-		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
-		usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
-	}
-	
-	/**
-	 * This button will remove the widget specified by parameter
-	 * @param type -- Type is the component (Calories, Distance ..etc)
-	 */
-	private void addRemoveWidget(IDs type){
-
-		if(widgetVisible[type.ordinal()] == true){
-			widgetVisible[type.ordinal()] = false;
-			widgetPanel.remove(all_widgets[type.ordinal()]);
-		}else{
-			widgetVisible[type.ordinal()] = true;
-			all_widgets[type.ordinal()].setVisible(true);
-			widgetPanel.add(all_widgets[type.ordinal()]);
-		}
-		revalidate();
-		repaint();
-	}
-		/**
-	 * This button will remove the widget specified by parameter
-	 * @param type -- Type is the component (Calories, Distance ..etc)
-	 */
-	private void configWidgetVisibilityToUsersPref(IDs type){
-
-		if(widgetVisible[type.ordinal()] == false){
-			widgetPanel.remove(all_widgets[type.ordinal()]);
-		}else{
-			all_widgets[type.ordinal()].setVisible(true);
-			widgetPanel.add(all_widgets[type.ordinal()]);
-		}
-		revalidate();
-		repaint();
-	}
-	
-	/**
-	 * This will set our last refresh label and will be called whenever the refresh button is hit
-	 * @return
-	 */
-	public Calendar getWorkingDate()
-	{		
-		return this.workingDate;
-	}
-	
-	public void setWorkingDate()
-	{
-	//	Calendar cal = Calendar.getInstance();
-	//	cal.setTime(javaSqlDate);
-		this.workingDate = Calendar.getInstance() ;
-		workingDate.setTime(new Date());
-	}
-	
-	/**
-	 * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
-	 */
-	private void openSettingsPanel(){
-		System.err.println("DeskTop.openSettingsPanel() called");
 		System.err.println("\t***Does nothing yet");
 	}
-	
-	private void populateNorthPanel(JPanel a){
-		
-		a.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
-		a.setOpaque(false);
-		
+	else
+	{
 
-		//add FitBit logo
-		
-		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
-		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
-		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
-		a.add(fitBitPic);
-		a.add(Box.createHorizontalGlue());
+		/*JAMES SHIT*/
 
-		
-		// create the welcome to user
-		JPanel hello = new JPanel();
-		hello.setBackground(SharedData.SMOKE);
-		JLabel helloLabel = new JLabel("Welcome, USER!");
-		helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-		helloLabel.setForeground(new Color(255,255,255));
-		hello.add(helloLabel);
-		a.add(hello);
-		a.add(Box.createHorizontalGlue());
+		Calendar time = this.getWorkingDate();
 
-		//add controller buttons
-		//add settings button
-		
-		ImagePanel settingsButton = new ImagePanel("Settings.png");
-		settingsButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				openSettingsPanel();
-			}
-		});
-		settingsButton.setToolTipText("Click to open settings panel");
-		a.add(settingsButton);
 
-		//add exit button
-		ImagePanel exitButton = new ImagePanel("Exit_Button.png");
-		exitButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				System.exit(0);
-			}
-		});
-		exitButton.setToolTipText("Click to exit FitBit Viewer");
-		a.add(exitButton);
-		
-	}
+		System.out.println( time.DAY_OF_MONTH + (time.MONTH + 1) + time.YEAR );
 
-	private void populateSouthPanel(JPanel a){
-		a.setOpaque(false);
-		a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
+		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+		//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+		
+		usr.getHistoricalFitnessData().retrieveDay( 19,3,2016 ).populateTotals();
+		
+		//Widget w = new Widget();
+		//w.changeViewLive(0, IDs.CALORIES);
+		//w.changeViewLive(0, IDs.CLIMB);
+		//w.changeViewLive(0, IDs.ACTIVE);
+		//w.changeViewLive(0, IDs.HEART_RATE);
+		//w.changeViewLive(0, IDs.STEPS);
+		//w.changeViewLive(0, IDs.SEDENTARY);
+		//w.changeViewLive(0, IDs.DISTANCE);
 
-		//Create panel to display last update date
-			datePanel = new JPanel();
-			datePanel.setBackground(SharedData.SMOKE);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
-			dateLabel = new JLabel(dateString);
-			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-			dateLabel.setForeground(new Color(255,255,255));
-			datePanel.add(dateLabel);
-			
-			JButton refreshButton = new JButton("Refresh Data");
-			refreshButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					refreshData();
-				}
-			});
-			refreshButton.setToolTipText("Click to refresh data");
-			datePanel.add(refreshButton);  
-			
-			
-		a.add(datePanel);
-		a.add(Box.createHorizontalGlue());
-	
-		// add widget button *** now redundant?????
-			ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
-			addWidgetButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					//addWidgetPanel();
-				}
-			});
-			addWidgetButton.setToolTipText("Click to add widget");
-			a.add(addWidgetButton);
-	}
-
-	private void populateEastPanel(JPanel a){
-		a.setOpaque(false);
-		a.setLayout(new BoxLayout(a,1));
-		
-			goalsPanel = new JPanel();
-			goalsPanel.setBackground(SharedData.SMOKE);
-			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
-			JLabel goalsTitleLabel = new JLabel("Daily Goals");
-			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			goalsTitleLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsTitleLabel);
-			goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			goalsListLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsListLabel);
-		
-		a.add(goalsPanel);
-		
-
-			awardsPanel = new JPanel();
-			awardsPanel.setBackground(SharedData.SMOKE);
-			awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
-			JLabel awardsTitleLabel = new JLabel("Achievements");
-			awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			awardsTitleLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsTitleLabel);
-			awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			awardsListLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsListLabel);
-		
-		a.add(awardsPanel);
-		
 
 	}
 
 
-	private void populateWestPanel(JPanel a){
-		a.setOpaque(false);
-		a.setLayout(new GridLayout(7,2));
+}
 
-			JPanel navBtn = createNavButton(IDs.CALORIES, "C");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CALORIES);
-					repaint();
+/**
+ * This button will remove the widget specified by parameter
+ * @param type -- Type is the component (Calories, Distance ..etc)
+ */
+private void addRemoveWidget(IDs type){
 
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					
-					addRemoveGraph(IDs.CALORIES);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = createNavButton(IDs.DISTANCE, "D");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.DISTANCE);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					Component source = (Component)e.getSource();
-					source.getParent().dispatchEvent(e);
-					addRemoveGraph(IDs.DISTANCE);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = createNavButton(IDs.CLIMB, "V");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CLIMB);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-			
-			a.add(Box.createHorizontalBox());
-			
-			navBtn = createNavButton(IDs.STEPS, "S");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.STEPS);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					
-					addRemoveGraph(IDs.STEPS);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = createNavButton(IDs.ACTIVE, "A");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.ACTIVE);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					
-					addRemoveGraph(IDs.ACTIVE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = createNavButton(IDs.SEDENTARY, "Sed");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.SEDENTARY);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-
-			a.add(Box.createHorizontalBox());
-			
-			navBtn = createNavButton(IDs.HEART_RATE, "HR");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.HEART_RATE);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					
-					addRemoveGraph(IDs.HEART_RATE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
+	if(widgetVisible[type.ordinal()] == true){
+		widgetVisible[type.ordinal()] = false;
+		widgetPanel.remove(all_widgets[type.ordinal()]);
+	}else{
+		widgetVisible[type.ordinal()] = true;
+		all_widgets[type.ordinal()].setVisible(true);
+		widgetPanel.add(all_widgets[type.ordinal()]);
 	}
+	revalidate();
+	repaint();
+}
+/**
+ * This button will remove the widget specified by parameter
+ * @param type -- Type is the component (Calories, Distance ..etc)
+ */
+private void configWidgetVisibilityToUsersPref(IDs type){
 
-	private void populateCenterPanel(JPanel a){
-		a.setLayout(new BoxLayout(a, 1));
-		a.setOpaque(false);
-
-		widgetPanel = new JPanel();
-		widgetPanel.setBackground(SharedData.SMOKE);
-		a.add(widgetPanel);
-
-		graphPanel = new JPanel();
-		graphPanel.setBackground(SharedData.SMOKE);
-		a.add(graphPanel);
+	if(widgetVisible[type.ordinal()] == false){
+		widgetPanel.remove(all_widgets[type.ordinal()]);
+	}else{
+		all_widgets[type.ordinal()].setVisible(true);
+		widgetPanel.add(all_widgets[type.ordinal()]);
 	}
-	
-	/**
-	 * Creating buttons to display different components onto the dash such as calories or distance travelled
-	 * @param type -- Label of the component (Calorie, distance...)
-	 * @param tag -- Holds value of current component
-	 * @return
-	 */
-	private JPanel createNavButton(IDs type, String tag) {
-		JPanel a = new JPanel();
-		a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
-		a.setPreferredSize(new Dimension(32, 32));
-		a.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
-		a.add(new JLabel(tag));
-		return a;
-	}
-	
+	revalidate();
+	repaint();
+}
+
+/**
+ * This will set our last refresh label and will be called whenever the refresh button is hit
+ * @return
+ */
+public Calendar getWorkingDate()
+{		
+	return this.workingDate;
+}
+
+public void setWorkingDate()
+{
+	//	Calendar cal = Calendar.getInstance();
+	//	cal.setTime(javaSqlDate);
+	this.workingDate = Calendar.getInstance() ;
+	workingDate.setTime(new Date());
+}
+
+/**
+ * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
+ */
+private void openSettingsPanel(){
+	System.err.println("DeskTop.openSettingsPanel() called");
+	System.err.println("\t***Does nothing yet");
+}
+
+private void populateNorthPanel(JPanel a){
+
+	a.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
+	a.setOpaque(false);
+
+
+	//add FitBit logo
+
+	ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
+	fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
+	fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
+	a.add(fitBitPic);
+	a.add(Box.createHorizontalGlue());
+
+
+	// create the welcome to user
+	JPanel hello = new JPanel();
+	hello.setBackground(SharedData.SMOKE);
+	JLabel helloLabel = new JLabel("Welcome, USER!");
+	helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+	helloLabel.setForeground(new Color(255,255,255));
+	hello.add(helloLabel);
+	a.add(hello);
+	a.add(Box.createHorizontalGlue());
+
+	//add controller buttons
+	//add settings button
+
+	ImagePanel settingsButton = new ImagePanel("Settings.png");
+	settingsButton.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			openSettingsPanel();
+		}
+	});
+	settingsButton.setToolTipText("Click to open settings panel");
+	a.add(settingsButton);
+
+	//add exit button
+	ImagePanel exitButton = new ImagePanel("Exit_Button.png");
+	exitButton.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			System.exit(0);
+		}
+	});
+	exitButton.setToolTipText("Click to exit FitBit Viewer");
+	a.add(exitButton);
+
+}
+
+private void populateSouthPanel(JPanel a){
+	a.setOpaque(false);
+	a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
+
+	//Create panel to display last update date
+	datePanel = new JPanel();
+	datePanel.setBackground(SharedData.SMOKE);
+	String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
+	dateLabel = new JLabel(dateString);
+	dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+	dateLabel.setForeground(new Color(255,255,255));
+	datePanel.add(dateLabel);
+
+	JButton refreshButton = new JButton("Refresh Data");
+	refreshButton.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			refreshData();
+		}
+	});
+	refreshButton.setToolTipText("Click to refresh data");
+	datePanel.add(refreshButton);  
+
+
+	a.add(datePanel);
+	a.add(Box.createHorizontalGlue());
+
+	// add widget button *** now redundant?????
+	ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
+	addWidgetButton.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			//addWidgetPanel();
+		}
+	});
+	addWidgetButton.setToolTipText("Click to add widget");
+	a.add(addWidgetButton);
+}
+
+private void populateEastPanel(JPanel a){
+	a.setOpaque(false);
+	a.setLayout(new BoxLayout(a,1));
+
+	goalsPanel = new JPanel();
+	goalsPanel.setBackground(SharedData.SMOKE);
+	goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
+	JLabel goalsTitleLabel = new JLabel("Daily Goals");
+	goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+	goalsTitleLabel.setForeground(new Color(255,255,255));
+	goalsPanel.add(goalsTitleLabel);
+	goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+	goalsListLabel.setForeground(new Color(255,255,255));
+	goalsPanel.add(goalsListLabel);
+
+	a.add(goalsPanel);
+
+
+	awardsPanel = new JPanel();
+	awardsPanel.setBackground(SharedData.SMOKE);
+	awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
+	JLabel awardsTitleLabel = new JLabel("Achievements");
+	awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+	awardsTitleLabel.setForeground(new Color(255,255,255));
+	awardsPanel.add(awardsTitleLabel);
+	awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+	awardsListLabel.setForeground(new Color(255,255,255));
+	awardsPanel.add(awardsListLabel);
+
+	a.add(awardsPanel);
+
+
+}
+
+
+private void populateWestPanel(JPanel a){
+	a.setOpaque(false);
+	a.setLayout(new GridLayout(7,2));
+
+	JPanel navBtn = createNavButton(IDs.CALORIES, "C");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.CALORIES);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = new ImagePanel("graph.png");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+
+			addRemoveGraph(IDs.CALORIES);
+			repaint();
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = createNavButton(IDs.DISTANCE, "D");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.DISTANCE);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = new ImagePanel("graph.png");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			Component source = (Component)e.getSource();
+			source.getParent().dispatchEvent(e);
+			addRemoveGraph(IDs.DISTANCE);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = createNavButton(IDs.CLIMB, "V");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.CLIMB);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	a.add(Box.createHorizontalBox());
+
+	navBtn = createNavButton(IDs.STEPS, "S");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.STEPS);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = new ImagePanel("graph.png");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+
+			addRemoveGraph(IDs.STEPS);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = createNavButton(IDs.ACTIVE, "A");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.ACTIVE);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = new ImagePanel("graph.png");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+
+			addRemoveGraph(IDs.ACTIVE);
+			repaint();
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = createNavButton(IDs.SEDENTARY, "Sed");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.SEDENTARY);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	a.add(Box.createHorizontalBox());
+
+	navBtn = createNavButton(IDs.HEART_RATE, "HR");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+			addRemoveWidget(IDs.HEART_RATE);
+			repaint();
+
+		}
+	});
+	a.add(navBtn);
+
+	navBtn = new ImagePanel("graph.png");
+	navBtn.addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent e){
+
+			addRemoveGraph(IDs.HEART_RATE);
+			repaint();
+		}
+	});
+	a.add(navBtn);
+}
+
+private void populateCenterPanel(JPanel a){
+	a.setLayout(new BoxLayout(a, 1));
+	a.setOpaque(false);
+
+	widgetPanel = new JPanel();
+	widgetPanel.setBackground(SharedData.SMOKE);
+	a.add(widgetPanel);
+
+	graphPanel = new JPanel();
+	graphPanel.setBackground(SharedData.SMOKE);
+	a.add(graphPanel);
+}
+
+/**
+ * Creating buttons to display different components onto the dash such as calories or distance travelled
+ * @param type -- Label of the component (Calorie, distance...)
+ * @param tag -- Holds value of current component
+ * @return
+ */
+private JPanel createNavButton(IDs type, String tag) {
+	JPanel a = new JPanel();
+	a.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+	a.setPreferredSize(new Dimension(32, 32));
+	a.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
+	a.add(new JLabel(tag));
+	return a;
+}
+
 }

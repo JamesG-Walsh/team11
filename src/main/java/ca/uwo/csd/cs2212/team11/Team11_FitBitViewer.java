@@ -18,7 +18,7 @@ public class Team11_FitBitViewer implements Serializable
 	public static boolean testFlag = false;
 	public static DeskTop GUI;
 	public static OneDaysWorthOfData odwod;
-	public static HistoricalFitnessData hfd;
+	static HistoricalFitnessData hfd;
 
 	/**
 	 * Main method for the project	 

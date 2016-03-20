@@ -38,6 +38,11 @@ public class Widget extends JPanel implements Serializable{
 
 	Color backColor;
 	
+	public Widget ()
+	{
+		
+	}
+	
 	/**
 	 * Widget class constructor
 	 * @param type	the type of the widget
@@ -198,7 +203,7 @@ public class Widget extends JPanel implements Serializable{
 		viewLabel.setText(Widget.views[i]);
 	}
 
-	private void changeViewLive(int i, IDs type){
+	public void changeViewLive(int i, IDs type){
 		
 				switch(type){
 						case STEPS: 
