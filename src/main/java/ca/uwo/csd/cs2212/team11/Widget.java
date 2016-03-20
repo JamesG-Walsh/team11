@@ -127,7 +127,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getDistanceData(type);
 					changeView(0);
 				}else{
-					changeViewLive(user, calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
@@ -136,7 +136,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getFloorsData(type);
 					changeView(0);
 				}else{
-					changeViewLive(user, calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 				}
 				break;
 			case STEPS:
@@ -144,7 +144,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getData(type);
 					changeView(0);	
 				}else{
-					changeViewLive(user, calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 					
@@ -154,7 +154,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getData(type);
 					changeView(0);
 				}else{
-					changeViewLive(user, calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
@@ -163,7 +163,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getSedData(type);
 					changeView(0);
 				}else{
-					changeViewLive(user, calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
@@ -191,7 +191,7 @@ public class Widget extends JPanel implements Serializable{
 
 					currentView = (currentView + 1) % maxView;
 					System.out.println(currentView);
-					changeViewLive(user, calen, currentView, typeLive);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, typeLive);
 				}
 
 				revalidate();
@@ -213,11 +213,11 @@ public class Widget extends JPanel implements Serializable{
 		viewLabel.setText(Widget.views[i]);
 	}
 
-	public void changeViewLive(User usr, Calendar cal, int i, IDs type){
+	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
 		System.out.println(cal.DAY_OF_MONTH + " " + cal.MONTH + " "+ cal.YEAR);
-		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
-		OneDaysWorthOfData odwod = hfd.retrieveDay(19, 3, 2016);
+		OneDaysWorthOfData odwod = hfd.retrieve2(18, 3, 2016);
 		System.out.println("Inside CVL...\n" + odwod.toString(false));
+		System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
 		
 				switch(type){
 						case STEPS: 
@@ -230,7 +230,7 @@ public class Widget extends JPanel implements Serializable{
 	
 									}else if(i==1){ //Get Best Day calorie
 										String convert = String.valueOf(hfd.getBestStepsValue());
-										System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
+										//System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
 	
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);

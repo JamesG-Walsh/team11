@@ -19,16 +19,16 @@ public class HistoricalFitnessData
 
 	private int bestStepsValue;
 	private String bestStepsDate;
-	
+
 	private double bestFloorsValue;
 	private String bestFloorsDate;
-	
+
 	private double lifetimeDistance;
 	private int lifetimeSteps;
 	private double lifetimeFloors;
-	
+
 	private String[] accoladesEarned;
-	
+
 	private ArrayList<OneDaysWorthOfData> allOneDays; /* Sorted list of recorded days; lower indices are earlier days */ 
 	/**
 	 * 		To do: Figure out if ArrayList initialized to size>0 such that empty elements counted in size
@@ -60,12 +60,12 @@ public class HistoricalFitnessData
 	public boolean addDay( OneDaysWorthOfData odwod ){
 		/* Add day to ordered list of days */
 		int i = allOneDays.size() - 1;
-		
+
 		if ( i < 0 ) {
 			allOneDays.add(odwod);
 			return true;
 		}
-		
+
 		boolean foundPos = false;
 		int compare;
 		while (!foundPos) {
@@ -108,8 +108,8 @@ public class HistoricalFitnessData
 	 * @exception Throw exception if no recorded fitness data for requested day
 	 */
 	/* Change method:THROW exception if day not present */
-	public OneDaysWorthOfData retrieveDay( int dayOfMonth, int month, int year ) {		
-
+	public OneDaysWorthOfData retrieveDay(int dayOfMonth, int month, int year ) 
+	{		
 		/* To find day of interest, binary search sorted array of days. */
 		int size = allOneDays.size();
 		int max = size - 1;
@@ -150,6 +150,35 @@ public class HistoricalFitnessData
 		}
 		return allOneDays.get(mid);					
 	}	
+
+	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
+	{
+		System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
+		Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
+		OneDaysWorthOfData odwod = null;
+
+		while (itr.hasNext())
+		{
+			odwod = itr.next();
+			if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
+			{
+				System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.");
+				return odwod;
+			}
+		}
+		
+		if (odwod == null)
+		{
+			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
+			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
+			odwod.populateTotals();
+			this.addDay(odwod);
+			System.out.print("  New Size is " + this.getAllOneDays().size() + "\n");
+		}
+		System.out.println(odwod.toString(false));
+		System.out.println("Returning from retrieve2");
+		return odwod;
+	}
 
 	/**
 	 * Helps enable historical fitness data to persist between uses of application.
@@ -285,21 +314,21 @@ public class HistoricalFitnessData
 		{
 			JSONObject jo = HttpClient.getLifetimeAndBestDays();
 			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
-			
+
 			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
 			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
 			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
-			
+
 			JSONObject bestDaysJSON = jo.getJSONObject("best").getJSONObject("total");
-			
+
 			System.out.println(bestDaysJSON.toString(1));
-			
+
 			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
 			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");
-			
+
 			this.bestFloorsValue = bestDaysJSON.getJSONObject("floors").getDouble("value");
 			this.bestFloorsDate = bestDaysJSON.getJSONObject("floors").getString("date");
-			
+
 			this.bestStepsValue = bestDaysJSON.getJSONObject("steps").getInt("value");
 			this.bestStepsDate = bestDaysJSON.getJSONObject("steps").getString("date");
 		} 
@@ -309,15 +338,15 @@ public class HistoricalFitnessData
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String lifetimeAndBestDaysToString()
 	{
 		String str = "\nLifetime totals\n";
 		str = str.concat("Distance: " + this.getLifetimeDistance() + "\t\tFloors: " + this.getLifetimeFloors() + "\t\t\tSteps: " + this.getLifetimeSteps());
-		
+
 		str = str.concat("\nBest Days\n");
 		str = str.concat("Distance: " + this.getBestDistanceValue() + ", " + this.getBestDistanceDate() + "\tFloors: " + this.getBestFloorsValue() + ", " + this.getBestFloorsDate() + "\tSteps: " + this.getBestStepsValue() + ", " + this.getBestStepsDate());
-		
+
 		return str;
 	}
 
