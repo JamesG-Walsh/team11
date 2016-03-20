@@ -172,8 +172,26 @@ public class DeskTop extends JFrame implements Serializable
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
 	private void refreshData(){
-		System.err.println("DeskTop.refreshData() called");
-		System.err.println("\t***Does nothing yet");
+		
+
+		if(Team11_FitBitViewer.testFlag){
+
+			System.err.println("DeskTop.refreshData() called");
+			System.err.println("\t***Does nothing yet");
+		}else{
+
+			/*JAMES SHIT*/
+
+			Widget w = new Widget();
+			w.changeViewLive(IDs.CALORIES);
+			w.changeViewLive(IDs.CLIMB);
+			w.changeViewLive(IDs.ACTIVE);
+			w.changeViewLive(IDs.HEART_RATE);
+			w.changeViewLive(IDs.STEPS);
+			w.changeViewLive(IDs.SEDENTARY);
+			w.changeViewLive(IDs.DISTANCE);
+			
+		}
 	}
 	
 	/**

@@ -198,7 +198,7 @@ public class Widget extends JPanel implements Serializable{
 		viewLabel.setText(Widget.views[i]);
 	}
 
-	private void changeViewLive(int i, IDs type){
+	public void changeViewLive(int i, IDs type){
 		
 				switch(type){
 						case STEPS: 
