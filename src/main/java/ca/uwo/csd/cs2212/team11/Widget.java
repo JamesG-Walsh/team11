@@ -118,8 +118,12 @@ public class Widget extends JPanel implements Serializable{
 				}
 				break;
 			case CLIMB:
-				data = getFloorsData(type);
-				changeView(0);
+				if(Team11_FitBitViewer.testFlag){
+					data = getFloorsData(type);
+					changeView(0);
+				}else{
+					changeViewLive(0, type);
+				}
 				break;
 			case STEPS:
 				if(Team11_FitBitViewer.testFlag){
