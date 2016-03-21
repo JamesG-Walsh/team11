@@ -234,10 +234,10 @@ public class Graph extends javax.swing.JPanel {
 		for (int i = 0; i < array.length; i++){
 			if(array[i] > maxVal) {	maxVal = array[i];	}
 		}
+		maxVal = maxVal * 1.1;
 		this.twentyFive = (int) Math.round(maxVal * 0.25);
 		this.fifty = (int) Math.round(maxVal * 0.5);
 		this.seventyFive = (int) Math.round(maxVal * 0.75);
-		maxVal = maxVal * 1.1;
 		for (int i = 0; i < array.length; i++){
 			array[i] = Math.round(array[i] / maxVal * 200);
 		}
