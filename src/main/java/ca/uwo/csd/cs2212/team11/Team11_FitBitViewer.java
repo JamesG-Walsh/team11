@@ -19,7 +19,7 @@ public class Team11_FitBitViewer implements Serializable
 	public static DeskTop GUI;
 	//public static OneDaysWorthOfData odwod;
 	//public static HistoricalFitnessData hfd;
-
+	//change comment
 	/**
 	 * Main method for the project	 
 	 * @param args				"test" if in test mode (passed from command line)
