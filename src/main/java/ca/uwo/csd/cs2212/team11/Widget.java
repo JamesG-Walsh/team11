@@ -213,7 +213,7 @@ public class Widget extends JPanel implements Serializable{
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
-		if(Team11_FitBitViewer.testFlag){
+		if(!Team11_FitBitViewer.testFlag){
 			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
 			System.out.println("Inside CVL...\n" + odwod.toString(false));
 			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());

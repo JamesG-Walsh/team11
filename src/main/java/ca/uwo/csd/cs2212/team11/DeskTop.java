@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,6 +27,13 @@ import java.awt.event.WindowEvent;
 
 import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 import ca.uwo.csd.cs2212.team11.SharedData.*;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import org.jdatepicker.impl.JDatePickerImpl;
+import java.util.Properties;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+
+
 
 /**
  * Class that will display components on a JFRAME dashboard 
@@ -359,6 +367,10 @@ public class DeskTop extends JFrame implements Serializable
 		dateLabel.setForeground(new Color(255,255,255));
 		datePanel.add(dateLabel);
 
+		 
+
+        //datePanel.add(conn);
+
 		JButton refreshButton = new JButton("Refresh Data");
 		refreshButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -372,15 +384,20 @@ public class DeskTop extends JFrame implements Serializable
 		a.add(datePanel);
 		a.add(Box.createHorizontalGlue());
 
-		// add widget button *** now redundant?????
-		ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
-		addWidgetButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				//addWidgetPanel();
-			}
-		});
-		addWidgetButton.setToolTipText("Click to add widget");
-		a.add(addWidgetButton);
+		JDatePickerImpl datePicker;
+
+		 Properties p = new Properties();
+			p.put("text.today", "Today");
+			p.put("text.month", "Month");
+			p.put("text.year", "Year");
+
+	
+
+		UtilDateModel model=new UtilDateModel();
+      	JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setSize(50,50);
+        a.add(datePicker);
 	}
 
 	private void populateEastPanel(JPanel a){

@@ -157,6 +157,12 @@ public class HistoricalFitnessData
 	{
 		if(Team11_FitBitViewer.testFlag){
 
+			return null;
+
+
+		}else{
+
+
 				System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
 				System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
 				Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
@@ -182,10 +188,8 @@ public class HistoricalFitnessData
 				System.out.println("Returning from retrieve2");
 
 				return odwod;
-
 		}
 
-		return null;
 	}
 
 	/**
