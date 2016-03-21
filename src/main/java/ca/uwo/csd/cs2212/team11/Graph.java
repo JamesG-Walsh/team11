@@ -2,17 +2,11 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Calendar;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,65 +20,36 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall, Dara Amin
  *
  */
-public class Graph extends javax.swing.JPanel implements Serializable
-{
-	private double[] data = new double[1440];
+public class Graph extends javax.swing.JPanel {
+	private int [] data;
 	private IDs type;
 	private int zoom = 1;
 	private int offset = 0;
-	private int spread = 4;
-	private int step;
+	private int spread = 6;
+	private int step = 16;
 	private int twentyFive, fifty, seventyFive;
-	private int legend = 400;
-	private JPanel paintPanel;
+	private int legend = 575;
+	private static int graphWidth = 650;
+	private static int graphHeight = 200;
+	private int endOfGraph = 534;
 
 	/**
 	 * Attach all methods in JPanel to our object
 	 */
-	public Graph(IDs type, User usr, Calendar workingDate)
-	{
+	public Graph(IDs type){
 		this.type = type;
-		
-		int year = workingDate.get(Calendar.YEAR);
-		int month = (workingDate.get(Calendar.MONTH) + 1);
-		int dayOfMonth = workingDate.get(Calendar.DAY_OF_MONTH);
-		
-		System.out.println("");
-		
-		//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(dayOfMonth, month, year);
-		//odwod.populateAllMins();
-		
-		switch(type)
-		{
+		switch(type){
 			case HEART_RATE:
-						
-				/*step = 16/zoom;				
-				HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
-				hrdod.populate();
-				
-				int[][] twoDArray = hrdod.getHeartRateByTheMin();
-				
-				for (int hour = 0, minOfDay = 0; hour < 24; hour ++)
-				{
-					for(int min = 0; min < 60 && minOfDay < 1440 ; min++, minOfDay++)
-					{
-						System.out.println("hour: " + hour + "\tmin: " + min + "\tminOfDay: " + minOfDay);
-						data[minOfDay] = twoDArray[hour][min];
-						System.out.print("\tvalue: " + data[minOfDay]);
-					}
-				}
-				
-				System.out.println(hrdod.toString());*/
-								
+				data = plot(getHRData());
 				break;
 			case CALORIES:
-				//data = normalizeData(SharedData.dummyCalories);
+				data = plot(normalizeData(getCaloriesData()));
 				break;
 			case STEPS:
-				//data = normalizeData(SharedData.dummySteps);	
+				data = plot(normalizeData(getStepsData()));
 				break;
 			case DISTANCE:
-				//data = normalizeData(SharedData.dummyDistance);
+				data = plot(normalizeData(getDistanceData()));
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
@@ -97,8 +62,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
-		this.setPreferredSize(new Dimension(450, 200));
-		this.setMinimumSize(new Dimension(450, 200));
+		this.setSize(graphWidth, graphHeight);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		
@@ -106,7 +70,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		else { paintGraph(this.type, g);	}
 //		this.repaint();
 		JPanel mouseListenerPanel = new JPanel();
-		mouseListenerPanel.setSize(450, 200);
+		mouseListenerPanel.setSize(graphWidth, graphHeight);
 		mouseListenerPanel.setOpaque(false);
 		mouseListenerPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -114,14 +78,16 @@ public class Graph extends javax.swing.JPanel implements Serializable
 					if (zoom < 16){
 						updateOffset(e.getX(), zoom * 2);
 						zoom = zoom * 2;
-						step= 16/zoom;
+						step = 16 / zoom;
+						//System.err.println("zoom is now " + zoom + "\tstep is now " + step);
 					}
 				}
 				if(e.getButton() == MouseEvent.BUTTON3){
 					if (zoom > 1){
 						updateOffset(e.getX(), zoom / 2);
 						zoom = zoom / 2;
-						step = 16/zoom;
+						step = 16 / zoom;
+						//System.err.println("zoom is now " + zoom + "\tstep is now " + step);
 					}
 				}
 			}
@@ -133,45 +99,49 @@ public class Graph extends javax.swing.JPanel implements Serializable
 	 * For testing purposes..
 	 * @param args 
 	 */
-	public static void main (String[] args)
-	{
-		/*JFrame frame = new JFrame();
+	public static void main (String[] args){
+		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Graph g = new Graph(IDs.HEART_RATE);
+		Graph g = new Graph(IDs.CALORIES);
 		frame.add(g);
-		frame.setSize(500,200);
-		frame.setVisible(true);*/
+		frame.setSize(graphWidth, graphHeight);
+		frame.setVisible(true);
 
 	}
 	
 	private void paintHRGraph(Graphics g){
 		paintHRVerticleScale(g);
-		g.setColor(Color.RED);
-		for(int i = 0; i < data.length - (step + 1) ; i+= step){
-			if ((i * spread * zoom) + offset < 0) {	continue;	}
-			if (((i) * spread * zoom /step) + offset > 384) {	break;	}
-			
-			g.drawLine((i * spread * zoom /step) + offset, (int)data[i], ((i+step) * spread * zoom/step) + offset, (int)data[i+step]);
-			if ((i % 12) == 0 || ((zoom >= 8) && (i%4 == 0))){
-				g.setColor(Color.GRAY);
-				g.drawLine((i * spread * zoom/step) + offset, 200, (i * spread * zoom/step) + offset, 150);
-				String time = String.format("%02d:00", i/4);
-				g.drawString(time, (i*zoom*spread/step)+offset - 15, 195);
-				if ((i % 48) == 0){
-					g.setColor(Color.BLACK);
-					g.drawLine((i * spread * zoom/step) + offset, 200, (i * spread * zoom/step) + offset, 0);
+		
+		int plotPoint = this.offset;
+		int i = 0;
+		while(i + step < data.length){
+			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph){
+				if ((i/60) != (i+step)/60){ // falls on hour check for scale markers
+					if (zoom >= 8 || (i/60+1) %3 == 0){
+						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
+						g.setColor(Color.GRAY);
+						g.drawLine(plotPoint + fix, graphHeight, plotPoint + fix, graphHeight - 50);
+						String time = String.format("%02d:00", i/60 + 1);
+						g.drawString(time, plotPoint + fix - 15, graphHeight - 5);
+						if ((i/60+1) %12 == 0){
+							g.setColor(Color.BLACK);
+							g.drawLine(plotPoint + fix, 0, plotPoint + fix, graphHeight);
+						}
+					}
 				}
 				g.setColor(Color.RED);
+				g.drawLine(plotPoint, graphHeight - data[i], plotPoint + spread, graphHeight- data[i + step]);
 			}
-			g.drawLine((i * spread * zoom / step) + offset, (int)data[i], ((i+1) * spread * zoom /step) + offset, (int)data[i+1]);
+			plotPoint += spread;
+			i += step;
 		}
+		
 		g.setColor(Color.BLACK);
-		g.drawLine(384, 200, 384, 0);
+		g.drawLine(endOfGraph, 0, endOfGraph, graphHeight);
 
 	}
 	
 	private void paintHRVerticleScale(Graphics g){
-		int maxHR = getUsersMaxHR();
         
 		Graphics2D g2d = (Graphics2D) g.create();
 
@@ -180,31 +150,31 @@ public class Graph extends javax.swing.JPanel implements Serializable
         //draw 68 bpm (base healthy resting HR)
         g2d.setColor(Color.CYAN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, 200-68, 450, 200-68);
-        g.drawString("68 bpm", legend, 200-70);
+        g2d.drawLine(0, graphHeight-68, legend, graphHeight-68);
+        g.drawString("68 bpm", legend, graphHeight-63);
 
         //draw maximum HR line
         g2d.setColor(Color.BLUE.darker());
         g2d.setStroke(dashed);
-        g2d.drawLine(0, 200-maxHR, 450, 200-maxHR);
-        g.drawString("Max HR", legend, 200-maxHR);
-        g.drawString(maxHR + " bpm", legend, 200-(maxHR-10));
+        g2d.drawLine(0, graphHeight-getMaxCardioHR(), legend, graphHeight-getMaxCardioHR());
+        g.drawString(getMaxCardioHR() + " bpm", legend, graphHeight-(getMaxCardioHR()-5));
 
         //draw fat burn line
         g2d.setColor(Color.GREEN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, 200-((int)(maxHR*.65)), 450, 200-((int)(maxHR*.65)));
-        g.drawString("FatBurn", legend, 200-((int)(maxHR*.65)));
-        g.drawString(((int)(maxHR*.65)) + " bpm", legend, 200-(((int)(maxHR*.65))-10));
+        g2d.drawLine(0, graphHeight-getMaxRestingHR(), legend, graphHeight-getMaxRestingHR());
+        g.drawString(getMaxRestingHR() + " bpm", legend, graphHeight-(getMaxRestingHR()-5));
 
         //draw cardio line
         g2d.setColor(Color.BLUE);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, 200-((int)(maxHR*.8)), 450, 200-((int)(maxHR*.8)));
-        g.drawString("Cardio", legend, 200-((int)(maxHR*.8)));
-        g.drawString((int)(maxHR*.8) + " bpm", legend, 200-((int)(maxHR*.8)-10));
+        g2d.drawLine(0, graphHeight-getMaxFatBurnHR(), legend, graphHeight-getMaxFatBurnHR());
+        g.drawString(getMaxFatBurnHR() + " bpm", legend, graphHeight-(getMaxFatBurnHR()-5));
 
-        
+        g.drawString("Peak", endOfGraph + 1, (graphHeight - getMaxCardioHR())/2 + 5);
+        g.drawString("FatBurn", endOfGraph + 1, ((graphHeight-getMaxFatBurnHR()) + (graphHeight - getMaxRestingHR())) /2 + 5);
+        g.drawString("Cardio", endOfGraph + 1, ((graphHeight-getMaxFatBurnHR()) + (graphHeight - getMaxCardioHR())) /2 + 5);
+        g.drawString("Resting", endOfGraph + 1, graphHeight - (getMaxRestingHR() /2));
         //gets rid of the copy
         g2d.dispose();
 	}
@@ -219,40 +189,47 @@ public class Graph extends javax.swing.JPanel implements Serializable
         //draw scale lines at 25, 50 and 75%
         g2d.setColor(Color.CYAN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, 150, 450, 150);
+        g2d.drawLine(0, (int)(graphHeight * .75), graphWidth, (int)(graphHeight * .75));
         g2d.setColor(Color.GREEN);
-        g2d.drawLine(0, 100, 450, 100);
+        g2d.drawLine(0, (int)(graphHeight * .5), graphWidth, (int)(graphHeight * .5));
         g2d.setColor(Color.BLUE);
-        g2d.drawLine(0, 50, 450, 50);
+        g2d.drawLine(0, (int)(graphHeight * .25), graphWidth, (int)(graphHeight * .25));
         g2d.dispose();
         
         // label scale lines
-        g.drawString(twentyFive + "", legend, 150);
-        g.drawString(fifty + "", legend, 100);
-        g.drawString(seventyFive + "", legend, 50);
+        g.drawString(twentyFive + "", legend, (int)(graphHeight*.75));
+        g.drawString(fifty + "", legend, (int)(graphHeight*.5));
+        g.drawString(seventyFive + "", legend, (int)(graphHeight*.25));
         
-		g.setColor(Color.RED);
-		for(int i = 0; i < data.length -1; i++){
-			if ((i * spread * zoom) + offset < 0) {	continue;	}
-			if (((i+1) * spread * zoom) + offset > 384) {	break;	}
-			if ((i % 12) == 0 || ((zoom >= 8) && (i%4 == 0))){
-				g.setColor(Color.GRAY);
-				g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 150);
-				String time = String.format("%02d:00", i/4);
-				g.drawString(time, (i*zoom*spread)+offset - 15, 195);
-				if ((i % 48) == 0){
-					g.setColor(Color.BLACK);
-					g.drawLine((i * spread * zoom) + offset, 200, (i * spread * zoom) + offset, 0);
+		int plotPoint = this.offset;
+		int i = 0;
+		while(i + step < data.length){
+			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph){
+				if ((i/60) != (i+step)/60){ // falls on hour check for scale markers
+					if (zoom >= 8 || (i/60+1) %3 == 0){
+						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
+						g.setColor(Color.GRAY);
+						g.drawLine(plotPoint + fix, graphHeight, plotPoint + fix, graphHeight - 50);
+						String time = String.format("%02d:00", i/60 + 1);
+						g.drawString(time, plotPoint + fix - 15, graphHeight - 5);
+						if ((i/60+1) %12 == 0){
+							g.setColor(Color.BLACK);
+							g.drawLine(plotPoint + fix, 0, plotPoint + fix, graphHeight);
+						}
+					}
 				}
 				g.setColor(Color.RED);
+				g.drawLine(plotPoint, graphHeight - data[i], plotPoint + spread, graphHeight- data[i + step]);
 			}
-			g.drawLine((i * spread * zoom) + offset,(int) data[i], ((i+1) * spread * zoom) + offset, (int)data[i+1]);
+			plotPoint += spread;
+			i += step;
 		}
+		
 		g.setColor(Color.BLACK);
-		g.drawLine(384, 200, 384, 0);
+		g.drawLine(endOfGraph, 0, endOfGraph, graphHeight);
 	}
 	
-	private int[] normalizeData(int[] array){
+	private double[] normalizeData(double[] array){
 		double maxVal = 0;
 		for (int i = 0; i < array.length; i++){
 			if(array[i] > maxVal) {	maxVal = array[i];	}
@@ -262,39 +239,54 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		this.seventyFive = (int) Math.round(maxVal * 0.75);
 		maxVal = maxVal * 1.1;
 		for (int i = 0; i < array.length; i++){
-			array[i] = (int)Math.round(array[i] / maxVal * 200);
+			array[i] = Math.round(array[i] / maxVal * 200);
 		}
 		return array;
 	}
 	
+	private int[] plot(double[] array){
+		int [] newArray = new int[array.length];
+		for (int i = 0; i < array.length; i++){
+			newArray[i] = (int)Math.round(array[i]);
+		}
+		return newArray;
+	}
+	
+	
 	private void updateOffset(int x, int newZoom){
-		// find which data point is at center of zoom rounds down
-		int element = (int) ((x - this.offset) / (this.spread * this.zoom));
-		this.offset = 192 - (element * this.spread * newZoom);
-		
-		//keep offset to either start or end at an edge
-		if (this.offset > 0) { this.offset = 0;	}
-		if ((this.offset + (data.length * this.spread * newZoom)) < 384){
-			this.offset = 384 - (data.length * this.spread * newZoom);
-		}
+		if (x > endOfGraph) {	x = endOfGraph;	}
+		if (newZoom > this.zoom){		this.offset = this.offset - (x * newZoom/2); 	}
+		if (newZoom < this.zoom){		this.offset = this.offset + (x * newZoom);	}
+		if (newZoom == 1) {	this.offset = 0;	}
+		//System.err.println("x is " + x +"\toffset resolves to " + offset);
 	}
 	
-	private int getUsersMaxHR(){
-		return 180;
+	
+	private int getMaxRestingHR(){
+		return 114;
 	}
 	
-	/**
-	 * Converts per-minute fitness data to total-so-far fitness data for graphical display.
-	 */ 
-	private void dataToCumulative() {
-		int numPoints = data.length;
-		if ( numPoints > 0 ) {
-			int[] dataCum = new int[numPoints]; /* cumulative values of data */
-			dataCum[0] = (int)data[0];
-			for ( int i = 1; i < numPoints; i++) {
-				dataCum[i] = dataCum[i-1] + (int)data[i];
-			}
-	//		data = (double[])dataCum; 
-		}
+	private int getMaxFatBurnHR(){
+		return 144;
+	}
+	
+	private int getMaxCardioHR(){
+		return 160;
+	}
+	
+	private double[] getHRData(){
+		return SharedData.newBigD;
+	}
+
+	private double[] getCaloriesData(){
+		return SharedData.newBigD;
+	}
+
+	private double[] getStepsData(){
+		return SharedData.newBigD;
+	}
+	
+	private double[] getDistanceData(){
+		return SharedData.newBigD;
 	}
 }
