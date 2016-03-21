@@ -93,8 +93,11 @@ public class DeskTop extends JFrame implements Serializable
 		this.setWorkingDate();
 
 		Calendar time = this.getWorkingDate();
+		int year = time.get(Calendar.YEAR);
+		int month = (time.get(Calendar.MONTH) + 1);
+		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
-		System.out.println("Using working date---  " +this.getWorkingDate().get(Calendar.DAY_OF_MONTH) + " " + this.getWorkingDate().get(Calendar.MONTH + 1) +" "+ this.getWorkingDate().get(Calendar.YEAR));
+		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
 		usr = new User();
 		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
@@ -103,17 +106,17 @@ public class DeskTop extends JFrame implements Serializable
 
 		System.out.println("Here");
 
-		if(Team11_FitBitViewer.testFlag){
-
+		if(Team11_FitBitViewer.testFlag)
+		{
 			System.out.println("Other things");
-			
-
-		}else{
+		}
+		else
+		{
 			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(time.get(Calendar.DAY_OF_MONTH), time.get(Calendar.MONTH), time.get(Calendar.YEAR));
-			System.out.println(odwod.toString(false));
+			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
+			//System.out.println(odwod.toString(false));
 		}
 
 		//odwod.populateTotals();
@@ -126,7 +129,7 @@ public class DeskTop extends JFrame implements Serializable
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(usr, getWorkingDate(),IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
 
-		//		System.out.println(System.getProperty("user.dir"));
+		//System.out.println(System.getProperty("user.dir"));
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
@@ -224,7 +227,7 @@ public class DeskTop extends JFrame implements Serializable
 			//this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
-   			time.setTime(date);
+			time.setTime(date);
 
 			System.out.println( "TIME- " + time.get(Calendar.DAY_OF_MONTH) + " " +time.get(Calendar.MONTH + 1) +" "+time.get(Calendar.YEAR));
 			int year = time.get(Calendar.YEAR);
@@ -239,7 +242,7 @@ public class DeskTop extends JFrame implements Serializable
 			this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
-   			time.setTime(date);
+			time.setTime(date);
 
 			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
@@ -315,8 +318,9 @@ public class DeskTop extends JFrame implements Serializable
 		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
+		System.out.println(this.workingDate.toString());
 		//Date date = new Date(116, 02, 1);
-   		//this.workingDate.setTime(date);
+		//this.workingDate.setTime(date);
 	}
 
 	/**
@@ -389,9 +393,9 @@ public class DeskTop extends JFrame implements Serializable
 		dateLabel.setForeground(new Color(255,255,255));
 		datePanel.add(dateLabel);
 
-		 
 
-        //datePanel.add(conn);
+
+		//datePanel.add(conn);
 
 		JButton refreshButton = new JButton("Refresh Data");
 		refreshButton.addMouseListener(new MouseAdapter(){
@@ -400,7 +404,7 @@ public class DeskTop extends JFrame implements Serializable
 				System.out.println(select.getDate());
 			}
 		});
-		
+
 		refreshButton.setToolTipText("Click to refresh data");
 		datePanel.add(refreshButton);  
 
@@ -410,24 +414,24 @@ public class DeskTop extends JFrame implements Serializable
 
 		JDatePickerImpl datePicker;
 
-		 Properties p = new Properties();
-			p.put("text.today", "Today");
-			p.put("text.month", "Month");
-			p.put("text.year", "Year");
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
 
-	
+
 
 		UtilDateModel model=new UtilDateModel();
-      	JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        datePicker.setSize(50,50);
-        a.add(datePicker);
+		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		datePicker.setSize(50,50);
+		a.add(datePicker);
 
-        select = new SelectDate(refreshButton, datePicker);
+		select = new SelectDate(refreshButton, datePicker);
 
 
 	}
-	
+
 
 	private void populateEastPanel(JPanel a){
 		a.setOpaque(false);
