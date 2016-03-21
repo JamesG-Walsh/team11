@@ -56,7 +56,7 @@ public class DeskTop extends JFrame implements Serializable
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
 	private boolean[] graphVisible = {false, false, false, false, false, false, false};
-
+	private SelectDate select;
 	private Calendar workingDate;
 
 	private User usr;
@@ -92,6 +92,9 @@ public class DeskTop extends JFrame implements Serializable
 		activeChart = new PieChart();
 		this.setWorkingDate();
 
+		Calendar time = this.getWorkingDate();
+
+		System.out.println("Using working date---  " +this.getWorkingDate().get(Calendar.DAY_OF_MONTH) + " " + this.getWorkingDate().get(Calendar.MONTH + 1) +" "+ this.getWorkingDate().get(Calendar.YEAR));
 		usr = new User();
 		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
@@ -109,7 +112,8 @@ public class DeskTop extends JFrame implements Serializable
 			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(1, 3, 2016 );
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(time.get(Calendar.DAY_OF_MONTH), time.get(Calendar.MONTH), time.get(Calendar.YEAR));
+			System.out.println(odwod.toString(false));
 		}
 
 		//odwod.populateTotals();
@@ -208,23 +212,36 @@ public class DeskTop extends JFrame implements Serializable
 	/**
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
-	private void refreshData()
+	private void refreshData(Date date)
 	{
 
 		if(Team11_FitBitViewer.testFlag)
 		{
 			System.err.println("DeskTop.refreshData() called");
 			System.err.println("\t***Does nothing yet");
+
+			System.out.println("Starting live call of refreshData();");
+			//this.setWorkingDate();
+			Calendar time =  Calendar.getInstance();
+			//Date date = new Date(116, 02, 3);
+   			time.setTime(date);
+
+			System.out.println( "TIME- " + time.get(Calendar.DAY_OF_MONTH) + " " +time.get(Calendar.MONTH + 1) +" "+time.get(Calendar.YEAR));
+			int year = time.get(Calendar.YEAR);
+			int month = time.get(Calendar.MONTH);
+			int day = time.get(Calendar.DAY_OF_MONTH);
+
+			System.out.println(year);
 		}
 		else
 		{
 			System.out.println("Starting live call of refreshData();");
 			this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
-			Date date = new Date(116, 02, 3);
+			//Date date = new Date(116, 02, 3);
    			time.setTime(date);
 
-			System.out.println( time.DAY_OF_MONTH + (time.MONTH + 1) + time.YEAR );
+			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
 			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
@@ -298,8 +315,8 @@ public class DeskTop extends JFrame implements Serializable
 		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
-		Date date = new Date(116, 02, 1);
-   		this.workingDate.setTime(date);
+		//Date date = new Date(116, 02, 1);
+   		//this.workingDate.setTime(date);
 	}
 
 	/**
@@ -379,7 +396,8 @@ public class DeskTop extends JFrame implements Serializable
 		JButton refreshButton = new JButton("Refresh Data");
 		refreshButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				refreshData();
+				refreshData(select.returnDate());
+				System.out.println(select.getDate());
 			}
 		});
 		
@@ -405,7 +423,9 @@ public class DeskTop extends JFrame implements Serializable
         datePicker.setSize(50,50);
         a.add(datePicker);
 
-        SelectDate select = new SelectDate(refreshButton, datePicker);
+        select = new SelectDate(refreshButton, datePicker);
+
+
 	}
 	
 
