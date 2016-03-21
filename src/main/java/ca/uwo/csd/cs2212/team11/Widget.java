@@ -73,16 +73,22 @@ public class Widget extends JPanel implements Serializable{
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Distance Travelled";
 				this.units = "yards";
+				hintLabel = new JLabel("Click to Change View");
+				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case CLIMB:
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Floors Climbed";
 				this.units = "Floors";
+				hintLabel = new JLabel("Click to Change View");
+				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case STEPS:
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Steps Taken";
 				this.units = "steps";
+				hintLabel = new JLabel("Click to Change View");
+				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case ACTIVE:
 				this.typeName = "Minutes of Activity";
@@ -101,7 +107,6 @@ public class Widget extends JPanel implements Serializable{
 		}
 		
 		content.add(new JLabel(typeName), BorderLayout.NORTH);
-		hintLabel = new JLabel("Click to Change View");
 		viewLabel = new JLabel();
 		dataBox.setEditable(false);
 
@@ -113,7 +118,6 @@ public class Widget extends JPanel implements Serializable{
 			}
 		});
 
-		content.add(hintLabel, BorderLayout.SOUTH);
 		//changeView(0);
 		switch(type){
 			case CALORIES:
