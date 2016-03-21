@@ -27,24 +27,22 @@ public class Team11_FitBitViewer implements Serializable
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
-
-		
-
-
-		if(args.length >= 1 && args[0].equals("test")){
-
+		if(args.length >= 1 && args[0].equals("test"))
+		{
 			System.out.println("Running in test mode ......");
 			testFlag = true;
+		}
+		else
+		{
+			System.out.println("Running in live mode.....");
+		}
 			GUI = new DeskTop();
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
 			//Accolades acc = new Accolades();
 			//acc.checkAccolades(GUI, hfd);
-		}
-		else
-		{
 			//hfd = new HistoricalFitnessData();
-			System.out.println("Running in live mode.....");
+			
 			
 			//User usrs = new User();
 
@@ -56,8 +54,6 @@ public class Team11_FitBitViewer implements Serializable
 
 			//hfd.populateLifetimeAndBestDays();
 						
-			GUI = new DeskTop();
-			GUI.setVisible(true);
 			//System.out.println(odwod.toString(false));
 			//GUI = new DeskTop();			
 			
@@ -83,10 +79,6 @@ public class Team11_FitBitViewer implements Serializable
 			//System.out.println(hrdod.toString());
 
 			
-
-
-
-
 		/*	try
 			{
 				odwod.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(h.getSpecificDataDailyTotal("floors", "2016-03-01")));
@@ -137,6 +129,6 @@ public class Team11_FitBitViewer implements Serializable
 					System.out.print("\t|||" + "active mins: " + odwod.getActiveMinsByTheMin()[hour][min]);
 				}
 			}*/
-		}//end of live run (no argument passed in command line)
+		
 	}//end of main method
 }//end of class

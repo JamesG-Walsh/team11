@@ -1,42 +1,37 @@
 package ca.uwo.csd.cs2212.team11;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
+import java.util.Calendar; 
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
+import java.awt.Color;
 
 /**
  * Creates components that are added/removed on dashboard that contain the users activity data
  * @author Andrew Hall
  * 
  */
-public class Widget extends JPanel implements Serializable{
-	/*private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
-		"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
-		"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};*/
+public class Widget extends JPanel{
 	private static final String[] views = {"<html>Daily</html>",
-		"<html>Record</html>", 
-		"<html>Lifetime</html>"};
+											"<html>Record</html>", 
+											"<html>Lifetime</html>"};
 	private int goals = 0;
 	private int currentView = 0;
 	private int maxView = 3;
-	private String units, typeName;
+	private String units, typeName, altUnit, stash;
 	private JLabel hintLabel, viewLabel;
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
+
 	private IDs typeLive;
 	private User user;
 	private Calendar calen;
@@ -49,7 +44,8 @@ public class Widget extends JPanel implements Serializable{
 	 * Widget class constructor
 	 * @param type	the type of the widget
 	 */
-	public Widget(User usr, Calendar cal, IDs type){
+	public Widget(User usr, Calendar cal, IDs type)
+	{
 		super();
 		user = usr;
 		calen = cal;
@@ -61,25 +57,35 @@ public class Widget extends JPanel implements Serializable{
 		this.setPreferredSize(new Dimension(150, 150));
 		content.setLayout(new BorderLayout(1,1));
 		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		
+		//this.setBackground(new Color(0,0,0,0));
 		content.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
 		this.add(content);
-
+		
 		switch(type){
 			case CALORIES:
 				this.typeName = "Calories Burned";
 				this.units = "calories";
+				//this.maxView = 2;
+				//data = getData(type);
+				this.altUnit = "Joules";
 				break;
 			case DISTANCE:
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Distance Travelled";
-				this.units = "yards";
+				this.units = "km";
+				//data = getDistanceData(type);
+				this.altUnit = "miles";
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
+
 				break;
 			case CLIMB:
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Floors Climbed";
 				this.units = "Floors";
+				//data = getFloorsData(type);
+
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
@@ -87,36 +93,53 @@ public class Widget extends JPanel implements Serializable{
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Steps Taken";
 				this.units = "steps";
+				//data = getData(type);
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case ACTIVE:
 				this.typeName = "Minutes of Activity";
 				this.units = "minutes";
+				//this.maxView = 2;
+				//data = getActiveMinData(type);
 				break;
 			case SEDENTARY:
 				this.typeName = "Minute of Inactivity";
 				this.units = "minutes";
+				//this.maxView = 2;
+				//data = getSedData(type);
 				break;
 			case HEART_RATE:
 				this.typeName = "Heart Rate";
 				this.units = "bpm";
+				//this.maxView = 1;
+				//data = getData(type);
 				break;
 			default:
 				typeName = "Undefined Widget";
 		}
 		
+/*<<<<<<< HEAD
+		display.add(new JLabel(typeName), BorderLayout.NORTH);
+		hintLabel = new JLabel("Single view Widget");
+		if (this.maxView > 1){		hintLabel.setText("Click Widget to Change View"); 	}
+=======*/
 		content.add(new JLabel(typeName), BorderLayout.NORTH);
 		viewLabel = new JLabel();
 		dataBox.setEditable(false);
-
 		dataBox.setOpaque(false);
+//		dataBox.setBackground(new Color(0, 0, 0)); does someone want this changed to black???
 		dataBox.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
-				source.getParent().dispatchEvent(e);
+				if(e.getButton() == MouseEvent.BUTTON1){		
+					source.getParent().dispatchEvent(e);	
+					} 	
 			}
 		});
+
+		//display.add(hintLabel, BorderLayout.SOUTH);
+		//changeView(0);
 
 		//changeView(0);
 		switch(type){
@@ -129,7 +152,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getDistanceData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
@@ -138,7 +161,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getFloorsData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 				}
 				break;
 			case STEPS:
@@ -146,7 +169,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getData(type);
 					changeView(currentView);	
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 					
@@ -156,7 +179,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
@@ -165,7 +188,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getSedData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
@@ -180,7 +203,7 @@ public class Widget extends JPanel implements Serializable{
 		content.add(dataBox, BorderLayout.CENTER);
 		content.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				
+
 				//source.getParent().repaint();
 				// source.getParent().revalidate();
 				/*dataBox.revalidate();
@@ -201,23 +224,22 @@ public class Widget extends JPanel implements Serializable{
 
 				revalidate();
 				repaint();
+
 			}
 		});
 
 	}
 	
-
 	/**
 	 * change view to specific data
 	 * @param i the index of a given data type
 	 */     
 	private void changeView(int i) {
-		
-		System.out.println("currentView :" + i);
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
 	}
 
+	
 	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
 
 		int year = cal.get(Calendar.YEAR);
@@ -320,16 +342,16 @@ public class Widget extends JPanel implements Serializable{
 		return SharedData.base_array;
 	}
 	
-	private int[] getStepsData(IDs type) {
+	/*private int[] getStepsData(IDs type) {
 		return SharedData.steps_Data;
-	}
+	}*/
 	
 	/**
 	 * Get sedentary canned data
 	 * @param type -- 
 	 * @return sedentary data
 	 */
-	private int[] getSedData(IDs type) {
+	private int[] getSedData(IDs type) { // what is the purpose of the arg????
 		return SharedData.sedentary_Data;
 	}
 	
