@@ -1,7 +1,7 @@
 package ca.uwo.csd.cs2212.team11;
 import java.io.Serializable;
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 import ca.uwo.csd.cs2212.team11.DeskTop;
 import ca.uwo.csd.cs2212.team11.OneDaysWorthOfData;
 import ca.uwo.csd.cs2212.team11.User;
@@ -25,7 +25,7 @@ public class Team11_FitBitViewer implements Serializable
 	 * @param args				"test" if in test mode (passed from command line)
 	 * @throws JSONException 
 	 */
-	public static void main(String[] args) throws JSONException 
+	public static void main(String[] args) //throws JSONException 
 	{
 
 		

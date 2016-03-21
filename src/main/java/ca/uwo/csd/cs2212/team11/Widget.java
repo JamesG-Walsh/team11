@@ -37,7 +37,7 @@ public class Widget extends JPanel{
 	public Widget(IDs type){
 		super();
 		this.setLayout(new BoxLayout(this, 1));
-		this.setPreferredSize(new Dimension(200, 200));
+		this.setPreferredSize(new Dimension(150, 150));
 		JPanel display = new JPanel();
 		display.setLayout(new BorderLayout(1,1));
 		display.setBackground(SharedData.COLOR_SET[type.ordinal()]);

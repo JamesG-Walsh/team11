@@ -2,6 +2,7 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -38,6 +39,12 @@ public class Graph extends javax.swing.JPanel {
 	 */
 	public Graph(IDs type){
 		this.type = type;
+//		this.setOpaque(false);
+		this.setBackground(Color.WHITE);
+		this.setPreferredSize(new Dimension(graphWidth, graphHeight));
+		this.setMinimumSize(new Dimension(graphWidth, graphHeight));
+		this.setMaximumSize(new Dimension(graphWidth, graphHeight));
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		switch(type){
 			case HEART_RATE:
 				data = plot(getHRData());
@@ -61,9 +68,6 @@ public class Graph extends javax.swing.JPanel {
 	 */
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.setBackground(Color.WHITE);
-		this.setSize(graphWidth, graphHeight);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		
 		if (type == IDs.HEART_RATE)	{	paintHRGraph(g);	}
@@ -144,7 +148,6 @@ public class Graph extends javax.swing.JPanel {
 	private void paintHRVerticleScale(Graphics g){
         
 		Graphics2D g2d = (Graphics2D) g.create();
-
         Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         
         //draw 68 bpm (base healthy resting HR)

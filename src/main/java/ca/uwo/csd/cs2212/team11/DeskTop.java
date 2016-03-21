@@ -2,6 +2,7 @@ package ca.uwo.csd.cs2212.team11;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -90,8 +91,10 @@ public class DeskTop extends JFrame{
 		widgetPanel = new JPanel();
 		widgetPanel.setOpaque(false);
 		graphsPanel = new JPanel();
-		graphsPanel.setLayout(new BoxLayout(graphsPanel, 1));
-		graphsPanel.setMinimumSize(new Dimension(200, 650));
+		graphsPanel.setLayout(new GridLayout(1,1));
+		graphsPanel.setPreferredSize(new Dimension(650, 205));
+		graphsPanel.setMinimumSize(new Dimension(650, 205));
+		graphsPanel.setMaximumSize(new Dimension (650, 205));
 		graphsPanel.setOpaque(false);
 		centerPanel.add(widgetPanel);
 		centerPanel.add(graphsPanel);
@@ -112,24 +115,51 @@ public class DeskTop extends JFrame{
 	 * @param steps -- Data that will be plugged into the graph for steps
 	 */
 	protected void addRemoveGraph(IDs type) {
-//		System.err.println("DeskTop.addRemoveGraph() called");
+//		System.err.println("DeskTop.addRemoveGraph("+ type.name()+") called");
 //		System.err.println("\t***Does nothing yet");
-		removeVisibleGraphs();
+
 		if (type == IDs.ACTIVE){
+			if(activeChartVisible == true){
+				activeChartVisible = false;
+				graphsPanel.remove(activeChart);
+			}else{
+				removeVisibleGraphs();
 				activeChartVisible = true;
+				activeChart.setVisible(true);
 				graphsPanel.add(activeChart);
+			}
 		}else{
+			if(graphVisible[type.ordinal()] == true){
+				graphVisible[type.ordinal()] = false;
+				graphsPanel.remove(allGraphs[type.ordinal()]);
+			}else{
+				removeVisibleGraphs();
 				graphVisible[type.ordinal()] = true;
+				allGraphs[type.ordinal()].setVisible(true);
 				graphsPanel.add(allGraphs[type.ordinal()]);
+			}
 		}
 		graphsPanel.revalidate();
+		validate();
 		repaint();
 	}
 	
 	private void addRemoveCGraph(IDs type){
-//		System.err.println("DeskTop.addRemoveGraph() called");
+//		System.err.println("DeskTop.addRemoveCGraph("+ type.name()+") called");
 //		System.err.println("\t***Does nothing yet");
-		removeVisibleGraphs();
+		if(cGraphVisible[type.ordinal()] == true){
+			cGraphVisible[type.ordinal()] = false;
+			allCGraphs[type.ordinal()].setVisible(false);
+			graphsPanel.remove(allCGraphs[type.ordinal()]);
+		}else{
+			removeVisibleGraphs();
+			cGraphVisible[type.ordinal()] = true;
+			allCGraphs[type.ordinal()].setVisible(true);
+			graphsPanel.add(allCGraphs[type.ordinal()]);
+		}
+		graphsPanel.revalidate();
+		validate();
+		repaint();
 	}
 	
 	/**
@@ -404,14 +434,8 @@ public class DeskTop extends JFrame{
 			a.add(navBtn);
 
 			
-			navBtn = new ImagePanel("graph2.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveCGraph(IDs.ACTIVE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
+			a.add(Box.createHorizontalBox());
+
 			
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
@@ -446,15 +470,7 @@ public class DeskTop extends JFrame{
 			a.add(navBtn);
 
 			
-			
-			navBtn = new ImagePanel("graph2.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveCGraph(IDs.HEART_RATE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
+			a.add(Box.createHorizontalBox());
 			
 			navBtn = new ImagePanel("graph.png");
 			navBtn.addMouseListener(new MouseAdapter(){
@@ -499,19 +515,23 @@ public class DeskTop extends JFrame{
 	}
 	
 	private void removeVisibleGraphs(){
+//		System.err.println("DeskTop.removeVisibleGraphs() called");
 		if(activeChartVisible == true){
 			activeChartVisible = false;
+			activeChart.setVisible(false);
 			graphsPanel.remove(activeChart);
 		}
 		for(IDs x : SharedData.IDs.values()){
 			if(graphVisible[x.ordinal()] == true){
 				graphVisible[x.ordinal()] = false;
+				allGraphs[x.ordinal()].setVisible(false);
 				graphsPanel.remove(allGraphs[x.ordinal()]);
 			}
 		}
 		for(IDs y : SharedData.IDs.values()){
 			if(cGraphVisible[y.ordinal()] == true){
 				cGraphVisible[y.ordinal()] = false;
+				allCGraphs[y.ordinal()].setVisible(false);
 				graphsPanel.remove(allCGraphs[y.ordinal()]);
 			}
 		}
