@@ -21,9 +21,9 @@ import java.awt.Color;
  * 
  */
 public class Widget extends JPanel{
-	private static final String[] views = {"<html>D<br/>a<br/>i<br/>l<br/>y</html>",
-											"<html>R<br/>e<br/>c<br/>o<br/>r<br/>d</html>", 
-											"<html>L<br/>i<br/>f<br/>e<br/>t<br/>i<br/>m<br/>e</html>"};
+	private static final String[] views = {"<html>Daily</html>",
+											"<html>Record</html>", 
+											"<html>Lifetime</html>"};
 	private int goals = 0;
 	private int currentView = 0;
 	private int maxView = 3;
@@ -44,7 +44,8 @@ public class Widget extends JPanel{
 	 * Widget class constructor
 	 * @param type	the type of the widget
 	 */
-	public Widget(IDs type){
+	public Widget(User usr, Calendar cal, IDs type)
+	{
 		super();
 		user = usr;
 		calen = cal;
@@ -53,28 +54,27 @@ public class Widget extends JPanel{
 		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
-		this.setPreferredSize(new Dimension(200, 200));
-		JPanel display = new JPanel();
-		display.setLayout(new BorderLayout(1,1));
-		display.setBackground(SharedData.COLOR_SET[type.ordinal()]);
+		this.setPreferredSize(new Dimension(150, 150));
+		content.setLayout(new BorderLayout(1,1));
+		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
 		
 		//this.setBackground(new Color(0,0,0,0));
-		display.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
-		this.add(display);
+		content.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
+		this.add(content);
 		
 		switch(type){
 			case CALORIES:
 				this.typeName = "Calories Burned";
 				this.units = "calories";
-				this.maxView = 2;
-				data = getData(type);
+				//this.maxView = 2;
+				//data = getData(type);
 				this.altUnit = "Joules";
 				break;
 			case DISTANCE:
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Distance Travelled";
 				this.units = "km";
-				data = getDistanceData(type);
+				//data = getDistanceData(type);
 				this.altUnit = "miles";
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
@@ -84,7 +84,7 @@ public class Widget extends JPanel{
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Floors Climbed";
 				this.units = "Floors";
-				data = getFloorsData(type);
+				//data = getFloorsData(type);
 
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
@@ -93,27 +93,27 @@ public class Widget extends JPanel{
 				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Steps Taken";
 				this.units = "steps";
-				data = getData(type);
+				//data = getData(type);
 				hintLabel = new JLabel("Click to Change View");
 				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case ACTIVE:
 				this.typeName = "Minutes of Activity";
 				this.units = "minutes";
-				this.maxView = 2;
-				data = getActiveMinData(type);
+				//this.maxView = 2;
+				//data = getActiveMinData(type);
 				break;
 			case SEDENTARY:
 				this.typeName = "Minute of Inactivity";
 				this.units = "minutes";
-				this.maxView = 2;
-				data = getSedData(type);
+				//this.maxView = 2;
+				//data = getSedData(type);
 				break;
 			case HEART_RATE:
 				this.typeName = "Heart Rate";
 				this.units = "bpm";
-				this.maxView = 1;
-				data = getData(type);
+				//this.maxView = 1;
+				//data = getData(type);
 				break;
 			default:
 				typeName = "Undefined Widget";
@@ -132,12 +132,14 @@ public class Widget extends JPanel{
 		dataBox.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
-				if(e.getButton() == MouseEvent.BUTTON1){		source.getParent().dispatchEvent(e);	} 	
+				if(e.getButton() == MouseEvent.BUTTON1){		
+					source.getParent().dispatchEvent(e);	
+					} 	
 			}
 		});
 
-		display.add(hintLabel, BorderLayout.SOUTH);
-		changeView(0);
+		//display.add(hintLabel, BorderLayout.SOUTH);
+		//changeView(0);
 
 		//changeView(0);
 		switch(type){
@@ -197,9 +199,9 @@ public class Widget extends JPanel{
 			default:
 				typeName = "Undefined Widget";
 		}
-		display.add(viewLabel, BorderLayout.WEST);
-		display.add(dataBox, BorderLayout.CENTER);
-		display.addMouseListener(new MouseAdapter(){
+		content.add(viewLabel, BorderLayout.WEST);
+		content.add(dataBox, BorderLayout.CENTER);
+		content.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 
 				//source.getParent().repaint();

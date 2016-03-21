@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.awt.Dimension;
 
 import java.io.Serializable;
@@ -42,7 +43,7 @@ import java.util.Calendar;
 public class DeskTop extends JFrame{
 
 	private Widget[] all_widgets = new Widget[7];	
-	private boolean[] widgetVisible = {false, false, false, false, false, false, false};
+	private boolean[] widgetVisible; /*= {false, false, false, false, false, false, false};*/
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel, graphsPanel, centerPanel;
 	private JLabel goalsListLabel, dateLabel, awardsListLabel;
 	private PieChart activeChart;
@@ -61,14 +62,26 @@ public class DeskTop extends JFrame{
 	public DeskTop(){
 	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		Serialize r = new Serialize();
+		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				Serialize writeTo = new Serialize();
+				writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
+				System.exit(0);
+			}
+		});
+		
+/*		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
 		all_widgets[IDs.CLIMB.ordinal()] = new Widget(IDs.CLIMB);
 		all_widgets[IDs.STEPS.ordinal()] = new Widget(IDs.STEPS);
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
-		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
+		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);*/
 		activeChart = new PieChart();
 
 		this.setWorkingDate();
@@ -80,10 +93,12 @@ public class DeskTop extends JFrame{
 
 		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
 		usr = new User();
-		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, usr, this.getWorkingDate());
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, usr, this.getWorkingDate());*/
+		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+		
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 2016, 3, 17);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
 		System.out.println("Here");
 
@@ -145,6 +160,16 @@ public class DeskTop extends JFrame{
 		graphsPanel.setOpaque(false);
 		centerPanel.add(widgetPanel);
 		centerPanel.add(graphsPanel);
+		
+		configWidgetVisibilityToUsersPref(IDs.CALORIES);
+		configWidgetVisibilityToUsersPref(IDs.CLIMB);
+		configWidgetVisibilityToUsersPref(IDs.ACTIVE);
+		configWidgetVisibilityToUsersPref(IDs.HEART_RATE);
+		configWidgetVisibilityToUsersPref(IDs.STEPS);
+		configWidgetVisibilityToUsersPref(IDs.SEDENTARY);
+		configWidgetVisibilityToUsersPref(IDs.DISTANCE);
+		
+		
 
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
@@ -252,7 +277,16 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
 		}
 	}
-	
+	private void configWidgetVisibilityToUsersPref(IDs type){
+		if(widgetVisible[type.ordinal()] == false){
+			widgetPanel.remove(all_widgets[type.ordinal()]);
+		}else{
+			all_widgets[type.ordinal()].setVisible(true);
+			widgetPanel.add(all_widgets[type.ordinal()]);
+		}
+		revalidate();
+		repaint();
+	}
 	/**
 	 * This button will remove the widget specified by parameter
 	 * @param type -- Type is the component (Calories, Distance ..etc)

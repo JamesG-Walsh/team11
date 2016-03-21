@@ -34,12 +34,12 @@ public class Graph extends javax.swing.JPanel
 	private static int graphWidth = 650;
 	private static int graphHeight = 200;
 	private int endOfGraph = 534;
-	
+
 	private HistoricalFitnessData hfd;
 	private int year;
 	private int month; //Jan = 1, Dec = 12
 	private int dayOfMonth; 
-	
+
 	/**
 	 * Attach all methods in JPanel to our object
 	 */
@@ -49,9 +49,10 @@ public class Graph extends javax.swing.JPanel
 		this.year = year;
 		this.month = month;
 		this.dayOfMonth = dayOfMonth;
-		
+
 		this.type = type;
-		switch(type){
+		switch(type)
+		{
 		case HEART_RATE:
 			data = plot(getHRData());
 			break;
@@ -257,7 +258,8 @@ public class Graph extends javax.swing.JPanel
 		return array;
 	}
 
-	private int[] plot(double[] array){
+	private int[] plot(double[] array)
+	{
 		int [] newArray = new int[array.length];
 		for (int i = 0; i < array.length; i++){
 			newArray[i] = (int)Math.round(array[i]);
@@ -309,17 +311,17 @@ public class Graph extends javax.swing.JPanel
 		{
 			double[][] in;
 			double[] out;
-			OneDaysWorthOfData odwod = hfd.retrieve2(year, month, dayOfMonth);
+			OneDaysWorthOfData odwod = hfd.retrieve2(dayOfMonth, month, year);
 			odwod.populateAllMins();
 			in = odwod.getDistanceByTheMin();
 			return this.convert2Dto1D(in);			
 		}
 	}
-	
+
 	private double[] convert2Dto1D(double[][] in)
 	{
 		double[] ret = new double[1440];
-		
+
 		for(int hour = 0, minOfDay=0 ; hour < 24 ; hour++)
 		{
 			for(int minOfHour = 0; minOfHour < 60; minOfHour++, minOfDay++)
