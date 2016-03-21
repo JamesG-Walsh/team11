@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -366,17 +367,9 @@ public class DeskTop extends JFrame implements Serializable
 		dateLabel.setForeground(new Color(255,255,255));
 		datePanel.add(dateLabel);
 
-		 JDatePickerImpl datePicker;
+		 
 
-		 Properties p = new Properties();
-			p.put("text.today", "Today");
-			p.put("text.month", "Month");
-			p.put("text.year", "Year");
-
-		 UtilDateModel model=new UtilDateModel();
-      	 JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        datePanel.add(datePicker);
+        //datePanel.add(conn);
 
 		JButton refreshButton = new JButton("Refresh Data");
 		refreshButton.addMouseListener(new MouseAdapter(){
@@ -391,15 +384,20 @@ public class DeskTop extends JFrame implements Serializable
 		a.add(datePanel);
 		a.add(Box.createHorizontalGlue());
 
-		// add widget button *** now redundant?????
-		ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
-		addWidgetButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				//addWidgetPanel();
-			}
-		});
-		addWidgetButton.setToolTipText("Click to add widget");
-		a.add(addWidgetButton);
+		JDatePickerImpl datePicker;
+
+		 Properties p = new Properties();
+			p.put("text.today", "Today");
+			p.put("text.month", "Month");
+			p.put("text.year", "Year");
+
+	
+
+		UtilDateModel model=new UtilDateModel();
+      	JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setSize(50,50);
+        a.add(datePicker);
 	}
 
 	private void populateEastPanel(JPanel a){
