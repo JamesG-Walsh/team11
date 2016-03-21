@@ -17,8 +17,8 @@ public class Team11_FitBitViewer implements Serializable
 {
 	public static boolean testFlag = false;
 	public static DeskTop GUI;
-	public static OneDaysWorthOfData odwod;
-	public static HistoricalFitnessData hfd;
+	//public static OneDaysWorthOfData odwod;
+	//public static HistoricalFitnessData hfd;
 
 	/**
 	 * Main method for the project	 
@@ -27,38 +27,44 @@ public class Team11_FitBitViewer implements Serializable
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
+
 		
+
 
 		if(args.length >= 1 && args[0].equals("test")){
 
 			System.out.println("Running in test mode ......");
 			testFlag = true;
-			User usrs = new User();
-			GUI = new DeskTop(usrs);
+			GUI = new DeskTop();
 			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
 			GUI.setVisible(true);
-			
+			//Accolades acc = new Accolades();
+			//acc.checkAccolades(GUI, hfd);
 		}
 		else
 		{
-
+			//hfd = new HistoricalFitnessData();
 			System.out.println("Running in live mode.....");
-			User usrs = new User();
-
-			hfd = usrs.getHistoricalFitnessData();
-			odwod = hfd.retrieveDay(17, 3, 2016);
-			odwod.populateTotals();
-
-			hfd.populateLifetimeAndBestDays();
-			System.out.println(odwod.toString(false));
-			//GUI = new DeskTop();			
-			GUI = new DeskTop(usrs);
-			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-			GUI.setVisible(true);
-
-
 			
-			System.out.println(hfd.lifetimeAndBestDaysToString());
+			//User usrs = new User();
+
+			//hfd = usrs.getHistoricalFitnessData();
+			//odwod = hfd.retrieveDay(20, 3, 2016);
+			//odwod.populateTotals();
+			
+			//odwod.toString(false);
+
+			//hfd.populateLifetimeAndBestDays();
+						
+			GUI = new DeskTop();
+			GUI.setVisible(true);
+			//System.out.println(odwod.toString(false));
+			//GUI = new DeskTop();			
+			
+			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
+			//Accolades acc = new Accolades();
+			//acc.checkAccolades(GUI, hfd);
+			//System.out.println(hfd.lifetimeAndBestDaysToString());
 			
 			//System.out.println(hfd.getLifetimeAndBestDays());
 			

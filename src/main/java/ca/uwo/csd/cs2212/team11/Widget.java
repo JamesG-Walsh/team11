@@ -12,6 +12,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
 
@@ -35,6 +38,8 @@ public class Widget extends JPanel implements Serializable{
 	private JTextField dataBox = new JTextField(10);
 	private int[] data;
 	private IDs typeLive;
+	private User user;
+	private Calendar calen;
 
 	Color backColor;
 	
@@ -42,10 +47,13 @@ public class Widget extends JPanel implements Serializable{
 	 * Widget class constructor
 	 * @param type	the type of the widget
 	 */
-	public Widget(IDs type){
+	public Widget(User usr, Calendar cal, IDs type){
 		super();
 
+		user = usr;
+		calen = cal;
 		typeLive = type;
+
 		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
@@ -113,20 +121,24 @@ public class Widget extends JPanel implements Serializable{
 					data = getDistanceData(type);
 					changeView(0);
 				}else{
-					changeViewLive(0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
 			case CLIMB:
-				data = getFloorsData(type);
-				changeView(0);
+				if(Team11_FitBitViewer.testFlag){
+					data = getFloorsData(type);
+					changeView(0);
+				}else{
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+				}
 				break;
 			case STEPS:
 				if(Team11_FitBitViewer.testFlag){
 					data = getData(type);
 					changeView(0);	
 				}else{
-					changeViewLive(0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 					
@@ -136,7 +148,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getData(type);
 					changeView(0);
 				}else{
-					changeViewLive(0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
@@ -145,7 +157,7 @@ public class Widget extends JPanel implements Serializable{
 					data = getSedData(type);
 					changeView(0);
 				}else{
-					changeViewLive(0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
 				}
 				break;
@@ -172,7 +184,8 @@ public class Widget extends JPanel implements Serializable{
 				}else{
 
 					currentView = (currentView + 1) % maxView;
-					changeViewLive(currentView, typeLive);
+					System.out.println(currentView);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, typeLive);
 				}
 
 				revalidate();
@@ -194,67 +207,81 @@ public class Widget extends JPanel implements Serializable{
 		viewLabel.setText(Widget.views[i]);
 	}
 
-	private void changeViewLive(int i, IDs type){
+	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
+
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+
+		if(Team11_FitBitViewer.testFlag){
+			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
+			System.out.println("Inside CVL...\n" + odwod.toString(false));
+			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
+			System.out.println("i = " + i);
+
 		
+
 				switch(type){
 						case STEPS: 
 									System.out.print("Getting steps...");
 									if(i==0){ //Get day calorie
-										String convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
+										String convert = String.valueOf(odwod.getTodaysTotalSteps());
 										System.out.println(convert);
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 	
 									}else if(i==1){ //Get Best Day calorie
-										String convert = String.valueOf(Team11_FitBitViewer.hfd.getBestStepsValue());
-										System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
+										String convert = String.valueOf(hfd.getBestStepsValue());
+										//System.out.println(Team11_FitBitViewer.odwod.getTodaysTotalSteps());
 	
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 	
 									}else if(i==2){
-										String convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeSteps());
+										String convert = String.valueOf(hfd.getLifetimeSteps());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 									}
 									break;
 						case DISTANCE: 
 									if(i==0){ //Get day calorie
-										String convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalDistance());
+										String convert = String.valueOf(odwod.getTodaysTotalDistance());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 	
 									}else if(i==1){ //Get Best Day calorie
-										String convert = String.valueOf(Team11_FitBitViewer.hfd.getBestDistanceValue());
+										String convert = String.valueOf(hfd.getBestDistanceValue());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 	
 									}else if(i==2){
-										String convert = String.valueOf(Team11_FitBitViewer.hfd.getLifetimeDistance());
+										String convert = String.valueOf(hfd.getLifetimeDistance());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 									}
 									break;
 						case CLIMB: 
 									if(i==0){ //Get day calorie
-										String convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalFloors());
+										String convert = String.valueOf(odwod.getTodaysTotalFloors());
+										System.out.println("CONVERT:- " + convert);
+										System.out.println("ODWOD TOTAL FLOORS - " + odwod.getTodaysTotalFloors());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 		
 									}else if(i==1){ //Get Best Day calorie
-										String convert = String.format("%.2f", Team11_FitBitViewer.hfd.getBestFloorsValue());
+										String convert = String.format("%.2f",hfd.getBestFloorsValue());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 		
 									}else if(i==2){
-										String convert = String.valueOf(Math.round(Team11_FitBitViewer.hfd.getLifetimeFloors()));
+										String convert = String.valueOf(Math.round(hfd.getLifetimeFloors()));
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 									}
 									break;
 						case ACTIVE: 
 							if(i==0){ //Get day calorie
-								String convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalActiveMins());
+								String convert = String.valueOf(odwod.getTodaysTotalActiveMins());
 								dataBox.setText(convert);
 								viewLabel.setText(Widget.views[i]);
 
@@ -262,7 +289,7 @@ public class Widget extends JPanel implements Serializable{
 							break;
 						case SEDENTARY: 
 							if(i==0){ //Get day calorie
-								String convert = String.valueOf(Team11_FitBitViewer.odwod.getTodaysTotalSedentaryMins());
+								String convert = String.valueOf(odwod.getTodaysTotalSedentaryMins());
 								dataBox.setText(convert);
 								viewLabel.setText(Widget.views[i]);
 							}
@@ -270,6 +297,7 @@ public class Widget extends JPanel implements Serializable{
 						default:
 							break;
 					}
+				}
 	}
 
 	/**

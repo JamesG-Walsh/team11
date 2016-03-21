@@ -51,14 +51,14 @@ public class Graph extends javax.swing.JPanel implements Serializable
 		
 		System.out.println("");
 		
-		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(dayOfMonth, month, year);
+		//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieveDay(dayOfMonth, month, year);
 		//odwod.populateAllMins();
 		
-		/*switch(type)
+		switch(type)
 		{
 			case HEART_RATE:
 						
-				step = 16/zoom;				
+				/*step = 16/zoom;				
 				HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
 				hrdod.populate();
 				
@@ -74,7 +74,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 					}
 				}
 				
-				System.out.println(hrdod.toString());
+				System.out.println(hrdod.toString());*/
 								
 				break;
 			case CALORIES:
@@ -88,7 +88,7 @@ public class Graph extends javax.swing.JPanel implements Serializable
 				break;
 			default:
 				System.err.println("Error in graph creation " + type.name() + " is not recognized");
-		}*/
+		}
 	}
 	/**
 	 * Paint the line graph with canned data
