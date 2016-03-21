@@ -40,6 +40,8 @@ public class Widget extends JPanel implements Serializable{
 	private IDs typeLive;
 	private User user;
 	private Calendar calen;
+	private	Serialize r;
+
 
 	Color backColor;
 	
@@ -49,11 +51,10 @@ public class Widget extends JPanel implements Serializable{
 	 */
 	public Widget(User usr, Calendar cal, IDs type){
 		super();
-
 		user = usr;
 		calen = cal;
 		typeLive = type;
-
+		r = new Serialize();
 		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
@@ -69,14 +70,17 @@ public class Widget extends JPanel implements Serializable{
 				this.units = "calories";
 				break;
 			case DISTANCE:
+				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Distance Travelled";
 				this.units = "yards";
 				break;
 			case CLIMB:
+				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Floors Climbed";
 				this.units = "Floors";
 				break;
 			case STEPS:
+				this.currentView = (Integer) r.readObject("./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml").readObject();
 				this.typeName = "Steps Taken";
 				this.units = "steps";
 				break;
@@ -114,12 +118,12 @@ public class Widget extends JPanel implements Serializable{
 		switch(type){
 			case CALORIES:
 				data = getData(type);
-				changeView(0);
+				changeView(currentView);
 				break;
 			case DISTANCE:
 				if(Team11_FitBitViewer.testFlag){
 					data = getDistanceData(type);
-					changeView(0);
+					changeView(currentView);
 				}else{
 					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
@@ -128,7 +132,7 @@ public class Widget extends JPanel implements Serializable{
 			case CLIMB:
 				if(Team11_FitBitViewer.testFlag){
 					data = getFloorsData(type);
-					changeView(0);
+					changeView(currentView);
 				}else{
 					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 				}
@@ -136,7 +140,7 @@ public class Widget extends JPanel implements Serializable{
 			case STEPS:
 				if(Team11_FitBitViewer.testFlag){
 					data = getData(type);
-					changeView(0);	
+					changeView(currentView);	
 				}else{
 					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
@@ -146,7 +150,7 @@ public class Widget extends JPanel implements Serializable{
 			case ACTIVE:
 				if(Team11_FitBitViewer.testFlag){
 					data = getData(type);
-					changeView(0);
+					changeView(currentView);
 				}else{
 					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
@@ -155,7 +159,7 @@ public class Widget extends JPanel implements Serializable{
 			case SEDENTARY:
 				if(Team11_FitBitViewer.testFlag){
 					data = getSedData(type);
-					changeView(0);
+					changeView(currentView);
 				}else{
 					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
 
@@ -163,7 +167,7 @@ public class Widget extends JPanel implements Serializable{
 				break;
 			case HEART_RATE:
 				data = getData(type);
-				changeView(0);
+				changeView(currentView);
 				break;
 			default:
 				typeName = "Undefined Widget";
@@ -180,6 +184,9 @@ public class Widget extends JPanel implements Serializable{
 				if(Team11_FitBitViewer.testFlag){
 
 					currentView = (currentView + 1) % maxView;
+					Serialize writeTo = new Serialize();
+					writeTo.writeObject(currentView, "./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml");
+				
 					changeView(currentView);
 				}else{
 
