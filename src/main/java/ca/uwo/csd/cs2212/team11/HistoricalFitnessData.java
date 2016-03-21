@@ -155,14 +155,13 @@ public class HistoricalFitnessData
 
 	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
-		if(Team11_FitBitViewer.testFlag){
+		if(Team11_FitBitViewer.testFlag)
+		{
 
 			return null;
-
-
-		}else{
-
-
+		}
+		else
+		{
 				System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
 				System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
 				Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
@@ -173,24 +172,21 @@ public class HistoricalFitnessData
 					odwod = itr.next();
 					if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
 					{
-						System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.");
+						System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
 						return odwod;
 					}
-				}
-				
+				}				
 	
 				odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
 				System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
 				odwod.populateTotals();
 				this.addDay(odwod);
-				System.out.print("  New Size is " + this.getAllOneDays().size() + "\n");
+				System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
 				System.out.println(odwod.toString(false));
 				System.out.println("Returning from retrieve2");
-
 				return odwod;
 		}
-
-	}
+	}//end of retreive2 method
 
 	/**
 	 * Helps enable historical fitness data to persist between uses of application.
@@ -333,7 +329,7 @@ public class HistoricalFitnessData
 
 			JSONObject bestDaysJSON = jo.getJSONObject("best").getJSONObject("total");
 
-			System.out.println(bestDaysJSON.toString(1));
+			//System.out.println(bestDaysJSON.toString(1));
 
 			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
 			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");

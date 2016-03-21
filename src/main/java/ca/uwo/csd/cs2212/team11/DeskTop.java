@@ -16,7 +16,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
+import java.io.Serializable;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
+
 import ca.uwo.csd.cs2212.team11.SharedData.*;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import org.jdatepicker.impl.JDatePickerImpl;
+import java.util.Properties;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+import java.text.DateFormat; 
+import java.text.SimpleDateFormat;
+import java.util.Calendar; 
+
 
 /**
  * Class that will display components on a JFRAME dashboard 
@@ -35,8 +51,10 @@ public class DeskTop extends JFrame{
 	private CGraph[] allCGraphs = new CGraph[7];
 	private boolean[] graphVisible = {false, false, false, false, false, false, false};
 	private boolean[] cGraphVisible = {false, false, false, false, false, false, false};
+	private SelectDate select;
+	private Calendar workingDate;
 
-	
+	private User usr;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
@@ -52,21 +70,47 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 		activeChart = new PieChart();
-		
-		//cheating starts here
-		HistoricalFitnessData hfd = new HistoricalFitnessData();
-		
-		//end cheating
-	
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 17,3,2016);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
-		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
-		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
-		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
 
-//		System.out.println(System.getProperty("user.dir"));
+		this.setWorkingDate();
+
+		Calendar time = this.getWorkingDate();
+		int year = time.get(Calendar.YEAR);
+		int month = (time.get(Calendar.MONTH) + 1);
+		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
+
+		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
+		usr = new User();
+		/*allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, usr, this.getWorkingDate());
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, usr, this.getWorkingDate());
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, usr, this.getWorkingDate());
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, usr, this.getWorkingDate());*/
+
+		System.out.println("Here");
+
+		if(Team11_FitBitViewer.testFlag)
+		{
+			System.out.println("Other things");
+		}
+		else
+		{
+			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+
+			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
+			//System.out.println(odwod.toString(false));
+		}
+
+		//odwod.populateTotals();
+
+		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
+		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.DISTANCE);
+		all_widgets[IDs.CLIMB.ordinal()] = new Widget(usr, getWorkingDate(),IDs.CLIMB);
+		all_widgets[IDs.STEPS.ordinal()] = new Widget(usr, getWorkingDate(),IDs.STEPS);
+		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.ACTIVE);
+		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(usr, getWorkingDate(),IDs.SEDENTARY);
+		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
+
+		//System.out.println(System.getProperty("user.dir"));
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
@@ -142,9 +186,71 @@ public class DeskTop extends JFrame{
 	/**
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
-	private void refreshData(){
-		System.err.println("DeskTop.refreshData() called");
-		System.err.println("\t***Does nothing yet");
+
+	private void refreshData(Date date)
+	{
+
+		if(Team11_FitBitViewer.testFlag)
+		{
+			System.err.println("DeskTop.refreshData() called");
+			System.err.println("\t***Does nothing yet");
+
+			System.out.println("Starting live call of refreshData();");
+			//this.setWorkingDate();
+			Calendar time =  Calendar.getInstance();
+			//Date date = new Date(116, 02, 3);
+
+   			time.setTime(date);
+   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			dateLabel.setText(dateString);
+			repaint();
+			revalidate();
+
+
+			System.out.println( "TIME- " + time.get(Calendar.DAY_OF_MONTH) + " " +time.get(Calendar.MONTH + 1) +" "+time.get(Calendar.YEAR));
+			int year = time.get(Calendar.YEAR);
+			int month = (time.get(Calendar.MONTH) + 1);
+			int day = time.get(Calendar.DAY_OF_MONTH);
+
+			System.out.println(year);
+		}
+		else
+		{
+			System.out.println("Starting live call of refreshData();");
+			this.setWorkingDate();
+			Calendar time =  Calendar.getInstance();
+			//Date date = new Date(116, 02, 3);
+   			time.setTime(date);
+   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			dateLabel.setText(dateString);
+			repaint();
+			revalidate();
+
+			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
+
+			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+
+			int year = time.get(Calendar.YEAR);
+			int month = time.get(Calendar.MONTH);
+			int day = time.get(Calendar.DAY_OF_MONTH);
+
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month +1, year );
+			odwod.populateTotals();
+			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
+
+			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
+			hfd.lifetimeAndBestDaysToString();
+
+			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
+			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
+			this.all_widgets[IDs.ACTIVE.ordinal()].changeViewLive(hfd, time, 0, IDs.ACTIVE);
+			this.all_widgets[IDs.HEART_RATE.ordinal()].changeViewLive(hfd, time, 0, IDs.HEART_RATE);
+			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
+			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
+			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
+		}
 	}
 	
 	/**
@@ -172,7 +278,21 @@ public class DeskTop extends JFrame{
 	public Date getDateOfLastRefresh(){
 		return new Date();
 	}
-	
+
+	public Calendar getWorkingDate(){
+		return this.workingDate;
+	}
+
+	public void setWorkingDate()
+	{
+		//Calendar cal = Calendar.getInstance();
+		//	cal.setTime(javaSqlDate);
+		this.workingDate = Calendar.getInstance();
+		System.out.println(this.workingDate.toString());
+		//Date date = new Date(116, 02, 1);
+		//this.workingDate.setTime(date);
+	}
+
 	/**
 	 * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
 	 */
@@ -235,37 +355,53 @@ public class DeskTop extends JFrame{
 		a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
 
 		//Create panel to display last update date
-			datePanel = new JPanel();
-			datePanel.setBackground(SharedData.SMOKE);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getDateOfLastRefresh());
-			dateLabel = new JLabel(dateString);
-			dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-			dateLabel.setForeground(new Color(255,255,255));
-			datePanel.add(dateLabel);
-			
-			ImagePanel refreshButton = new ImagePanel("Refresh.png");
-			refreshButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					refreshData();
-				}
-			});
-			refreshButton.setToolTipText("Click to refresh data");
-			datePanel.add(refreshButton);  
-			
-			
+		datePanel = new JPanel();
+		datePanel.setBackground(SharedData.SMOKE);
+
+
+		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
+		dateLabel = new JLabel(dateString);
+		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		dateLabel.setForeground(new Color(255,255,255));
+		datePanel.add(dateLabel);
+
+
+
+		//datePanel.add(conn);
+
+		JButton refreshButton = new JButton("Refresh Data");
+		refreshButton.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				refreshData(select.returnDate());
+				System.out.println(select.getDate());
+			}
+		});
+
+		refreshButton.setToolTipText("Click to refresh data");
+		datePanel.add(refreshButton);  
+
+
 		a.add(datePanel);
 		a.add(Box.createHorizontalGlue());
-	
-		// add widget button *** now redundant?????
-			ImagePanel addWidgetButton = new ImagePanel("Add_Widgit.png");
-			addWidgetButton.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					//addWidgetPanel();
-				}
-			});
-			addWidgetButton.setToolTipText("Click to add widget");
-			a.add(addWidgetButton);
+
+		JDatePickerImpl datePicker;
+
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+
+
+
+		UtilDateModel model=new UtilDateModel();
+		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		datePicker.setSize(50,50);
+		a.add(datePicker);
+
+		select = new SelectDate(refreshButton, datePicker);
 	}
+
 
 	private void populateEastPanel(JPanel a){
 		a.setOpaque(false);
