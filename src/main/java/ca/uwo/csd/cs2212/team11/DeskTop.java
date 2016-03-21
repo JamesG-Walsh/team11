@@ -398,6 +398,8 @@ public class DeskTop extends JFrame implements Serializable
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         datePicker.setSize(50,50);
         a.add(datePicker);
+        
+        
 	}
 
 	private void populateEastPanel(JPanel a){
