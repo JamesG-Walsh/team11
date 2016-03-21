@@ -152,7 +152,7 @@ public class Widget extends JPanel{
 					data = getDistanceData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
@@ -161,7 +161,7 @@ public class Widget extends JPanel{
 					data = getFloorsData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 				}
 				break;
 			case STEPS:
@@ -169,7 +169,7 @@ public class Widget extends JPanel{
 					data = getData(type);
 					changeView(currentView);	
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 					
@@ -179,7 +179,7 @@ public class Widget extends JPanel{
 					data = getData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
@@ -188,7 +188,7 @@ public class Widget extends JPanel{
 					data = getSedData(type);
 					changeView(currentView);
 				}else{
-					changeViewLive(user.getHistoricalFitnessData(), calen, 0, type);
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 				break;
