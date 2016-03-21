@@ -53,6 +53,7 @@ public class SelectDate extends JFrame implements ActionListener
 {
 JButton checkBtn;
 public JDatePickerImpl dtePick;
+String selectedDate;
 /*JLabel CheckDate; JButton check;
 public UtilDateModel model;
 public JDatePanelImpl datePanel;
@@ -70,12 +71,17 @@ public void actionPerformed(ActionEvent e)
     {
         if(checkBtn==e.getSource())
         {
-        Date selectedDate = (Date) dtePick.getModel().getValue();
+        selectedDate = (Date) dtePick.getModel().getValue();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         String reportDate = df.format(selectedDate);
         System.out.println(reportDate);
         System.out.println("Hey");
         }
+    }
+
+public String getSelectedDate(){
+
+        return this.selectedDate;
     }
 
 }

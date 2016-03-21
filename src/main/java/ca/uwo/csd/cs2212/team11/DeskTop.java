@@ -406,10 +406,6 @@ public class DeskTop extends JFrame implements Serializable
         a.add(datePicker);
 
         SelectDate select = new SelectDate(refreshButton, datePicker);
-
-
-
-       
 	}
 	
 
