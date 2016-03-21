@@ -19,13 +19,13 @@ public class CGraph extends JPanel{
 		this.type = type;
 		switch(type){
 		case CALORIES:
-			normalizeData(getCaloriesData());
+			//normalizeData(getCaloriesData());
 			break;
 		case STEPS:
-			normalizeData(getStepsData());
+			//normalizeData(getStepsData());
 			break;
 		case DISTANCE:
-			normalizeData(getDistanceData());
+			//normalizeData(getDistanceData());
 			break;
 		default:
 			System.err.println("Error in graph creation " + type.name() + " is not recognized");

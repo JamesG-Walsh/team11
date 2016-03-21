@@ -52,10 +52,16 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 		activeChart = new PieChart();
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE);
+		
+		//cheating starts here
+		HistoricalFitnessData hfd = new HistoricalFitnessData();
+		
+		//end cheating
+	
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 17,3,2016);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
 		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
 		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
@@ -115,7 +121,8 @@ public class DeskTop extends JFrame{
 //		System.err.println("DeskTop.addRemoveGraph() called");
 //		System.err.println("\t***Does nothing yet");
 		removeVisibleGraphs();
-		if (type == IDs.ACTIVE){
+		if (type == IDs.ACTIVE)
+		{
 				activeChartVisible = true;
 				graphsPanel.add(activeChart);
 		}else{

@@ -19,7 +19,7 @@ public class Team11_FitBitViewer implements Serializable
 	public static DeskTop GUI;
 	//public static OneDaysWorthOfData odwod;
 	//public static HistoricalFitnessData hfd;
-	//change comment
+
 	/**
 	 * Main method for the project	 
 	 * @param args				"test" if in test mode (passed from command line)
@@ -27,12 +27,8 @@ public class Team11_FitBitViewer implements Serializable
 	 */
 	public static void main(String[] args) throws JSONException 
 	{
-
-		
-
-
-		if(args.length >= 1 && args[0].equals("test")){
-
+		if(args.length >= 1 && args[0].equals("test"))
+		{
 			System.out.println("Running in test mode ......");
 			testFlag = true;
 			GUI = new DeskTop();
