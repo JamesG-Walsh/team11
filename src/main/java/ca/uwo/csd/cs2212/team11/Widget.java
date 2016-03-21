@@ -43,12 +43,6 @@ public class Widget extends JPanel implements Serializable{
 
 	Color backColor;
 	
-	public Widget (User usr, Calendar cal)
-	{
-		user = usr;
-		calen = cal;
-	}
-	
 	/**
 	 * Widget class constructor
 	 * @param type	the type of the widget
@@ -219,10 +213,14 @@ public class Widget extends JPanel implements Serializable{
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
-		OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
-		System.out.println("Inside CVL...\n" + odwod.toString(false));
-		System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
-		System.out.println("i = " + i);
+		if(Team11_FitBitViewer.testFlag){
+			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
+			System.out.println("Inside CVL...\n" + odwod.toString(false));
+			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
+			System.out.println("i = " + i);
+
+		
+
 				switch(type){
 						case STEPS: 
 									System.out.print("Getting steps...");
@@ -299,6 +297,7 @@ public class Widget extends JPanel implements Serializable{
 						default:
 							break;
 					}
+				}
 	}
 
 	/**

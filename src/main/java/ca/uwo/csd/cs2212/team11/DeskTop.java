@@ -87,10 +87,18 @@ public class DeskTop extends JFrame implements Serializable
 
 		System.out.println("Here");
 
-		usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
-		//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+		if(Team11_FitBitViewer.testFlag){
 
-		OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(1, 3, 2016 );
+			System.out.println("Other things");
+			
+
+		}else{
+			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(1, 3, 2016 );
+		}
+
 		//odwod.populateTotals();
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
