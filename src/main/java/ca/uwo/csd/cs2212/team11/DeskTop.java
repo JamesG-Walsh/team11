@@ -227,11 +227,17 @@ public class DeskTop extends JFrame implements Serializable
 			//this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
-			time.setTime(date);
+
+   			time.setTime(date);
+   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			dateLabel.setText(dateString);
+			repaint();
+			revalidate();
+
 
 			System.out.println( "TIME- " + time.get(Calendar.DAY_OF_MONTH) + " " +time.get(Calendar.MONTH + 1) +" "+time.get(Calendar.YEAR));
 			int year = time.get(Calendar.YEAR);
-			int month = time.get(Calendar.MONTH);
+			int month = (time.get(Calendar.MONTH) + 1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
 
 			System.out.println(year);
@@ -242,7 +248,11 @@ public class DeskTop extends JFrame implements Serializable
 			this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
-			time.setTime(date);
+   			time.setTime(date);
+   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			dateLabel.setText(dateString);
+			repaint();
+			revalidate();
 
 			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
@@ -387,6 +397,8 @@ public class DeskTop extends JFrame implements Serializable
 		//Create panel to display last update date
 		datePanel = new JPanel();
 		datePanel.setBackground(SharedData.SMOKE);
+
+
 		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
 		dateLabel = new JLabel(dateString);
 		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
