@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.io.Serializable;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 import ca.uwo.csd.cs2212.team11.SharedData.*;
@@ -32,6 +34,9 @@ import org.jdatepicker.impl.UtilDateModel;
 import org.jdatepicker.impl.JDatePickerImpl;
 import java.util.Properties;
 import javax.swing.JFormattedTextField.AbstractFormatter;
+import java.text.DateFormat; 
+import java.text.SimpleDateFormat;
+import java.util.Calendar; 
 
 
 
@@ -377,6 +382,7 @@ public class DeskTop extends JFrame implements Serializable
 				refreshData();
 			}
 		});
+		
 		refreshButton.setToolTipText("Click to refresh data");
 		datePanel.add(refreshButton);  
 
@@ -398,7 +404,14 @@ public class DeskTop extends JFrame implements Serializable
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         datePicker.setSize(50,50);
         a.add(datePicker);
+
+        SelectDate select = new SelectDate(refreshButton, datePicker);
+
+
+
+       
 	}
+	
 
 	private void populateEastPanel(JPanel a){
 		a.setOpaque(false);
