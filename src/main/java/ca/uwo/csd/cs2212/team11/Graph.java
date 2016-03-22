@@ -80,7 +80,8 @@ public class Graph extends javax.swing.JPanel
 	 * Paint the line graph with canned data
 	 * @param g 
 	 */
-	protected void paintComponent(Graphics g){
+	protected void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 
 
@@ -219,10 +220,15 @@ public class Graph extends javax.swing.JPanel
 
 		int plotPoint = this.offset;
 		int i = 0;
-		while(i + step < data.length){
-			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph){
-				if ((i/60) != (i+step)/60){ // falls on hour check for scale markers
-					if (zoom >= 8 || (i/60+1) %3 == 0){
+		while(i + step < data.length)
+		{
+			//System.out.println("i = " + i);
+			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph)
+			{
+				if ((i/60) != (i+step)/60)// falls on hour check for scale markers
+				{ 
+					if (zoom >= 8 || (i/60+1) %3 == 0)
+					{
 						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
 						g.setColor(Color.GRAY);
 						g.drawLine(plotPoint + fix, SharedData.GRAPH_HEIGHT, plotPoint + fix, SharedData.GRAPH_HEIGHT - 50);
@@ -235,7 +241,23 @@ public class Graph extends javax.swing.JPanel
 					}
 				}
 				g.setColor(Color.RED);
-				g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - data[i], plotPoint + spread, SharedData.GRAPH_HEIGHT- data[i + step]);
+				
+				int startAvg = 0;
+				int endAvg = 0;
+				
+				for (int count = 0; count < step; count++)
+				{
+					//System.out.println("i+ count = " + (i+count));
+					startAvg += data[i+count];
+					//System.out.println("i+count+step" + i + " " + count + " " + step);
+					endAvg += data[i + count + step];
+				}
+				
+				startAvg = startAvg/step;
+				endAvg = endAvg/step;
+				
+				g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - startAvg, plotPoint + spread, SharedData.GRAPH_HEIGHT- endAvg);
+			
 			}
 			plotPoint += spread;
 			i += step;
@@ -245,9 +267,11 @@ public class Graph extends javax.swing.JPanel
 		g.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
 
-	private double[] normalizeData(double[] array){
+	private double[] normalizeData(double[] array)
+	{
 		double maxVal = 0;
-		for (int i = 0; i < array.length; i++){
+		for (int i = 0; i < array.length; i++)
+		{
 			if(array[i] > maxVal) {	maxVal = array[i];	}
 		}
 		maxVal = maxVal * 1.1;
@@ -263,7 +287,8 @@ public class Graph extends javax.swing.JPanel
 	private int[] plot(double[] array)
 	{
 		int [] newArray = new int[array.length];
-		for (int i = 0; i < array.length; i++){
+		for (int i = 0; i < array.length; i++)
+		{
 			newArray[i] = (int)Math.round(array[i]);
 		}
 		return newArray;

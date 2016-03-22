@@ -141,7 +141,8 @@ public class CGraph extends JPanel{
 		q.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
 	
-	private void prepData(double[] array){
+	private void prepData(double[] array)
+	{
 		double hourAccumulator=0, qtrAccumulator=0;
 		for (int i = 0; i < array.length; i++){
 			hourAccumulator += array[i];

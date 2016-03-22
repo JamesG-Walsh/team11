@@ -59,15 +59,18 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(){
+	public DeskTop()
+	{
 	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
 		
 		Serialize r = new Serialize();
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
-		addWindowListener(new java.awt.event.WindowAdapter() {
+		addWindowListener(new java.awt.event.WindowAdapter() 
+		{
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent e) {
+			public void windowClosing(java.awt.event.WindowEvent e) 
+			{
 				Serialize writeTo = new Serialize();
 				writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
 				System.exit(0);
@@ -91,7 +94,6 @@ public class DeskTop extends JFrame{
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
-		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
 		usr = new User();
 		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 		
@@ -357,7 +359,14 @@ public class DeskTop extends JFrame{
 		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
-		System.out.println(this.workingDate.toString());
+		
+		Calendar time = this.getWorkingDate();
+		int year = time.get(Calendar.YEAR);
+		int month = (time.get(Calendar.MONTH) + 1);
+		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
+		
+		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
+		//System.out.println(this.workingDate.toString());
 		//Date date = new Date(116, 02, 1);
 		//this.workingDate.setTime(date);
 	}
