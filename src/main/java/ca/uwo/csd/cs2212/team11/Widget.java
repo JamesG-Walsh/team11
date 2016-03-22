@@ -54,7 +54,7 @@ public class Widget extends JPanel{
 		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
-		this.setPreferredSize(new Dimension(150, 150));
+		this.setPreferredSize(new Dimension(100, 100));
 		content.setLayout(new BorderLayout(1,1));
 		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
 		
