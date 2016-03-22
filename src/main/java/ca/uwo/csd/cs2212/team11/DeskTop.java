@@ -105,7 +105,7 @@ public class DeskTop extends JFrame{
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
 		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
-		System.out.println("Here");
+		//System.out.println("Here");
 
 		if(this.testFlag)
 		{
@@ -251,7 +251,6 @@ public class DeskTop extends JFrame{
 
 	private void refreshData(Date date)
 	{
-
 		if(this.testFlag)
 		{
 			System.err.println("DeskTop.refreshData() called");
@@ -273,8 +272,17 @@ public class DeskTop extends JFrame{
 			int year = time.get(Calendar.YEAR);
 			int month = (time.get(Calendar.MONTH) + 1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
+			
+			HistoricalFitnessData hfd = new HistoricalFitnessData();
+			
+			this.removeVisibleGraphs();
 
-			System.out.println(year);
+			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+
+			//System.out.println(year);
 		}
 		else
 		{
@@ -312,6 +320,25 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
 			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
+			
+			addRemoveGraph(IDs.CALORIES);
+			repaint();
+			addRemoveGraph(IDs.DISTANCE);
+			repaint();
+			addRemoveGraph(IDs.STEPS);
+			repaint();
+			addRemoveGraph(IDs.HEART_RATE);
+			repaint();
+			
+			this.removeVisibleGraphs();
+			
+			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+			
+			//repaint();
+			
 		}
 	}
 	private void configWidgetVisibilityToUsersPref(IDs type){
