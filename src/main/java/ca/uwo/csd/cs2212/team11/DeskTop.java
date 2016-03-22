@@ -107,7 +107,7 @@ public class DeskTop extends JFrame{
 
 		System.out.println("Here");
 
-		if(Team11_FitBitViewer.testFlag)
+		if(this.testFlag)
 		{
 			System.out.println("Other things");
 		}
@@ -122,19 +122,16 @@ public class DeskTop extends JFrame{
 
 		//odwod.populateTotals();
 
-		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
-		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.DISTANCE);
-		all_widgets[IDs.CLIMB.ordinal()] = new Widget(usr, getWorkingDate(),IDs.CLIMB);
-		all_widgets[IDs.STEPS.ordinal()] = new Widget(usr, getWorkingDate(),IDs.STEPS);
-		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.ACTIVE);
-		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(usr, getWorkingDate(),IDs.SEDENTARY);
-		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
+		all_widgets[IDs.CALORIES.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(), IDs.CALORIES);
+		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.DISTANCE);
+		all_widgets[IDs.CLIMB.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.CLIMB);
+		all_widgets[IDs.STEPS.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.STEPS);
+		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.ACTIVE);
+		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.SEDENTARY);
+		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.HEART_RATE);
 
 		//System.out.println(System.getProperty("user.dir"));
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 2016,3,17);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
+		
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
 		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
 		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
@@ -255,7 +252,7 @@ public class DeskTop extends JFrame{
 	private void refreshData(Date date)
 	{
 
-		if(Team11_FitBitViewer.testFlag)
+		if(this.testFlag)
 		{
 			System.err.println("DeskTop.refreshData() called");
 			System.err.println("\t***Does nothing yet");

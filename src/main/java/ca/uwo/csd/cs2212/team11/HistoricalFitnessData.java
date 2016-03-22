@@ -175,16 +175,9 @@ public class HistoricalFitnessData
 
 	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
-		System.out.println("---------------------");
+	/*	System.out.println("---------------------");
 		new Exception().printStackTrace();
-		System.out.println("---------------------");
-		if(Team11_FitBitViewer.testFlag)
-		{
-
-			return null;
-		}
-		else
-		{
+		System.out.println("---------------------");*/
 			System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
 			System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
 			Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
@@ -208,7 +201,6 @@ public class HistoricalFitnessData
 			System.out.println(odwod.toString(false));
 			System.out.println("Returning from retrieve2");
 			return odwod;
-		}
 	}//end of retreive2 method
 
 	/**

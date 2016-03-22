@@ -125,11 +125,10 @@ public class Graph extends javax.swing.JPanel
 	public static void main (String[] args){
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Graph g = new Graph(IDs.CALORIES, new HistoricalFitnessData(), 1, 1, 1);
+		Graph g = new Graph(true, IDs.CALORIES, new HistoricalFitnessData(), 1, 1, 1);
 		frame.add(g);
 		frame.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		frame.setVisible(true);
-
 	}
 
 	private void paintHRGraph(Graphics g){
@@ -333,7 +332,7 @@ public class Graph extends javax.swing.JPanel
 
 	private double[] getDistanceData()
 	{
-		if (Team11_FitBitViewer.testFlag == true)
+		if (this.testFlag == true)
 		{
 			return SharedData.newBigD;
 		}
