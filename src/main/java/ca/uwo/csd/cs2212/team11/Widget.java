@@ -216,8 +216,9 @@ public class Widget extends JPanel{
 				
 					changeView(currentView);
 				}else{
-
 					currentView = (currentView + 1) % maxView;
+					Serialize writeTo = new Serialize();
+					writeTo.writeObject(currentView, "./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml");
 					System.out.println(currentView);
 					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, typeLive);
 				}
