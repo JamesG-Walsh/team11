@@ -1,6 +1,8 @@
 package ca.uwo.csd.cs2212.team11;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -11,13 +13,25 @@ import javax.swing.JFrame;
  *
  */
 public class PieChart extends javax.swing.JPanel {
-	private int[] data = Widgets.time_series;
+	private int[] data;
 	private int sum;
 	private int[] arc = new int[4];
+	private int legend = 400;
+	private int circleX = SharedData.GRAPH_WIDTH / 2 - 175;
+	private int legendText = 475;
+	private int legendBox = 25;
+	private int legendLineOne = 25;
+	private int legendLineTwo = 65;
+	private int legendLineTre = 110;
+	private int legendLineFor = 150;
+
 	/**
 	 * Construct with canned Data
 	 */
 	public PieChart(){
+		this.setBackground(Color.GRAY);
+		this.setPreferredSize(new Dimension (SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
+		data = getTimeData();
 		sum = data[0]+data[1]+data[2]+data[3];
 		arc[0] = 0;
 		arc[1] = 360*data[1]/sum;
@@ -30,38 +44,41 @@ public class PieChart extends javax.swing.JPanel {
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.GRAY);
-		this.setSize(350, 200);
+		this.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		g.setColor(Color.WHITE);
-		g.fillOval(1, 1, 199, 199);
+		g.fillOval(circleX+1, 26, 149, 149);
 		g.setColor(Color.CYAN);
-		g.fillArc(0, 0, 200, 200, arc[0], arc[1]);
+		g.fillArc(circleX, 25, 150, 150, arc[0], arc[1]);
 		g.setColor(Color.BLUE);
-		g.fillArc(0, 0, 200, 200, arc[1], arc[2]);
+		g.fillArc(circleX, 25, 150, 150, arc[1], arc[2]);
 		g.setColor(Color.BLUE.darker());
-		g.fillArc(0, 0, 200, 200, arc[1] + arc[2], arc[3]);
+		g.fillArc(circleX, 25, 150, 150, arc[1] + arc[2], arc[3]);
+		
+		g.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
 		g.setColor(Color.WHITE);
-		g.fillRect(225, 50, 20, 20);
+		g.fillRect(legend, legendLineOne, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 50, 20, 20);
-		g.drawString("Inactive", 250, 60);
+		g.drawRect(legend, legendLineOne, legendBox * 2, legendBox);
+		g.drawString("Inactive", legendText, legendLineOne + 20);
 		
 		g.setColor(Color.CYAN);
-		g.fillRect(225, 75, 20, 20);
+		g.fillRect(legend, legendLineTwo, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 75, 20, 20);
-		g.drawString("Light Activity", 250, 85);
+		g.drawRect(legend, legendLineTwo, legendBox * 2, legendBox);
+		g.drawString("Light Activity", legendText, legendLineTwo + 20);
 
 		g.setColor(Color.BLUE);
-		g.fillRect(225, 100, 20, 20);
+		g.fillRect(legend, legendLineTre, legendBox *2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 100, 20, 20);
-		g.drawString("Med Activity", 250, 110);
+		g.drawRect(legend, legendLineTre, legendBox *2, legendBox);
+		g.drawString("Med Activity", legendText, legendLineTre + 20);
 
 		g.setColor(Color.BLUE.darker());
-		g.fillRect(225, 125, 20, 20);
+		g.fillRect(legend, legendLineFor, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 125, 20, 20);
-		g.drawString("Light Activity", 250, 135);
+		g.drawRect(legend, legendLineFor, legendBox * 2, legendBox);
+		g.drawString("Heavy Activity", legendText, legendLineFor + 20);
 
 		this.repaint();
 	}
@@ -75,9 +92,33 @@ public class PieChart extends javax.swing.JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		PieChart p = new PieChart();
 		frame.add(p);
-		frame.setSize(250, 200);
+		frame.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		frame.setVisible(true);
 
 	}
+	
+	private int[] getTimeData(){
+		int [] times = new int[4];
+		times[0] = getSedentaryMinutes();
+		times[1] = getLightActivityMinutes();
+		times[2] = getMediumActivityMinutes();
+		times[3] = getHeavyActivityMinutes();
+		return times;
+	}
 
+	private int getSedentaryMinutes(){
+		return 237;
+	}
+	
+	private int getLightActivityMinutes(){
+		return 321;
+	}
+	
+	private int getMediumActivityMinutes(){
+		return 98;
+	}
+	
+	private int getHeavyActivityMinutes(){
+		return 12;
+	}
 }

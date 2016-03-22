@@ -455,6 +455,7 @@ public class OneDaysWorthOfData
 	public void populateTotals()
 	{
 		String date = this.buildDateAsString();
+		//System.out.println("date string for populateTotals() : "+ date);
 
 		try
 		{
@@ -519,8 +520,9 @@ public class OneDaysWorthOfData
 
 
 
-	private String buildDateAsString()
+	public String buildDateAsString()
 	{
+		//System.out.println("Entered build date as string");
 		Integer yearObj = new Integer(year);
 		Integer monthObj = new Integer(month);
 		Integer dayObj = new Integer(dayOfMonth); //get the day of this object
@@ -528,18 +530,22 @@ public class OneDaysWorthOfData
 
 		if(dayOfMonth<10 && month <10)
 		{
+			//System.out.println("both < 10");
 			date = (yearObj.toString() + "-0" + monthObj.toString() + "-0" + dayObj.toString());
 		}
-		if(dayOfMonth<10 && month >=10)
+		else if(dayOfMonth<10 && month >=10)
 		{
+			//System.out.println("day < 10");
 			date = (yearObj.toString() + "-" + monthObj.toString() + "-0" + dayObj.toString());
 		}
-		if(dayOfMonth>=10 && month <10)
+		else if(dayOfMonth>=10 && month <10)
 		{
+			//System.out.println("month < 10");
 			date = (yearObj.toString() + "-0" + monthObj.toString() + "-" + dayObj.toString());
 		}
 		else
 		{
+			//System.out.println("neither < 10");
 			date = (yearObj.toString() + "-" + monthObj.toString() + "-" + dayObj.toString()); //format date string properly for URL
 		}
 
@@ -583,7 +589,7 @@ public class OneDaysWorthOfData
 
 	public String toString(boolean includeMins)
 	{
-		String str = "\nTOTALS\n\n";
+		String str = "\nTOTALS for "+ this.buildDateAsString() +"\n\n";
 
 		str = str.concat("Floors:\t\t\t" + this.getTodaysTotalFloors());
 		str = str.concat("\nSteps:\t\t\t" + this.getTodaysTotalSteps());
