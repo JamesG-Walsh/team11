@@ -16,7 +16,14 @@ public class PieChart extends javax.swing.JPanel {
 	private int[] data;
 	private int sum;
 	private int[] arc = new int[4];
-	private int legend = 575;
+	private int legend = 400;
+	private int circleX = SharedData.GRAPH_WIDTH / 2 - 175;
+	private int legendText = 475;
+	private int legendBox = 25;
+	private int legendLineOne = 25;
+	private int legendLineTwo = 65;
+	private int legendLineTre = 110;
+	private int legendLineFor = 150;
 
 	/**
 	 * Construct with canned Data
@@ -39,39 +46,39 @@ public class PieChart extends javax.swing.JPanel {
 		this.setBackground(Color.GRAY);
 		this.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		g.setColor(Color.WHITE);
-		g.fillOval(1, 1, 199, 199);
+		g.fillOval(circleX+1, 26, 149, 149);
 		g.setColor(Color.CYAN);
-		g.fillArc(0, 0, 200, 200, arc[0], arc[1]);
+		g.fillArc(circleX, 25, 150, 150, arc[0], arc[1]);
 		g.setColor(Color.BLUE);
-		g.fillArc(0, 0, 200, 200, arc[1], arc[2]);
+		g.fillArc(circleX, 25, 150, 150, arc[1], arc[2]);
 		g.setColor(Color.BLUE.darker());
-		g.fillArc(0, 0, 200, 200, arc[1] + arc[2], arc[3]);
+		g.fillArc(circleX, 25, 150, 150, arc[1] + arc[2], arc[3]);
 		
-		g.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		g.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		g.setColor(Color.WHITE);
-		g.fillRect(225, 50, 20, 20);
+		g.fillRect(legend, legendLineOne, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 50, 20, 20);
-		g.drawString("Inactive", 250, 60);
+		g.drawRect(legend, legendLineOne, legendBox * 2, legendBox);
+		g.drawString("Inactive", legendText, legendLineOne + 20);
 		
 		g.setColor(Color.CYAN);
-		g.fillRect(225, 75, 20, 20);
+		g.fillRect(legend, legendLineTwo, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 75, 20, 20);
-		g.drawString("Light Activity", 250, 85);
+		g.drawRect(legend, legendLineTwo, legendBox * 2, legendBox);
+		g.drawString("Light Activity", legendText, legendLineTwo + 20);
 
 		g.setColor(Color.BLUE);
-		g.fillRect(225, 100, 20, 20);
+		g.fillRect(legend, legendLineTre, legendBox *2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 100, 20, 20);
-		g.drawString("Med Activity", 250, 110);
+		g.drawRect(legend, legendLineTre, legendBox *2, legendBox);
+		g.drawString("Med Activity", legendText, legendLineTre + 20);
 
 		g.setColor(Color.BLUE.darker());
-		g.fillRect(225, 125, 20, 20);
+		g.fillRect(legend, legendLineFor, legendBox * 2, legendBox);
 		g.setColor(Color.BLACK);
-		g.drawRect(225, 125, 20, 20);
-		g.drawString("Heavy Activity", 250, 135);
+		g.drawRect(legend, legendLineFor, legendBox * 2, legendBox);
+		g.drawString("Heavy Activity", legendText, legendLineFor + 20);
 
 		this.repaint();
 	}
