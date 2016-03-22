@@ -58,7 +58,6 @@ public class Graph extends javax.swing.JPanel
 		if (!testFlag)
 		{
 			OneDaysWorthOfData odwodCurr = hfd.retrieve2(dayOfMonth, month, year);
-			odwodCurr.populateAllMins();
 		}
 
 		this.type = type;
@@ -377,7 +376,7 @@ public class Graph extends javax.swing.JPanel
 			for(int minOfHour = 0; minOfHour < 60; minOfHour++, minOfDay++)
 			{
 				ret[minOfDay] = in[hour][minOfHour]; 
-				System.out.println(hour + ":" + minOfHour + "\t" + ret[minOfDay]);
+				//System.out.println(hour + ":" + minOfHour + "\t" + ret[minOfDay]);
 			}
 		}		
 		return ret;

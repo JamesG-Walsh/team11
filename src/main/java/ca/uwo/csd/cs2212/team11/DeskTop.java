@@ -98,12 +98,7 @@ public class DeskTop extends JFrame{
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
 		this.usr = usr;
-		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
-		
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
+		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();		
 
 		//System.out.println("Here");
 
@@ -112,15 +107,22 @@ public class DeskTop extends JFrame{
 			System.out.println("Other things");
 		}
 		else
-		{
-			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+		{		
+			OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
+			odwodToday.populateAllMins();			
+			hfd.populateLifetimeAndBestDays();	
+			
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
 			//System.out.println(odwod.toString(false));
 		}
+		
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
-		//odwod.populateTotals();
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(), IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.DISTANCE);
@@ -274,7 +276,7 @@ public class DeskTop extends JFrame{
 			int day = time.get(Calendar.DAY_OF_MONTH);
 			
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
-			
+	
 			this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
@@ -311,7 +313,9 @@ public class DeskTop extends JFrame{
 
 			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
-			hfd.lifetimeAndBestDaysToString();
+			
+			OneDaysWorthOfData odwodCurr = hfd.retrieve2(day, month, year);
+			odwodCurr.populateAllMins();
 
 			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
 			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
@@ -321,14 +325,14 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
 			
-			addRemoveGraph(IDs.CALORIES);
+			/*addRemoveGraph(IDs.CALORIES);
 			repaint();
 			addRemoveGraph(IDs.DISTANCE);
 			repaint();
 			addRemoveGraph(IDs.STEPS);
 			repaint();
 			addRemoveGraph(IDs.HEART_RATE);
-			repaint();
+			repaint();*/
 			
 			this.removeVisibleGraphs();
 			
@@ -337,8 +341,7 @@ public class DeskTop extends JFrame{
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
 			
-			//repaint();
-			
+			repaint();			
 		}
 	}
 	private void configWidgetVisibilityToUsersPref(IDs type){
