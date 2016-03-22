@@ -126,6 +126,13 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
 
 		//System.out.println(System.getProperty("user.dir"));
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 17,3,2016);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
+		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
+		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
+		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
