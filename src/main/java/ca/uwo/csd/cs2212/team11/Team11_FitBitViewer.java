@@ -35,10 +35,13 @@ public class Team11_FitBitViewer implements Serializable
 		else
 		{
 			System.out.println("Running in live mode.....");
+			
 		}
-			GUI = new DeskTop();
-			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
+			User usr = new User();
+			
+			GUI = new DeskTop(testFlag, usr);
 			GUI.setVisible(true);
+			
 			//Accolades acc = new Accolades();
 			//acc.checkAccolades(GUI, hfd);
 			//hfd = new HistoricalFitnessData();

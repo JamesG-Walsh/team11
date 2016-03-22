@@ -56,13 +56,16 @@ public class DeskTop extends JFrame{
 	private Calendar workingDate;
 
 	private User usr;
+	
+	private boolean testFlag;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop()
+	public DeskTop(boolean testFlag, User usr)
 	{
-	
 		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
+		
+		this.testFlag = testFlag;
 		
 		Serialize r = new Serialize();
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
@@ -94,13 +97,13 @@ public class DeskTop extends JFrame{
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
-		usr = new User();
+		this.usr = usr;
 		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 		
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 2016, 3, 17);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
 		System.out.println("Here");
 
@@ -365,7 +368,7 @@ public class DeskTop extends JFrame{
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 		
-		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
+		System.out.println("Working Date set to---  " +dayOfMonth + "-" + month + "-"+ year);
 		//System.out.println(this.workingDate.toString());
 		//Date date = new Date(116, 02, 1);
 		//this.workingDate.setTime(date);

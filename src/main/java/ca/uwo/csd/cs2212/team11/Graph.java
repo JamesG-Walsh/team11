@@ -39,14 +39,18 @@ public class Graph extends javax.swing.JPanel
 	private HistoricalFitnessData hfd;
 	private int year;
 	private int month; //Jan = 1, Dec = 12
-	private int dayOfMonth; 
+	private int dayOfMonth;
+	
+	private boolean testFlag;
 
 	/**
 	 * Attach all methods in JPanel to our object
 	 */
-	public Graph(IDs type, HistoricalFitnessData hfd, int year, int month, int dayOfMonth)
+	public Graph(boolean testFlag, IDs type, HistoricalFitnessData hfd, int year, int month, int dayOfMonth)
 	{
-		this.hfd = new HistoricalFitnessData();
+		this.testFlag = testFlag;
+		
+		this.hfd = hfd;
 		this.year = year;
 		this.month = month;
 		this.dayOfMonth = dayOfMonth;
@@ -336,7 +340,6 @@ public class Graph extends javax.swing.JPanel
 		else
 		{
 			double[][] in;
-			double[] out;
 			OneDaysWorthOfData odwod = hfd.retrieve2(dayOfMonth, month, year);
 			odwod.populateAllMins();
 			in = odwod.getDistanceByTheMin();
