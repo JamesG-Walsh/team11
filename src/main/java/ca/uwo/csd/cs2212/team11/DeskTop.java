@@ -61,7 +61,7 @@ public class DeskTop extends JFrame{
 	 */
 	public DeskTop(){
 	
-		super("Team 11 FitBit Viewer - Click on left Panel Colors to add Components");
+		super("Team 11 FitBit Viewer");
 		
 		Serialize r = new Serialize();
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
@@ -144,7 +144,7 @@ public class DeskTop extends JFrame{
 		populateEastPanel(eastPanel);
 
 		southPanel = new JPanel();
-		populateSouthPanel(southPanel);
+		//populateSouthPanel(southPanel);
 
 		westPanel = new JPanel();
 		populateWestPanel(westPanel);
@@ -176,7 +176,7 @@ public class DeskTop extends JFrame{
 		
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
-		mainDisplay.add(southPanel, BorderLayout.SOUTH);
+		//mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(centerPanel, BorderLayout.CENTER);
 		
@@ -370,16 +370,10 @@ public class DeskTop extends JFrame{
 		
 
 		//add FitBit logo
-		
-		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
-		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
-		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
-		a.add(fitBitPic);
-		a.add(Box.createHorizontalGlue());
 
 		
 		// create the welcome to user
-		JPanel hello = new JPanel();
+		/*JPanel hello = new JPanel();
 		hello.setBackground(SharedData.SMOKE);
 		JLabel helloLabel = new JLabel("Welcome, " + getUserName() + "!");
 		helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
@@ -387,34 +381,31 @@ public class DeskTop extends JFrame{
 		hello.add(helloLabel);
 		a.add(hello);
 		a.add(Box.createHorizontalGlue());
-
+*/
 		//add controller buttons
 		//add settings button
-		
+		/*
 		ImagePanel settingsButton = new ImagePanel("Settings.png");
 		settingsButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				openSettingsPanel();
 			}
-		});
-		settingsButton.setToolTipText("Click to open settings panel");
-		a.add(settingsButton);
+		});*/
+		//settingsButton.setToolTipText("Click to open settings panel");
+		//a.add(settingsButton);
 
 		//add exit button
-		ImagePanel exitButton = new ImagePanel("Exit_Button.png");
+		/*ImagePanel exitButton = new ImagePanel("Exit_Button.png");
 		exitButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				System.exit(0);
 			}
 		});
 		exitButton.setToolTipText("Click to exit FitBit Viewer");
-		a.add(exitButton);
-		
-	}
+		a.add(exitButton);*/
 
-	private void populateSouthPanel(JPanel a){
-		a.setOpaque(false);
-		a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
+		//a.setOpaque(false);
+		//a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
 
 		//Create panel to display last update date
 		datePanel = new JPanel();
@@ -462,6 +453,31 @@ public class DeskTop extends JFrame{
 		a.add(datePicker);
 
 		select = new SelectDate(refreshButton, datePicker);
+		
+	}
+
+	private void populateSouthPanel(JPanel a){
+		a.setOpaque(false);
+		a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
+		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
+		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
+		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
+
+		//Create panel to display last update date
+		datePanel = new JPanel();
+		datePanel.setBackground(SharedData.SMOKE);
+
+
+		datePanel.add(fitBitPic);
+
+
+
+		//datePanel.add(conn); 
+
+
+		a.add(datePanel);
+		a.add(Box.createHorizontalGlue());
+
 	}
 
 
@@ -495,6 +511,13 @@ public class DeskTop extends JFrame{
 			awardsPanel.add(awardsListLabel);
 		
 		a.add(awardsPanel);
+
+		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
+		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
+		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
+
+		a.add(fitBitPic);
+
 		
 
 	}
@@ -502,7 +525,7 @@ public class DeskTop extends JFrame{
 	private void populateWestPanel(JPanel a){
 		a.setOpaque(false);
 		a.setLayout(new GridLayout(7,3));
-		a.setMinimumSize(new Dimension(200, 200));
+		a.setMinimumSize(new Dimension(200, 250));
 		JPanel navBtn;
 		
 		navBtn = new ImagePanel("graph2.png");

@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar; 
-
+import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -54,7 +54,7 @@ public class Widget extends JPanel{
 		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
-		this.setPreferredSize(new Dimension(100, 100));
+		this.setPreferredSize(new Dimension(130, 130));
 		content.setLayout(new BorderLayout(1,1));
 		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
 		
@@ -76,7 +76,9 @@ public class Widget extends JPanel{
 				this.units = "km";
 				//data = getDistanceData(type);
 				this.altUnit = "miles";
+
 				hintLabel = new JLabel("Click to Change View");
+				hintLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 				content.add(hintLabel, BorderLayout.SOUTH);
 
 				break;
@@ -87,6 +89,7 @@ public class Widget extends JPanel{
 				//data = getFloorsData(type);
 
 				hintLabel = new JLabel("Click to Change View");
+				hintLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case STEPS:
@@ -95,6 +98,7 @@ public class Widget extends JPanel{
 				this.units = "steps";
 				//data = getData(type);
 				hintLabel = new JLabel("Click to Change View");
+				hintLabel.setFont(new Font("Tahoma", Font.PLAIN, 9));
 				content.add(hintLabel, BorderLayout.SOUTH);
 				break;
 			case ACTIVE:
