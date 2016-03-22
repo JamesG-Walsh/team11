@@ -2,6 +2,7 @@ package ca.uwo.csd.cs2212.team11;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -21,8 +22,6 @@ public class CGraph extends JPanel{
 	private int[] hourlyData = new int[24];
 	private int[] qtrHourlyData = new int[96];
 	private int legend = 575;
-	private static int graphWidth = 650;
-	private static int graphHeight = 200;
 	private int endOfGraph = 534;
 	private Graphics q;
 	private boolean hourView = true;
@@ -31,6 +30,7 @@ public class CGraph extends JPanel{
 		this.type = type;
 		switch(type){
 		case CALORIES:
+
 			prepData(getCaloriesData());
 			break;
 		case STEPS:
@@ -50,13 +50,15 @@ public class CGraph extends JPanel{
 		super.paintComponent(g);
 		this.q = g;
 		this.setBackground(Color.WHITE);
-		this.setSize(graphWidth, graphHeight);
+		this.setPreferredSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
+		this.setMinimumSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
+		this.setMaximumSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		paintCGraph();
 		
 		JPanel mouseListenerPanel = new JPanel();
-		mouseListenerPanel.setSize(graphWidth, graphHeight);
+		mouseListenerPanel.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		mouseListenerPanel.setOpaque(false);
 		mouseListenerPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -79,7 +81,7 @@ public class CGraph extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		CGraph g = new CGraph(IDs.CALORIES);
 		frame.add(g);
-		frame.setSize(graphWidth, graphHeight);
+		frame.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		frame.setVisible(true);
 
 	}
@@ -95,7 +97,7 @@ public class CGraph extends JPanel{
 		for (int i = 0; i < 24; i++){
 			if (i !=0 && i%12 == 0){
 				q.setColor(Color.BLACK);
-				q.drawLine(i*20 + 10, 0, i*20 + 10, graphHeight);
+				q.drawLine(i*20 + 10, 0, i*20 + 10, SharedData.GRAPH_HEIGHT);
 				q.setColor(Color.RED);
 			}
 			q.fillRect(i * 20 + 3, 200 - hourlyData[i], 15, hourlyData[i]);
@@ -124,19 +126,19 @@ public class CGraph extends JPanel{
         //draw scale lines at 25, 50 and 75%
         g2d.setColor(Color.CYAN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, (int)(graphHeight * .75), legend, (int)(graphHeight * .75));
+        g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .75), legend, (int)(SharedData.GRAPH_HEIGHT * .75));
         g2d.setColor(Color.GREEN);
-        g2d.drawLine(0, (int)(graphHeight * .5), legend, (int)(graphHeight * .5));
+        g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .5), legend, (int)(SharedData.GRAPH_HEIGHT * .5));
         g2d.setColor(Color.BLUE);
-        g2d.drawLine(0, (int)(graphHeight * .25), legend, (int)(graphHeight * .25));
+        g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .25), legend, (int)(SharedData.GRAPH_HEIGHT * .25));
         g2d.dispose();
         
         // label scale lines
-        q.drawString(twentyFive + "", legend + 5, (int)(graphHeight*.75) + 5);
-        q.drawString(fifty + "", legend + 5, (int)(graphHeight*.5) + 5);
-        q.drawString(seventyFive + "", legend + 5, (int)(graphHeight*.25) + 5);
+        q.drawString(twentyFive + "", legend + 5, (int)(SharedData.GRAPH_HEIGHT * 0.75) + 5);
+        q.drawString(fifty + "", legend + 5, (int)(SharedData.GRAPH_HEIGHT * 0.5) + 5);
+        q.drawString(seventyFive + "", legend + 5, (int)(SharedData.GRAPH_HEIGHT * 0.25) + 5);
 		q.setColor(Color.BLACK);
-		q.drawLine(endOfGraph, 0, endOfGraph, graphHeight);
+		q.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
 	
 	private void prepData(double[] array){

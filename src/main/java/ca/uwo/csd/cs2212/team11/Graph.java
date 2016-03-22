@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,7 +22,8 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall, Dara Amin
  *
  */
-public class Graph extends javax.swing.JPanel {
+public class Graph extends javax.swing.JPanel 
+{
 	private int [] data;
 	private IDs type;
 	private int zoom = 1;
@@ -30,36 +32,46 @@ public class Graph extends javax.swing.JPanel {
 	private int step = 16;
 	private int twentyFive, fifty, seventyFive;
 	private int legend = 575;
-	private static int graphWidth = 650;
-	private static int graphHeight = 200;
 	private int endOfGraph = 534;
-
+	Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+	
+	private HistoricalFitnessData hfd;
+	private int year;
+	private int month; //Jan = 1, Dec = 12
+	private int dayOfMonth; 
+	
 	/**
 	 * Attach all methods in JPanel to our object
 	 */
-	public Graph(IDs type){
+	public Graph(IDs type, HistoricalFitnessData hfd, int year, int month, int dayOfMonth)
+	{
+		this.hfd = new HistoricalFitnessData();
+		this.year = year;
+		this.month = month;
+		this.dayOfMonth = dayOfMonth;
+		
 		this.type = type;
 //		this.setOpaque(false);
 		this.setBackground(Color.WHITE);
-		this.setPreferredSize(new Dimension(graphWidth, graphHeight));
-		this.setMinimumSize(new Dimension(graphWidth, graphHeight));
-		this.setMaximumSize(new Dimension(graphWidth, graphHeight));
+		this.setPreferredSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
+		this.setMinimumSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
+		this.setMaximumSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT));
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		switch(type){
-			case HEART_RATE:
-				data = plot(getHRData());
-				break;
-			case CALORIES:
-				data = plot(normalizeData(getCaloriesData()));
-				break;
-			case STEPS:
-				data = plot(normalizeData(getStepsData()));
-				break;
-			case DISTANCE:
-				data = plot(normalizeData(getDistanceData()));
-				break;
-			default:
-				System.err.println("Error in graph creation " + type.name() + " is not recognized");
+		case HEART_RATE:
+			data = plot(getHRData());
+			break;
+		case CALORIES:
+			data = plot(normalizeData(getCaloriesData()));
+			break;
+		case STEPS:
+			data = plot(normalizeData(getStepsData()));
+			break;
+		case DISTANCE:
+			data = plot(normalizeData(getDistanceData()));
+			break;
+		default:
+			System.err.println("Error in graph creation " + type.name() + " is not recognized");
 		}
 	}
 	/**
@@ -69,12 +81,12 @@ public class Graph extends javax.swing.JPanel {
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		
+
 		if (type == IDs.HEART_RATE)	{	paintHRGraph(g);	}
 		else { paintGraph(this.type, g);	}
-//		this.repaint();
+		//		this.repaint();
 		JPanel mouseListenerPanel = new JPanel();
-		mouseListenerPanel.setSize(graphWidth, graphHeight);
+		mouseListenerPanel.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		mouseListenerPanel.setOpaque(false);
 		mouseListenerPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -98,7 +110,7 @@ public class Graph extends javax.swing.JPanel {
 		});
 		this.add(mouseListenerPanel);
 	}
-	
+
 	/**
 	 * For testing purposes..
 	 * @param args 
@@ -106,16 +118,16 @@ public class Graph extends javax.swing.JPanel {
 	public static void main (String[] args){
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Graph g = new Graph(IDs.CALORIES);
+		Graph g = new Graph(IDs.CALORIES, new HistoricalFitnessData(), 1, 1, 1);
 		frame.add(g);
-		frame.setSize(graphWidth, graphHeight);
+		frame.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		frame.setVisible(true);
 
 	}
-	
+
 	private void paintHRGraph(Graphics g){
 		paintHRVerticleScale(g);
-		
+
 		int plotPoint = this.offset;
 		int i = 0;
 		while(i + step < data.length){
@@ -124,86 +136,85 @@ public class Graph extends javax.swing.JPanel {
 					if (zoom >= 8 || (i/60+1) %3 == 0){
 						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
 						g.setColor(Color.GRAY);
-						g.drawLine(plotPoint + fix, graphHeight, plotPoint + fix, graphHeight - 50);
+						g.drawLine(plotPoint + fix, SharedData.GRAPH_HEIGHT, plotPoint + fix, SharedData.GRAPH_HEIGHT - 50);
 						String time = String.format("%02d:00", i/60 + 1);
-						g.drawString(time, plotPoint + fix - 15, graphHeight - 5);
+						g.drawString(time, plotPoint + fix - 15, SharedData.GRAPH_HEIGHT - 5);
 						if ((i/60+1) %12 == 0){
 							g.setColor(Color.BLACK);
-							g.drawLine(plotPoint + fix, 0, plotPoint + fix, graphHeight);
+							g.drawLine(plotPoint + fix, 0, plotPoint + fix, SharedData.GRAPH_HEIGHT);
 						}
 					}
 				}
 				g.setColor(Color.RED);
-				g.drawLine(plotPoint, graphHeight - data[i], plotPoint + spread, graphHeight- data[i + step]);
+				g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - data[i], plotPoint + spread, SharedData.GRAPH_HEIGHT- data[i + step]);
 			}
 			plotPoint += spread;
 			i += step;
 		}
-		
+
 		g.setColor(Color.BLACK);
-		g.drawLine(endOfGraph, 0, endOfGraph, graphHeight);
+		g.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 
 	}
-	
+
 	private void paintHRVerticleScale(Graphics g){
-        
+
 		Graphics2D g2d = (Graphics2D) g.create();
-        Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
         
         //draw 68 bpm (base healthy resting HR)
         g2d.setColor(Color.CYAN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, graphHeight-68, legend, graphHeight-68);
-        g.drawString("68 bpm", legend, graphHeight-63);
+        g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
+        g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
 
         //draw maximum HR line
         g2d.setColor(Color.BLUE.darker());
         g2d.setStroke(dashed);
-        g2d.drawLine(0, graphHeight-getMaxCardioHR(), legend, graphHeight-getMaxCardioHR());
-        g.drawString(getMaxCardioHR() + " bpm", legend, graphHeight-(getMaxCardioHR()-5));
+        g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
+        g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
 
         //draw fat burn line
         g2d.setColor(Color.GREEN);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, graphHeight-getMaxRestingHR(), legend, graphHeight-getMaxRestingHR());
-        g.drawString(getMaxRestingHR() + " bpm", legend, graphHeight-(getMaxRestingHR()-5));
+        g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-getMaxRestingHR());
+        g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));
 
         //draw cardio line
         g2d.setColor(Color.BLUE);
         g2d.setStroke(dashed);
-        g2d.drawLine(0, graphHeight-getMaxFatBurnHR(), legend, graphHeight-getMaxFatBurnHR());
-        g.drawString(getMaxFatBurnHR() + " bpm", legend, graphHeight-(getMaxFatBurnHR()-5));
+        g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR(), legend, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR());
+        g.drawString(getMaxFatBurnHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxFatBurnHR()-5));
 
-        g.drawString("Peak", endOfGraph + 1, (graphHeight - getMaxCardioHR())/2 + 5);
-        g.drawString("FatBurn", endOfGraph + 1, ((graphHeight-getMaxFatBurnHR()) + (graphHeight - getMaxRestingHR())) /2 + 5);
-        g.drawString("Cardio", endOfGraph + 1, ((graphHeight-getMaxFatBurnHR()) + (graphHeight - getMaxCardioHR())) /2 + 5);
-        g.drawString("Resting", endOfGraph + 1, graphHeight - (getMaxRestingHR() /2));
+        g.drawString("Peak", endOfGraph + 1, (SharedData.GRAPH_HEIGHT - getMaxCardioHR())/2 + 5);
+        g.drawString("FatBurn", endOfGraph + 1, ((SharedData.GRAPH_HEIGHT-getMaxFatBurnHR()) + (SharedData.GRAPH_HEIGHT - getMaxRestingHR())) /2 + 5);
+        g.drawString("Cardio", endOfGraph + 1, ((SharedData.GRAPH_HEIGHT-getMaxFatBurnHR()) + (SharedData.GRAPH_HEIGHT - getMaxCardioHR())) /2 + 5);
+        g.drawString("Resting", endOfGraph + 1, SharedData.GRAPH_HEIGHT - (getMaxRestingHR() /2));
         //gets rid of the copy
         g2d.dispose();
 	}
-	
+
 	private void paintGraph(IDs type, Graphics g){
 		g.drawString(type.name(), 10, 20);
-        
+
 		Graphics2D g2d = (Graphics2D) g.create();
 
-        Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
-        
-        //draw scale lines at 25, 50 and 75%
-        g2d.setColor(Color.CYAN);
-        g2d.setStroke(dashed);
-        g2d.drawLine(0, (int)(graphHeight * .75), graphWidth, (int)(graphHeight * .75));
-        g2d.setColor(Color.GREEN);
-        g2d.drawLine(0, (int)(graphHeight * .5), graphWidth, (int)(graphHeight * .5));
-        g2d.setColor(Color.BLUE);
-        g2d.drawLine(0, (int)(graphHeight * .25), graphWidth, (int)(graphHeight * .25));
-        g2d.dispose();
-        
-        // label scale lines
-        g.drawString(twentyFive + "", legend, (int)(graphHeight*.75));
-        g.drawString(fifty + "", legend, (int)(graphHeight*.5));
-        g.drawString(seventyFive + "", legend, (int)(graphHeight*.25));
-        
+		
+
+		//draw scale lines at 25, 50 and 75%
+		g2d.setColor(Color.CYAN);
+		g2d.setStroke(dashed);
+		g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .75), SharedData.GRAPH_WIDTH, (int)(SharedData.GRAPH_HEIGHT * .75));
+		g2d.setColor(Color.GREEN);
+		g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .5), SharedData.GRAPH_WIDTH, (int)(SharedData.GRAPH_HEIGHT * .5));
+		g2d.setColor(Color.BLUE);
+		g2d.drawLine(0, (int)(SharedData.GRAPH_HEIGHT * .25), SharedData.GRAPH_WIDTH, (int)(SharedData.GRAPH_HEIGHT * .25));
+		g2d.dispose();
+
+		// label scale lines
+		g.drawString(twentyFive + "", legend, (int)(SharedData.GRAPH_HEIGHT*.75));
+		g.drawString(fifty + "", legend, (int)(SharedData.GRAPH_HEIGHT*.5));
+		g.drawString(seventyFive + "", legend, (int)(SharedData.GRAPH_HEIGHT*.25));
+
 		int plotPoint = this.offset;
 		int i = 0;
 		while(i + step < data.length){
@@ -212,26 +223,26 @@ public class Graph extends javax.swing.JPanel {
 					if (zoom >= 8 || (i/60+1) %3 == 0){
 						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
 						g.setColor(Color.GRAY);
-						g.drawLine(plotPoint + fix, graphHeight, plotPoint + fix, graphHeight - 50);
+						g.drawLine(plotPoint + fix, SharedData.GRAPH_HEIGHT, plotPoint + fix, SharedData.GRAPH_HEIGHT - 50);
 						String time = String.format("%02d:00", i/60 + 1);
-						g.drawString(time, plotPoint + fix - 15, graphHeight - 5);
+						g.drawString(time, plotPoint + fix - 15, SharedData.GRAPH_HEIGHT - 5);
 						if ((i/60+1) %12 == 0){
 							g.setColor(Color.BLACK);
-							g.drawLine(plotPoint + fix, 0, plotPoint + fix, graphHeight);
+							g.drawLine(plotPoint + fix, 0, plotPoint + fix, SharedData.GRAPH_HEIGHT);
 						}
 					}
 				}
 				g.setColor(Color.RED);
-				g.drawLine(plotPoint, graphHeight - data[i], plotPoint + spread, graphHeight- data[i + step]);
+				g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - data[i], plotPoint + spread, SharedData.GRAPH_HEIGHT- data[i + step]);
 			}
 			plotPoint += spread;
 			i += step;
 		}
-		
+
 		g.setColor(Color.BLACK);
-		g.drawLine(endOfGraph, 0, endOfGraph, graphHeight);
+		g.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
-	
+
 	private double[] normalizeData(double[] array){
 		double maxVal = 0;
 		for (int i = 0; i < array.length; i++){
@@ -246,7 +257,7 @@ public class Graph extends javax.swing.JPanel {
 		}
 		return array;
 	}
-	
+
 	private int[] plot(double[] array){
 		int [] newArray = new int[array.length];
 		for (int i = 0; i < array.length; i++){
@@ -254,29 +265,28 @@ public class Graph extends javax.swing.JPanel {
 		}
 		return newArray;
 	}
-	
-	
+
+
 	private void updateOffset(int x, int newZoom){
 		if (x > endOfGraph) {	x = endOfGraph;	}
 		if (newZoom > this.zoom){		this.offset = this.offset - (x * newZoom/2); 	}
 		if (newZoom < this.zoom){		this.offset = this.offset + (x * newZoom);	}
 		if (newZoom == 1) {	this.offset = 0;	}
-		//System.err.println("x is " + x +"\toffset resolves to " + offset);
 	}
-	
-	
+
+
 	private int getMaxRestingHR(){
 		return 114;
 	}
-	
+
 	private int getMaxFatBurnHR(){
 		return 144;
 	}
-	
+
 	private int getMaxCardioHR(){
 		return 160;
 	}
-	
+
 	private double[] getHRData(){
 		return SharedData.newBigD;
 	}
@@ -288,8 +298,36 @@ public class Graph extends javax.swing.JPanel {
 	private double[] getStepsData(){
 		return SharedData.newBigD;
 	}
+
+	private double[] getDistanceData()
+	{
+		if (Team11_FitBitViewer.testFlag == true)
+		{
+			return SharedData.newBigD;
+		}
+		else
+		{
+			double[][] in;
+			double[] out;
+			OneDaysWorthOfData odwod = hfd.retrieve2(year, month, dayOfMonth);
+			odwod.populateAllMins();
+			in = odwod.getDistanceByTheMin();
+			return this.convert2Dto1D(in);			
+		}
+	}
 	
-	private double[] getDistanceData(){
-		return SharedData.newBigD;
+	private double[] convert2Dto1D(double[][] in)
+	{
+		double[] ret = new double[1440];
+		
+		for(int hour = 0, minOfDay=0 ; hour < 24 ; hour++)
+		{
+			for(int minOfHour = 0; minOfHour < 60; minOfHour++, minOfDay++)
+			{
+				ret[minOfDay] = in[hour][minOfHour]; 
+				System.out.println(hour + ":" + minOfHour + "\t" + ret[minOfDay]);
+			}
+		}		
+		return ret;
 	}
 }

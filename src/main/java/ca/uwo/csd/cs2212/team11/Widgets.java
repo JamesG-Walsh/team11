@@ -331,12 +331,10 @@ public class Widgets extends JPanel {
 		JPanel a = new JPanel();
 		a.setSize(500, 200);
 		a.setVisible(true);
-		Graph g = new Graph(IDs.CALORIES,new User(), Calendar.getInstance());
+		Graph g = new Graph(IDs.CALORIES, new HistoricalFitnessData(), 17,3,2016); //cheating
 		g.setSize(500,200);
 		g.setVisible(true);
-		a.add(g);
-		
-		
+		a.add(g);		
 		return a;
 	}
 	

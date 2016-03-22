@@ -2,7 +2,6 @@ package ca.uwo.csd.cs2212.team11;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -53,10 +52,16 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);
 		activeChart = new PieChart();
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE);
+		
+		//cheating starts here
+		HistoricalFitnessData hfd = new HistoricalFitnessData();
+		
+		//end cheating
+	
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 17,3,2016);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
 		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
 		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
@@ -92,9 +97,9 @@ public class DeskTop extends JFrame{
 		widgetPanel.setOpaque(false);
 		graphsPanel = new JPanel();
 		graphsPanel.setLayout(new GridLayout(1,1));
-		graphsPanel.setPreferredSize(new Dimension(650, 205));
-		graphsPanel.setMinimumSize(new Dimension(650, 205));
-		graphsPanel.setMaximumSize(new Dimension (650, 205));
+		graphsPanel.setPreferredSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT +5));
+		graphsPanel.setMinimumSize(new Dimension(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT +5));
+		graphsPanel.setMaximumSize(new Dimension (SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT +5));
 		graphsPanel.setOpaque(false);
 		centerPanel.add(widgetPanel);
 		centerPanel.add(graphsPanel);
