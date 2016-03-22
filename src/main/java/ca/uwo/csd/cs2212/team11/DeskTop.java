@@ -127,7 +127,7 @@ public class DeskTop extends JFrame{
 
 		//System.out.println(System.getProperty("user.dir"));
 		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, 17,3,2016);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 17,3,2016);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 2016,3,17);
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, 17,3,2016);
 		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, 17,3,2016);
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
