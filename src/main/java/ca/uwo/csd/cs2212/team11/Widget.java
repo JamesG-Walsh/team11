@@ -36,7 +36,8 @@ public class Widget extends JPanel{
 	private User user;
 	private Calendar calen;
 	private	Serialize r;
-
+	
+	private boolean testF;
 
 	Color backColor;
 	
@@ -44,9 +45,10 @@ public class Widget extends JPanel{
 	 * Widget class constructor
 	 * @param type	the type of the widget
 	 */
-	public Widget(User usr, Calendar cal, IDs type)
+	public Widget(boolean testFlag, User usr, Calendar cal, IDs type)
 	{
 		super();
+		this.testF = testFlag;
 		user = usr;
 		calen = cal;
 		typeLive = type;
@@ -152,7 +154,7 @@ public class Widget extends JPanel{
 				changeView(currentView);
 				break;
 			case DISTANCE:
-				if(Team11_FitBitViewer.testFlag){
+				if(this.testF){
 					data = getDistanceData(type);
 					changeView(currentView);
 				}else{
@@ -161,7 +163,7 @@ public class Widget extends JPanel{
 				}
 				break;
 			case CLIMB:
-				if(Team11_FitBitViewer.testFlag){
+				if(this.testF){
 					data = getFloorsData(type);
 					changeView(currentView);
 				}else{
@@ -169,17 +171,20 @@ public class Widget extends JPanel{
 				}
 				break;
 			case STEPS:
-				if(Team11_FitBitViewer.testFlag){
+				if(this.testF)
+				{
 					data = getData(type);
 					changeView(currentView);	
-				}else{
+				}
+				else
+				{
 					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
 
 				}
 					
 				break;
 			case ACTIVE:
-				if(Team11_FitBitViewer.testFlag){
+				if(this.testF){
 					data = getData(type);
 					changeView(currentView);
 				}else{
@@ -188,7 +193,7 @@ public class Widget extends JPanel{
 				}
 				break;
 			case SEDENTARY:
-				if(Team11_FitBitViewer.testFlag){
+				if(this.testF){
 					data = getSedData(type);
 					changeView(currentView);
 				}else{
@@ -205,23 +210,28 @@ public class Widget extends JPanel{
 		}
 		content.add(viewLabel, BorderLayout.WEST);
 		content.add(dataBox, BorderLayout.CENTER);
-		content.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
+		content.addMouseListener(new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
 
 				//source.getParent().repaint();
 				// source.getParent().revalidate();
 				/*dataBox.revalidate();
 				dataBox.repaint();*/
-				if(Team11_FitBitViewer.testFlag){
-
+				if(testF)
+				{
 					currentView = (currentView + 1) % maxView;
 					Serialize writeTo = new Serialize();
 					writeTo.writeObject(currentView, "./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml");
 				
 					changeView(currentView);
-				}else{
-
+				}
+				else
+				{
 					currentView = (currentView + 1) % maxView;
+					Serialize writeTo = new Serialize();
+					writeTo.writeObject(currentView, "./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml");
 					System.out.println(currentView);
 					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, typeLive);
 				}
@@ -250,7 +260,8 @@ public class Widget extends JPanel{
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
-		if(!Team11_FitBitViewer.testFlag){
+		if(!this.testF)
+		{
 			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
 			System.out.println("Inside CVL...\n" + odwod.toString(false));
 			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());

@@ -34,8 +34,8 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
  * @author Andrew Hall
  *
  */
-public class Widgets extends JPanel {
-
+public class Widgets extends JPanel 
+{
 	private static final double METERS_PER_YARD = 0.9144;
 	private static final double YARDS_PER_MILE = 1760.0;
 	private static final Color[] color_set = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE}; 
@@ -54,13 +54,16 @@ public class Widgets extends JPanel {
 	private static int[] base_array = {1492, 55555, 987654321};
 	static int[] time_series = {126, 83, 118, 53, 80, 51, 83, 144, 98, 115, 134, 77, 129, 92, 55, 141, 149, 121, 60, 107, 109, 50, 131, 130, 122, 124, 117, 97, 61, 115, 102, 125, 92, 146, 99, 65, 140, 84, 107, 120, 69, 112, 89, 109, 83, 64, 106, 135, 104, 148} ;
 	
+	private boolean testFlag;
 	
 	/**
 	 * Class constructor -- Set size of container
 	 * @param type	the type of the widget
 	 */
-	public Widgets(int type) {
+	public Widgets(boolean testFlag, int type)
+	{
 			super();
+			this.testFlag = testFlag;
 //			System.err.println("Widget constructor entered");
 //			this.setSize(500, 150);
 			this.setVisible(true);
@@ -331,7 +334,7 @@ public class Widgets extends JPanel {
 		JPanel a = new JPanel();
 		a.setSize(500, 200);
 		a.setVisible(true);
-		Graph g = new Graph(IDs.CALORIES, new HistoricalFitnessData(), 17,3,2016); //cheating
+		Graph g = new Graph(this.testFlag, IDs.CALORIES, new HistoricalFitnessData(), 17,3,2016); //cheating
 		g.setSize(500,200);
 		g.setVisible(true);
 		a.add(g);		

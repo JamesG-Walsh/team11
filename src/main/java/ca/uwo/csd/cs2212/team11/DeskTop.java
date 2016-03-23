@@ -37,7 +37,7 @@ import java.util.Calendar;
 
 /**
  * Class that will display components on a JFRAME dashboard 
- * @author Andrew Hall
+ * @author Andrew Hall, James Walsh, Dara Amin
  *
  */
 public class DeskTop extends JFrame{
@@ -56,18 +56,24 @@ public class DeskTop extends JFrame{
 	private Calendar workingDate;
 
 	private User usr;
+	
+	private boolean testFlag;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(){
+	public DeskTop(boolean testFlag, User usr ){
 	
 		super("Team 11 FitBit Viewer");
 		
+		this.testFlag = testFlag;
+		
 		Serialize r = new Serialize();
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
-		addWindowListener(new java.awt.event.WindowAdapter() {
+		addWindowListener(new java.awt.event.WindowAdapter() 
+		{
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent e) {
+			public void windowClosing(java.awt.event.WindowEvent e) 
+			{
 				Serialize writeTo = new Serialize();
 				writeTo.writeObject(Team11_FitBitViewer.GUI.widgetVisible, "./src/main/resources/desktop/widgetVisible.xml");
 				System.exit(0);
@@ -91,41 +97,46 @@ public class DeskTop extends JFrame{
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
-		System.out.println("Using working date---  " +dayOfMonth + "-" + month + "-"+ year);
-		usr = new User();
-		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
-		
-		allGraphs[IDs.CALORIES.ordinal()] = new Graph(IDs.CALORIES, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(IDs.DISTANCE, hfd, 2016, 3, 17);
-		allGraphs[IDs.STEPS.ordinal()] = new Graph(IDs.STEPS, hfd, year, month, dayOfMonth);
-		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(IDs.HEART_RATE, hfd, year, month, dayOfMonth);
+		this.usr = usr;
+		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();		
 
-		System.out.println("Here");
+		//System.out.println("Here");
 
-		if(Team11_FitBitViewer.testFlag)
+		if(this.testFlag)
 		{
 			System.out.println("Other things");
 		}
 		else
-		{
-			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+		{		
+			OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
+			odwodToday.populateAllMins();			
+			hfd.populateLifetimeAndBestDays();	
+			
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
 			//System.out.println(odwod.toString(false));
 		}
+		
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
-		//odwod.populateTotals();
 
-		all_widgets[IDs.CALORIES.ordinal()] = new Widget(usr, getWorkingDate(), IDs.CALORIES);
-		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.DISTANCE);
-		all_widgets[IDs.CLIMB.ordinal()] = new Widget(usr, getWorkingDate(),IDs.CLIMB);
-		all_widgets[IDs.STEPS.ordinal()] = new Widget(usr, getWorkingDate(),IDs.STEPS);
-		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.ACTIVE);
-		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(usr, getWorkingDate(),IDs.SEDENTARY);
-		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(usr, getWorkingDate(),IDs.HEART_RATE);
+		all_widgets[IDs.CALORIES.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(), IDs.CALORIES);
+		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.DISTANCE);
+		all_widgets[IDs.CLIMB.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.CLIMB);
+		all_widgets[IDs.STEPS.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.STEPS);
+		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.ACTIVE);
+		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.SEDENTARY);
+		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.HEART_RATE);
 
 		//System.out.println(System.getProperty("user.dir"));
+		
+		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
+		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
+		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
 
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
@@ -242,8 +253,7 @@ public class DeskTop extends JFrame{
 
 	private void refreshData(Date date)
 	{
-
-		if(Team11_FitBitViewer.testFlag)
+		if(this.testFlag)
 		{
 			System.err.println("DeskTop.refreshData() called");
 			System.err.println("\t***Does nothing yet");
@@ -264,8 +274,40 @@ public class DeskTop extends JFrame{
 			int year = time.get(Calendar.YEAR);
 			int month = (time.get(Calendar.MONTH) + 1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
+			
+			HistoricalFitnessData hfd = new HistoricalFitnessData();
 
-			System.out.println(year);
+			int i;
+			for(i = 0; i<graphVisible.length; i++){
+
+				if(graphVisible[i] == true){
+
+					System.out.println(i);
+
+					break;
+				}
+			}
+
+			IDs id = allGraphs[i].getType();
+
+			System.out.println(graphVisible.length);
+	
+			this.removeVisibleGraphs();
+
+			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+
+
+			//allGraphs[i].setVisible(true);
+			addRemoveGraph(id);
+
+			
+			repaint();
+
+			//System.out.println(year);
+			//repaint();
 		}
 		else
 		{
@@ -285,16 +327,18 @@ public class DeskTop extends JFrame{
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 			int year = time.get(Calendar.YEAR);
-			int month = time.get(Calendar.MONTH);
+			int month = (time.get(Calendar.MONTH)+1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month +1, year );
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month, year );
 			odwod.populateTotals();
 			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
 			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
-			hfd.lifetimeAndBestDaysToString();
+			
+			OneDaysWorthOfData odwodCurr = hfd.retrieve2(day, month, year);
+			odwodCurr.populateAllMins();
 
 			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
 			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
@@ -303,6 +347,47 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
 			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
+			
+			/*addRemoveGraph(IDs.CALORIES);
+			repaint();
+			addRemoveGraph(IDs.DISTANCE);
+			repaint();
+			addRemoveGraph(IDs.STEPS);
+			repaint();
+			addRemoveGraph(IDs.HEART_RATE);
+			repaint();*/
+			
+			this.removeVisibleGraphs();
+			
+			int i;
+			for(i = 0; i < graphVisible.length; i++){
+
+				if(graphVisible[i] == true)
+				{
+
+					System.out.println(i);
+
+					break;
+				}
+			}
+
+			IDs id = allGraphs[i].getType();
+
+			System.out.println(graphVisible.length);
+	
+			this.removeVisibleGraphs();
+
+			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+
+
+			//allGraphs[i].setVisible(true);
+			addRemoveGraph(id);
+
+			
+			repaint();		
 		}
 	}
 	private void configWidgetVisibilityToUsersPref(IDs type){
@@ -350,7 +435,14 @@ public class DeskTop extends JFrame{
 		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
-		System.out.println(this.workingDate.toString());
+		
+		Calendar time = this.getWorkingDate();
+		int year = time.get(Calendar.YEAR);
+		int month = (time.get(Calendar.MONTH) + 1);
+		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
+		
+		System.out.println("Working Date set to---  " +dayOfMonth + "-" + month + "-"+ year);
+		//System.out.println(this.workingDate.toString());
 		//Date date = new Date(116, 02, 1);
 		//this.workingDate.setTime(date);
 	}

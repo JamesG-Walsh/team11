@@ -15,7 +15,7 @@ public class User
 
 	/* private UserPreferences preferences; */
 	private HistoricalFitnessData historicalData;
-	private OneDaysWorthOfData todaysData;
+
 
 	/**
 	 *  Class constructor.
@@ -25,33 +25,26 @@ public class User
 		historicalData = new HistoricalFitnessData();
 	}
 
-	/**
-	 * Gets this user's fitness data so far today.
-	 *
-	 * @return todaysData
-	 */
-	public OneDaysWorthOfData getTodaysData() {
-		return todaysData;
-	}
 
 	/**
 	 * Gets this user's fitness data from all past days and today.
 	 * 
 	 * @return historicalData
 	 */
-	public HistoricalFitnessData getHistoricalFitnessData(){
+	public HistoricalFitnessData getHistoricalFitnessData()
+	{
 		return historicalData;
 	}
 
-	/**
+	/*/**
 	 * Gets this user's fitness goals and application configuration preferences.
 	 * 
 	 * @return preferences
 	 */
-	/*
-public UserPreferences getPreferences() {
-	return preferences;
-}
-	 */
+	/*public UserPreferences getPreferences() 
+	{
+		return preferences;
+	}
+	*/
 
 }

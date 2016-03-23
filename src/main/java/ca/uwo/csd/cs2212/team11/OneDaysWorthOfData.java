@@ -33,7 +33,7 @@ public class OneDaysWorthOfData
 
 	private int todaysTotalSedentaryMins;
 	private int[][] sedentaryMinsByTheMin = new int [24][60];
-	
+
 	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
 
 	private Date lastUpdated;
@@ -59,7 +59,7 @@ public class OneDaysWorthOfData
 		this.year = year;
 		this.month = month;
 		this.dayOfMonth = dayOfMonth;
-		
+
 		this.hrdod = new HeartRateDayOfData(this.buildDateAsString()); // create separate sub-container for heart rate data
 		//TODO Set all int[][] arrays to null? initialize here?
 	}

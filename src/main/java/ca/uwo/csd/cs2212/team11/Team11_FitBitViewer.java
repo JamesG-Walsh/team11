@@ -15,7 +15,6 @@ import ca.uwo.csd.cs2212.team11.User;
  */
 public class Team11_FitBitViewer implements Serializable
 {
-	public static boolean testFlag = false;
 	public static DeskTop GUI;
 	//public static OneDaysWorthOfData odwod;
 	//public static HistoricalFitnessData hfd;
@@ -27,6 +26,7 @@ public class Team11_FitBitViewer implements Serializable
 	 */
 	public static void main(String[] args) //throws JSONException 
 	{
+		boolean testFlag = false;
 		if(args.length >= 1 && args[0].equals("test"))
 		{
 			System.out.println("Running in test mode ......");
@@ -35,12 +35,15 @@ public class Team11_FitBitViewer implements Serializable
 		else
 		{
 			System.out.println("Running in live mode.....");
+			
 		}
-			GUI = new DeskTop();
-			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
+			User usr = new User();
+			
+			GUI = new DeskTop(testFlag, usr);
 			GUI.setVisible(true);
+			
 			//Accolades acc = new Accolades();
-			//acc.checkAccolades(GUI, hfd);
+			//acc.checkAccolades(GUI, hfd);//
 			//hfd = new HistoricalFitnessData();
 			
 			
