@@ -191,24 +191,30 @@ public class Graph extends javax.swing.JPanel
 		}
 		else
 		{
-			System.out.println("live rest HR");
 			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR());
-			g.drawString(this.getMaxRestingHR() + " bpm ffff", legend, SharedData.GRAPH_HEIGHT-this.getMaxCardioHR());
+			g.drawString(this.getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(this.getMaxRestingHR()-5));
 		}
 
-		//draw maximum HR line
+		//draw max cardio line
 		g2d.setColor(Color.BLUE.darker());
 		g2d.setStroke(dashed);
-		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
-		g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		if (this.testFlag)
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
+			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		}
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
+			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		}
 
-		//draw fat burn line
+		/*//draw fat burn line
 		g2d.setColor(Color.GREEN);
 		g2d.setStroke(dashed);
 		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-getMaxRestingHR());
-		g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));
+		g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));*/
 
-		//draw cardio line
+		//draw max fatburn line
 		g2d.setColor(Color.BLUE);
 		g2d.setStroke(dashed);
 		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR(), legend, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR());
@@ -349,16 +355,31 @@ public class Graph extends javax.swing.JPanel
 	}
 
 	private int getMaxFatBurnHR(){
-		return 144;
+		if(this.testFlag)
+		{
+			return 144;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getFatBurnZoneMaximum();
+		}
 	}
 
-	private int getMaxCardioHR(){
-		return 160;
+	private int getMaxCardioHR()
+	{
+		if(this.testFlag)
+		{
+			return 160;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getCardioZoneMaximum();
+		}
 	}
 
 	private double[] getHRData()
 	{
-		if (this.testFlag == true)
+		if (this.testFlag)
 		{
 			return SharedData.newBigD;
 		}
