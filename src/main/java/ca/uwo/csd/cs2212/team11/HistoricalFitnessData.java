@@ -51,7 +51,8 @@ public class HistoricalFitnessData
 	 * 
 	 * @return    Number of days that have fitness day recorded for
 	 */
-	public int getNumDays() {
+	public int getNumDays() 
+	{
 		return allOneDays.size();
 	}
 	/** Adds given day to this user's list of days for which fitness data is recorded
@@ -59,7 +60,7 @@ public class HistoricalFitnessData
 	 * @param odwod 	fitness data collected on one specific day
 	 * @return boolean value	true if day added, and false if day already in historical set of days  
 	 */
-	public boolean addDay( OneDaysWorthOfData odwod ){
+	public boolean addDay2( OneDaysWorthOfData odwod ){
 		/* Add day to ordered list of days */
 		int i = allOneDays.size() - 1;
 
@@ -98,6 +99,25 @@ public class HistoricalFitnessData
 			}
 		}
 		allOneDays.add(i, odwod);
+		return true;
+	}
+
+	public boolean addDay(OneDaysWorthOfData odwodNew)
+	{
+		System.out.println("Entering addDay");
+		Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
+
+		while (itr.hasNext())
+		{
+			OneDaysWorthOfData odwodOld = itr.next();
+			if(odwodOld.compareTo(odwodNew) == 0)
+			{
+				System.out.println("odwod : " + odwodOld.buildDateAsString() + "Already in ArrayList container.\n");
+				return false;
+			}
+		}
+		System.out.println("odwod : " + odwodNew.buildDateAsString() + " Not Already in ArrayList container. Adding to container.\n");
+		allOneDays.add(odwodNew);
 		return true;
 	}
 	/** 
@@ -155,37 +175,32 @@ public class HistoricalFitnessData
 
 	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
-		if(Team11_FitBitViewer.testFlag)
-		{
+	/*	System.out.println("---------------------");
+		new Exception().printStackTrace();
+		System.out.println("---------------------");*/
+			System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
+			System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
+			Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
+			OneDaysWorthOfData odwod = null;
 
-			return null;
-		}
-		else
-		{
-				System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
-				System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
-				Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
-				OneDaysWorthOfData odwod = null;
-
-				while (itr.hasNext())
+			while (itr.hasNext())
+			{
+				odwod = itr.next();
+				if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
 				{
-					odwod = itr.next();
-					if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
-					{
-						System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
-						return odwod;
-					}
-				}				
-	
-				odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
-				System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
-				odwod.populateTotals();
-				this.addDay(odwod);
-				System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
-				System.out.println(odwod.toString(false));
-				System.out.println("Returning from retrieve2");
-				return odwod;
-		}
+					System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
+					return odwod;
+				}
+			}				
+
+			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
+			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
+			odwod.populateTotals();
+			this.addDay(odwod);
+			System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
+			System.out.println(odwod.toString(false));
+			System.out.println("Returning from retrieve2");
+			return odwod;
 	}//end of retreive2 method
 
 	/**
