@@ -366,7 +366,7 @@ public class DeskTop extends JFrame{
 			addRemoveGraph(IDs.HEART_RATE);
 			repaint();*/
 			
-			this.removeVisibleGraphs();
+			//this.removeVisibleGraphs();
 			
 			int i;
 			for(i = 0; i < graphVisible.length; i++){
@@ -380,7 +380,6 @@ public class DeskTop extends JFrame{
 				}
 			}
 
-			IDs id = allGraphs[i].getType();
 
 			System.out.println(graphVisible.length);
 	
@@ -393,7 +392,14 @@ public class DeskTop extends JFrame{
 
 
 			//allGraphs[i].setVisible(true);
-			addRemoveGraph(id);
+
+			if(0<=i && i<=6){
+
+				IDs id = allGraphs[i].getType();
+				addRemoveGraph(id);
+
+			}
+			
 
 			
 			repaint();		
