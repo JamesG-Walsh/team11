@@ -19,7 +19,7 @@ import ca.uwo.csd.cs2212.team11.SharedData.IDs;
 
 /**
  * Class to initialize a graph object
- * @author Andrew Hall, Dara Amin
+ * @author Andrew Hall, Dara Amin, James Walsh
  *
  */
 public class Graph extends javax.swing.JPanel 
@@ -134,7 +134,8 @@ public class Graph extends javax.swing.JPanel
 	 * For testing purposes..
 	 * @param args 
 	 */
-	public static void main (String[] args){
+	public static void main (String[] args)
+	{
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Graph g = new Graph(true, IDs.CALORIES, new HistoricalFitnessData(), 1, 1, 1);
@@ -348,8 +349,19 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getStepsData(){
-		return SharedData.newBigD;
+	private double[] getStepsData()
+	{
+		if (this.testFlag == true)
+		{
+			return SharedData.newBigD;
+		}
+		else
+		{
+			int[][] in;
+			OneDaysWorthOfData odwod = hfd.retrieve2(dayOfMonth, month, year);
+			in = odwod.getStepsByTheMin();
+			return null;
+		}
 	}
 
 	private double[] getDistanceData()
@@ -380,5 +392,10 @@ public class Graph extends javax.swing.JPanel
 			}
 		}		
 		return ret;
+	}
+	
+	private double[] convert2Dto1D(int[][] inArr)
+	{
+		return null;
 	}
 }

@@ -37,7 +37,7 @@ import java.util.Calendar;
 
 /**
  * Class that will display components on a JFRAME dashboard 
- * @author Andrew Hall
+ * @author Andrew Hall, James Walsh, Dara Amin
  *
  */
 public class DeskTop extends JFrame{
@@ -277,13 +277,14 @@ public class DeskTop extends JFrame{
 			
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
 	
-			this.removeVisibleGraphs();
+			//this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
-
+			
+			repaint();
 			//System.out.println(year);
 		}
 		else
