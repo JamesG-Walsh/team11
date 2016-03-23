@@ -381,4 +381,9 @@ public class Graph extends javax.swing.JPanel
 		}		
 		return ret;
 	}
+
+	public IDs getType(){
+
+		return this.type;
+	}
 }

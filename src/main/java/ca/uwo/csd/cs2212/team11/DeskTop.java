@@ -276,6 +276,21 @@ public class DeskTop extends JFrame{
 			int day = time.get(Calendar.DAY_OF_MONTH);
 			
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
+
+			int i;
+			for(i = 0; i<graphVisible.length; i++){
+
+				if(graphVisible[i] == true){
+
+					System.out.println(i);
+
+					break;
+				}
+			}
+
+			IDs id = allGraphs[i].getType();
+
+			System.out.println(graphVisible.length);
 	
 			this.removeVisibleGraphs();
 
@@ -284,7 +299,10 @@ public class DeskTop extends JFrame{
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
 
+			//allGraphs[i].setVisible(true);
+			addRemoveGraph(id);
 			//System.out.println(year);
+			//repaint();
 		}
 		else
 		{
@@ -334,7 +352,7 @@ public class DeskTop extends JFrame{
 			addRemoveGraph(IDs.HEART_RATE);
 			repaint();*/
 			
-			this.removeVisibleGraphs();
+			//this.removeVisibleGraphs();
 			
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
