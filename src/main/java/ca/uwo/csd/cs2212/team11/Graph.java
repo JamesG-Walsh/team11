@@ -340,7 +340,18 @@ public class Graph extends javax.swing.JPanel
 
 	private double[] getHRData()
 	{
-		return SharedData.newBigD;
+		if (this.testFlag == true)
+		{
+			return SharedData.newBigD;
+		}
+		else
+		{
+			int[][] in;
+			HeartRateDayOfData hrdod = hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData();
+			hrdod.populate();
+			in = hrdod.getHeartRateByTheMin();
+			return this.convert2Dto1D(in);		
+		}
 	}
 
 	private double[] getCaloriesData(){
