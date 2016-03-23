@@ -152,7 +152,8 @@ public class Graph extends javax.swing.JPanel
 		while(i + step < data.length){
 			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph){
 				if ((i/60) != (i+step)/60){ // falls on hour check for scale markers
-					if (zoom >= 8 || (i/60+1) %3 == 0){
+					if (zoom >= 8 || (i/60+1) %3 == 0)
+					{
 						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
 						g.setColor(Color.GRAY);
 						g.drawLine(plotPoint + fix, SharedData.GRAPH_HEIGHT, plotPoint + fix, SharedData.GRAPH_HEIGHT - 50);
@@ -183,8 +184,17 @@ public class Graph extends javax.swing.JPanel
 		//draw 68 bpm (base healthy resting HR)
 		g2d.setColor(Color.CYAN);
 		g2d.setStroke(dashed);
-		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
-		g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
+		if (this.testFlag)
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
+			g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
+		}
+		else
+		{
+			System.out.println("live rest HR");
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR());
+			g.drawString(this.getMaxRestingHR() + " bpm ffff", legend, SharedData.GRAPH_HEIGHT-this.getMaxCardioHR());
+		}
 
 		//draw maximum HR line
 		g2d.setColor(Color.BLUE.darker());
@@ -300,7 +310,7 @@ public class Graph extends javax.swing.JPanel
 			array[i] = Math.round(array[i] / maxVal * 200);
 		}
 		return array;
-	/*}
+		/*}
 		else
 		{
 			live method
@@ -326,8 +336,16 @@ public class Graph extends javax.swing.JPanel
 	}
 
 
-	private int getMaxRestingHR(){
-		return 114;
+	private int getMaxRestingHR()
+	{
+		if(this.testFlag)
+		{
+			return 114;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getRestingHeartRate();
+		}
 	}
 
 	private int getMaxFatBurnHR(){
@@ -419,7 +437,7 @@ public class Graph extends javax.swing.JPanel
 
 		return this.type;
 	}
-	
+
 	private double[] convert2Dto1D(int[][] inArr)
 	{
 		double[] ret = new double[1440];
