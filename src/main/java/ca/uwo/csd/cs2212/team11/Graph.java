@@ -152,7 +152,8 @@ public class Graph extends javax.swing.JPanel
 		while(i + step < data.length){
 			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph){
 				if ((i/60) != (i+step)/60){ // falls on hour check for scale markers
-					if (zoom >= 8 || (i/60+1) %3 == 0){
+					if (zoom >= 8 || (i/60+1) %3 == 0)
+					{
 						int fix = ((i+step) - ((i+step)/60) *60) * spread / step;
 						g.setColor(Color.GRAY);
 						g.drawLine(plotPoint + fix, SharedData.GRAPH_HEIGHT, plotPoint + fix, SharedData.GRAPH_HEIGHT - 50);
@@ -183,22 +184,37 @@ public class Graph extends javax.swing.JPanel
 		//draw 68 bpm (base healthy resting HR)
 		g2d.setColor(Color.CYAN);
 		g2d.setStroke(dashed);
-		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
-		g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
+		if (this.testFlag)
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
+			g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
+		}
+		else
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR());
+			g.drawString(this.getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(this.getMaxRestingHR()-5));
+		}
 
-		//draw maximum HR line
+		//draw max cardio line
 		g2d.setColor(Color.BLUE.darker());
 		g2d.setStroke(dashed);
-		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
-		g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		if (this.testFlag)
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
+			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		}
+		{
+			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
+			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
+		}
 
-		//draw fat burn line
+		/*//draw fat burn line
 		g2d.setColor(Color.GREEN);
 		g2d.setStroke(dashed);
 		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-getMaxRestingHR());
-		g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));
+		g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));*/
 
-		//draw cardio line
+		//draw max fatburn line
 		g2d.setColor(Color.BLUE);
 		g2d.setStroke(dashed);
 		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR(), legend, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR());
@@ -300,7 +316,7 @@ public class Graph extends javax.swing.JPanel
 			array[i] = Math.round(array[i] / maxVal * 200);
 		}
 		return array;
-	/*}
+		/*}
 		else
 		{
 			live method
@@ -326,21 +342,55 @@ public class Graph extends javax.swing.JPanel
 	}
 
 
-	private int getMaxRestingHR(){
-		return 114;
+	private int getMaxRestingHR()
+	{
+		if(this.testFlag)
+		{
+			return 114;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getRestingHeartRate();
+		}
 	}
 
 	private int getMaxFatBurnHR(){
-		return 144;
+		if(this.testFlag)
+		{
+			return 144;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getFatBurnZoneMaximum();
+		}
 	}
 
-	private int getMaxCardioHR(){
-		return 160;
+	private int getMaxCardioHR()
+	{
+		if(this.testFlag)
+		{
+			return 160;
+		}
+		else
+		{
+			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getCardioZoneMaximum();
+		}
 	}
 
 	private double[] getHRData()
 	{
-		return SharedData.newBigD;
+		if (this.testFlag)
+		{
+			return SharedData.newBigD;
+		}
+		else
+		{
+			int[][] in;
+			HeartRateDayOfData hrdod = hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData();
+			hrdod.populate();
+			in = hrdod.getHeartRateByTheMin();
+			return this.convert2Dto1D(in);		
+		}
 	}
 
 	private double[] getCaloriesData(){
@@ -408,7 +458,7 @@ public class Graph extends javax.swing.JPanel
 
 		return this.type;
 	}
-	
+
 	private double[] convert2Dto1D(int[][] inArr)
 	{
 		double[] ret = new double[1440];
