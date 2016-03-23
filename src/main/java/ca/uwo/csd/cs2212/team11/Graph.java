@@ -285,6 +285,8 @@ public class Graph extends javax.swing.JPanel
 
 	private double[] normalizeData(double[] array)
 	{
+		/*TODO if(test.Flag)
+		{*/
 		double maxVal = 0;
 		for (int i = 0; i < array.length; i++)
 		{
@@ -298,6 +300,11 @@ public class Graph extends javax.swing.JPanel
 			array[i] = Math.round(array[i] / maxVal * 200);
 		}
 		return array;
+	/*}
+		else
+		{
+			live method
+		}*/
 	}
 
 	private int[] plot(double[] array)
