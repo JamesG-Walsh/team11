@@ -43,7 +43,7 @@ public class Team11_FitBitViewer implements Serializable
 			GUI.setVisible(true);
 			
 			//Accolades acc = new Accolades();
-			//acc.checkAccolades(GUI, hfd);
+			//acc.checkAccolades(GUI, hfd);//
 			//hfd = new HistoricalFitnessData();
 			
 			

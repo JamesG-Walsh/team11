@@ -331,7 +331,8 @@ public class Graph extends javax.swing.JPanel
 		return 160;
 	}
 
-	private double[] getHRData(){
+	private double[] getHRData()
+	{
 		return SharedData.newBigD;
 	}
 
