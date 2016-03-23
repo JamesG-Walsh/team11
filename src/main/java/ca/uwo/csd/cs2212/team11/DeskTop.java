@@ -1,4 +1,5 @@
 package ca.uwo.csd.cs2212.team11;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,7 +14,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Dimension;
 
@@ -45,7 +48,7 @@ public class DeskTop extends JFrame{
 	private Widget[] all_widgets = new Widget[7];	
 	private boolean[] widgetVisible; /*= {false, false, false, false, false, false, false};*/
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel, graphsPanel, centerPanel;
-	private JLabel goalsListLabel, dateLabel, awardsListLabel;
+	private JLabel goalsListLabelStep, goalsListLabelCal, goalsListLabelDis, dateLabel, awardsListLabel;
 	private PieChart activeChart;
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
@@ -54,9 +57,14 @@ public class DeskTop extends JFrame{
 	private boolean[] cGraphVisible = {false, false, false, false, false, false, false};
 	private SelectDate select;
 	private Calendar workingDate;
-
 	private User usr;
-	
+	private JPanel aTem;
+	private int result;
+	private JTextField stepsGoal;
+	private JTextField distanceGoal;
+	private JTextField caloriesGoal;
+	//private int stpGoal, calGoal, distGoal;
+	private String[] goalsArray;
 	private boolean testFlag;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
@@ -79,6 +87,7 @@ public class DeskTop extends JFrame{
 				System.exit(0);
 			}
 		});
+
 		
 /*		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
@@ -556,10 +565,67 @@ public class DeskTop extends JFrame{
 		select = new SelectDate(refreshButton, datePicker);
 	}
 
+	
 
 	private void populateEastPanel(JPanel a){
+		
+		aTem = new JPanel();
+		stepsGoal = new JTextField(10);
+		distanceGoal = new JTextField(10);
+		caloriesGoal = new JTextField(10);
+		Serialize r = new Serialize();
+		goalsArray = ((String[]) r.readObject("./src/main/resources/desktop/setGoals.xml").readObject());
+		/*goalsArray = new String[3];
+		goalsArray[0] = "COOL" ;
+		goalsArray[1] = "COOL";
+		goalsArray[2] = "COOL";*/
+
 		a.setOpaque(false);
 		a.setLayout(new BoxLayout(a,1));
+		aTem.add(new JLabel("Steps Goal"));
+		aTem.add(stepsGoal);
+		aTem.add(new JLabel("Distance Goal"));
+		aTem.add(distanceGoal);
+		aTem.add(new JLabel("Calories Goal"));
+		aTem.add(caloriesGoal);
+
+		JButton button = new JButton();
+		button.setText("Set New Goals");
+		a.add(button);
+		button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
+                
+                if (result == JOptionPane.OK_OPTION) {
+        	         System.out.println(result);
+		        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText());
+		        	 goalsArray = usr.getDailyGoals().getGoalsArray();
+        	         //goalsArray[0] = stepsGoal.getText();
+		        	 //goalsArray[1] = caloriesGoal.getText();
+		        	 //goalsArray[2] = distanceGoal.getText();
+
+			         //Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
+		        	 usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
+			        
+			         
+			         goalsListLabelStep.setText(goalsArray[0]);
+			         goalsListLabelCal.setText(goalsArray[1]);
+			         goalsListLabelDis.setText( goalsArray[2]);
+			         //goalsListLabelStep.setText(goalsArray[0]);
+			         //goalsListLabelCal.setText(goalsArray[1]);
+			         //goalsListLabelDis.setText( goalsArray[2]);
+
+			         revalidate();
+			         repaint();
+
+			         Serialize r = new Serialize();
+			         //r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+			         r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+
+		      }
+            }
+        });
 		
 			goalsPanel = new JPanel();
 			goalsPanel.setBackground(SharedData.SMOKE);
@@ -568,9 +634,18 @@ public class DeskTop extends JFrame{
 			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 			goalsTitleLabel.setForeground(new Color(255,255,255));
 			goalsPanel.add(goalsTitleLabel);
-			goalsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			goalsListLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsListLabel);
+			goalsListLabelStep= new JLabel(goalsArray[0]);
+			goalsListLabelStep.setForeground(new Color(255,255,255));
+			goalsListLabelCal= new JLabel(goalsArray[1]);
+			goalsListLabelCal.setForeground(new Color(255,255,255));
+			goalsListLabelDis= new JLabel(goalsArray[2]);
+			goalsListLabelDis.setForeground(new Color(255,255,255));
+
+
+
+			goalsPanel.add(goalsListLabelStep);
+			goalsPanel.add(goalsListLabelCal);
+			goalsPanel.add(goalsListLabelDis);
 		
 		a.add(goalsPanel);
 		

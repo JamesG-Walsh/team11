@@ -300,37 +300,6 @@ public class HistoricalFitnessData
 		return bestFloorsDate;
 	}
 
-	/**
-	 * Compares a given date to the date of a given set of daily fitness data.
-	 * 
-	 * @param dayOfMonth
-	 * @param month
-	 * @param year
-	 * @param oswod
-	 * @return      integer value indicating result of comparison: -1, 0, or 1 if given date is earlier than, 
-	 * 				same as, or later than date of OneDaysWorthOfData object
-	 */
-	private int compareDate( int dayOfMonth, int month, int year, OneDaysWorthOfData odwod ) {
-
-		/* Compare years of the dates */
-		if ( year < odwod.getYear() )
-			return -1;
-		if ( year > odwod.getYear() )
-			return 1;
-		/* Years are the same, so compare months of the dates */
-		if ( month < odwod.getMonth() )
-			return -1;
-		if ( month > odwod.getMonth() )
-			return 1;
-		/* Months are the same, so compare days-of-month of the dates */
-		if ( dayOfMonth < odwod.getDayOfMonth() )
-			return -1;
-		if ( dayOfMonth > odwod.getDayOfMonth() )
-			return 1;
-		/* Dates are the same */
-		return 0;
-	}
-
 	public void populateLifetimeAndBestDays()
 	{
 		try 
@@ -373,4 +342,39 @@ public class HistoricalFitnessData
 		return str;
 	}
 
+	
+	/**
+	 * Compares a given date to the date of a given set of daily fitness data.
+	 * 
+	 * @param dayOfMonth
+	 * @param month
+	 * @param year
+	 * @param oswod
+	 * @return      integer value indicating result of comparison: -1, 0, or 1 if given date is earlier than, 
+	 * 				same as, or later than date of OneDaysWorthOfData object
+	 */
+	private int compareDate( int dayOfMonth, int month, int year, OneDaysWorthOfData odwod ) {
+
+		/* Compare years of the dates */
+		if ( year < odwod.getYear() )
+			return -1;
+		if ( year > odwod.getYear() )
+			return 1;
+		/* Years are the same, so compare months of the dates */
+		if ( month < odwod.getMonth() )
+			return -1;
+		if ( month > odwod.getMonth() )
+			return 1;
+		/* Months are the same, so compare days-of-month of the dates */
+		if ( dayOfMonth < odwod.getDayOfMonth() )
+			return -1;
+		if ( dayOfMonth > odwod.getDayOfMonth() )
+			return 1;
+		/* Dates are the same */
+		return 0;
+	}
+	
+	
+
+	
 }//end of class

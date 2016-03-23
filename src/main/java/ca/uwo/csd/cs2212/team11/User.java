@@ -1,8 +1,5 @@
 package ca.uwo.csd.cs2212.team11;
-
-
-/* When UserPreferences class exists: */
-/* import ca.uwo.csd.cs2212.team11.UserPreferences.*;  */
+import java.io.Serializable;
 
 /** 
  * This class contains all information and data unique to this user. 
@@ -10,12 +7,11 @@ package ca.uwo.csd.cs2212.team11;
  * @author Team 11
  */
 
-public class User 
+public class User implements Serializable
 {
-
-	/* private UserPreferences preferences; */
 	private HistoricalFitnessData historicalData;
-
+	//private OneDaysWorthOfData todaysData;
+	private DailyGoals dg;
 
 	/**
 	 *  Class constructor.
@@ -23,6 +19,8 @@ public class User
 	public User() 
 	{
 		historicalData = new HistoricalFitnessData();
+
+		dg = new DailyGoals();
 	}
 
 
@@ -35,16 +33,31 @@ public class User
 	{
 		return historicalData;
 	}
-
-	/*/**
+    
+	/**
+	 * Helps enable this user's fitness data to persist between uses of application.
+	 * Sets all of this user's historical fitness data by replacing it.
 	 * Gets this user's fitness goals and application configuration preferences.
 	 * 
-	 * @return preferences
+	 * @param one day's worth of fitness data
 	 */
-	/*public UserPreferences getPreferences() 
-	{
-		return preferences;
+	
+	/**
+	 * Gets this user's daily goals.
+	 *
+	 * @return dg
+	 */
+	public DailyGoals getDailyGoals() {
+		return this.dg;
 	}
-	*/
+	
+	public void setHistoricalFitnessData( HistoricalFitnessData hfd ) {
+		this.historicalData = hfd;
+	}
 
+
+	public void setDailyGoals( DailyGoals dg ) {
+		this.dg = dg;
+	}
+	
 }

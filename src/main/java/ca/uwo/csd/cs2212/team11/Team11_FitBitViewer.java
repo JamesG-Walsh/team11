@@ -6,7 +6,6 @@ import ca.uwo.csd.cs2212.team11.DeskTop;
 import ca.uwo.csd.cs2212.team11.OneDaysWorthOfData;
 import ca.uwo.csd.cs2212.team11.User;
 
-
 /**
  * COMP 2212 Group Project
  * FitBit Viewer
@@ -16,6 +15,7 @@ import ca.uwo.csd.cs2212.team11.User;
 public class Team11_FitBitViewer implements Serializable
 {
 	public static DeskTop GUI;
+
 	//public static OneDaysWorthOfData odwod;
 	//public static HistoricalFitnessData hfd;
 
@@ -64,7 +64,7 @@ public class Team11_FitBitViewer implements Serializable
 			//Accolades acc = new Accolades();
 			//acc.checkAccolades(GUI, hfd);
 			//System.out.println(hfd.lifetimeAndBestDaysToString());
-			
+
 			//System.out.println(hfd.getLifetimeAndBestDays());
 			
 			//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
