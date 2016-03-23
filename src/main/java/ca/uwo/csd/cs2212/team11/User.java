@@ -11,7 +11,8 @@ public class User implements Serializable
 {
 	private HistoricalFitnessData historicalData;
 	private OneDaysWorthOfData todaysData;
-
+    private DailyGoals dg;
+    
 	/**
 	 *  Class constructor.
 	 */
@@ -44,8 +45,22 @@ public class User implements Serializable
 	 * 
 	 * @param one day's worth of fitness data
 	 */
+	
+	/**
+	 * Gets this user's daily goals.
+	 *
+	 * @return dg
+	 */
+	public DailyGoals getDailyGoals() {
+		return dg;
+	}
+	
 	public void setHistoricalFitnessData( HistoricalFitnessData hfd ) {
 		this.historicalData = hfd;
 	}
 
+	public void setDailyGoals( DailyGoals dg ) {
+		this.dg = dg;
+	}
+	
 }
