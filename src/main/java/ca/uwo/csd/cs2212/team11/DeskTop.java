@@ -37,7 +37,7 @@ import java.util.Calendar;
 
 /**
  * Class that will display components on a JFRAME dashboard 
- * @author Andrew Hall
+ * @author Andrew Hall, James Walsh, Dara Amin
  *
  */
 public class DeskTop extends JFrame{
@@ -292,15 +292,20 @@ public class DeskTop extends JFrame{
 
 			System.out.println(graphVisible.length);
 	
-			this.removeVisibleGraphs();
+			//this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
 
+
 			//allGraphs[i].setVisible(true);
 			addRemoveGraph(id);
+
+			
+			repaint();
+
 			//System.out.println(year);
 			//repaint();
 		}
@@ -322,10 +327,10 @@ public class DeskTop extends JFrame{
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 			int year = time.get(Calendar.YEAR);
-			int month = time.get(Calendar.MONTH);
+			int month = (time.get(Calendar.MONTH)+1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
 
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month +1, year );
+			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month, year );
 			odwod.populateTotals();
 			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
@@ -354,12 +359,35 @@ public class DeskTop extends JFrame{
 			
 			//this.removeVisibleGraphs();
 			
+			int i;
+			for(i = 0; i < graphVisible.length; i++){
+
+				if(graphVisible[i] == true)
+				{
+
+					System.out.println(i);
+
+					break;
+				}
+			}
+
+			IDs id = allGraphs[i].getType();
+
+			System.out.println(graphVisible.length);
+	
+			this.removeVisibleGraphs();
+
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+
+
+			//allGraphs[i].setVisible(true);
+			addRemoveGraph(id);
+
 			
-			repaint();			
+			repaint();		
 		}
 	}
 	private void configWidgetVisibilityToUsersPref(IDs type){
