@@ -292,7 +292,7 @@ public class DeskTop extends JFrame{
 
 			System.out.println(graphVisible.length);
 	
-			//this.removeVisibleGraphs();
+			this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
@@ -357,7 +357,7 @@ public class DeskTop extends JFrame{
 			addRemoveGraph(IDs.HEART_RATE);
 			repaint();*/
 			
-			//this.removeVisibleGraphs();
+			this.removeVisibleGraphs();
 			
 			int i;
 			for(i = 0; i < graphVisible.length; i++){
