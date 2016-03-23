@@ -255,14 +255,17 @@ public class Widget extends JPanel{
 
 	
 	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
-
+		
+		calen = cal;
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
+
 		if(!this.testF)
 		{
 			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
+
 			System.out.println("Inside CVL...\n" + odwod.toString(false));
 			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
 			System.out.println("i = " + i);
