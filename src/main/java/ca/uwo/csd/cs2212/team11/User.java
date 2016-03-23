@@ -22,12 +22,6 @@ public class User implements Serializable
 		dg = new DailyGoals();
 	}
 
-	public getDailyGoals()
-	{
-		return this.dg;
-	}
-
-
 	/**
 	 * Gets this user's fitness data from all past days and today.
 	 * 
@@ -37,6 +31,30 @@ public class User implements Serializable
 		return historicalData;
 	}
     
-	
 
+	/**
+	 * Helps enable this user's fitness data to persist between uses of application.
+	 * Sets all of this user's historical fitness data by replacing it.
+	 * 
+	 * @param one day's worth of fitness data
+	 */
+	
+	/**
+	 * Gets this user's daily goals.
+	 *
+	 * @return dg
+	 */
+	public DailyGoals getDailyGoals() {
+		return this.dg;
+	}
+	
+	public void setHistoricalFitnessData( HistoricalFitnessData hfd ) {
+		this.historicalData = hfd;
+	}
+
+
+	public void setDailyGoals( DailyGoals dg ) {
+		this.dg = dg;
+	}
+	
 }

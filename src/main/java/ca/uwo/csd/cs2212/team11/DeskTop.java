@@ -64,7 +64,7 @@ public class DeskTop extends JFrame{
 	private JTextField stepsGoal;
 	private JTextField distanceGoal;
 	private JTextField caloriesGoal;
-	private int stpGoal, calGoal, distGoal;
+	//private int stpGoal, calGoal, distGoal;
 	private String[] goalsArray;
 
 	
@@ -493,7 +493,7 @@ public class DeskTop extends JFrame{
 		distanceGoal = new JTextField(10);
 		caloriesGoal = new JTextField(10);
 		Serialize r = new Serialize();
-		this.goalsArray = (String[]) r.readObject("./src/main/resources/desktop/setGoals.xml").readObject();
+		goalsArray = ((String[]) r.readObject("./src/main/resources/desktop/setGoals.xml").readObject());
 		/*goalsArray = new String[3];
 		goalsArray[0] = "COOL" ;
 		goalsArray[1] = "COOL";
@@ -513,29 +513,34 @@ public class DeskTop extends JFrame{
 		a.add(button);
 		button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+
                 result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
                 
                 if (result == JOptionPane.OK_OPTION) {
         	         System.out.println(result);
-		        	 goalsArray[0] = stepsGoal.getText();
-		        	 goalsArray[1] = caloriesGoal.getText();
-		        	 goalsArray[2] = distanceGoal.getText();
+		        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText());
+		        	 goalsArray = usr.getDailyGoals().getGoalsArray();
+        	         //goalsArray[0] = stepsGoal.getText();
+		        	 //goalsArray[1] = caloriesGoal.getText();
+		        	 //goalsArray[2] = distanceGoal.getText();
 
-			         stpGoal = Integer.parseInt(goalsArray[0]);
-			         calGoal = Integer.parseInt(goalsArray[1]);
-			         distGoal = Integer.parseInt(goalsArray[2]);
-
- 
+			         //Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
+		        	 usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
+			        
+			         
 			         goalsListLabelStep.setText(goalsArray[0]);
 			         goalsListLabelCal.setText(goalsArray[1]);
 			         goalsListLabelDis.setText( goalsArray[2]);
+			         //goalsListLabelStep.setText(goalsArray[0]);
+			         //goalsListLabelCal.setText(goalsArray[1]);
+			         //goalsListLabelDis.setText( goalsArray[2]);
 
 			         revalidate();
 			         repaint();
 
 			         Serialize r = new Serialize();
+			         //r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
 			         r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
-
 
 		      }
             }
