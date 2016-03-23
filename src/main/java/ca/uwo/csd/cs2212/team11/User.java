@@ -10,7 +10,8 @@ import java.io.Serializable;
 public class User implements Serializable
 {
 	private HistoricalFitnessData historicalData;
-	private OneDaysWorthOfData todaysData;
+	//private OneDaysWorthOfData todaysData;
+	private DailyGoals dg;
 
 	/**
 	 *  Class constructor.
@@ -18,16 +19,14 @@ public class User implements Serializable
 	public User() 
 	{
 		historicalData = new HistoricalFitnessData();
+		dg = new DailyGoals();
 	}
 
-	/**
-	 * Gets this user's fitness data so far today.
-	 *
-	 * @return todaysData
-	 */
-	public OneDaysWorthOfData getTodaysData() {
-		return todaysData;
+	public getDailyGoals()
+	{
+		return this.dg;
 	}
+
 
 	/**
 	 * Gets this user's fitness data from all past days and today.
@@ -38,14 +37,6 @@ public class User implements Serializable
 		return historicalData;
 	}
     
-	/**
-	 * Helps enable this user's fitness data to persist between uses of application.
-	 * Sets all of this user's historical fitness data by replacing it.
-	 * 
-	 * @param one day's worth of fitness data
-	 */
-	public void setHistoricalFitnessData( HistoricalFitnessData hfd ) {
-		this.historicalData = hfd;
-	}
+	
 
 }

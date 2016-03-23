@@ -512,7 +512,6 @@ public class DeskTop extends JFrame{
 		button.setText("Set New Goals");
 		a.add(button);
 		button.addActionListener(new java.awt.event.ActionListener() {
-            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
                 
