@@ -150,9 +150,13 @@ public class Widget extends JPanel{
 		//changeView(0);
 		switch(type){
 			case CALORIES:
-				data = getData(type);
-				changeView(currentView);
-				break;
+				if(this.testF){
+					data = getDistanceData(type);
+					changeView(currentView);
+				}else{
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
+
+				}
 			case DISTANCE:
 				if(this.testF){
 					data = getDistanceData(type);
@@ -273,6 +277,13 @@ public class Widget extends JPanel{
 		
 
 				switch(type){
+						case CALORIES:
+									if(i==0){ //Get day calorie
+										String convert = String.valueOf(odwod.getTodaysTotalCaloriesBurned());
+										dataBox.setText(convert);
+										viewLabel.setText(Widget.views[i]);
+									}
+									break;
 						case STEPS: 
 									System.out.print("Getting steps...");
 									if(i==0){ //Get day calorie

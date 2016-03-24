@@ -477,7 +477,8 @@ public class DeskTop extends JFrame{
 	
 	private void populateNorthPanel(JPanel a){
 		
-		a.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
+		a.setLayout(new GridLayout(1,1));
+		a.setPreferredSize(new Dimension(850, 27));
 		a.setOpaque(false);
 		
 
@@ -526,7 +527,7 @@ public class DeskTop extends JFrame{
 
 		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(getWorkingDate().getTime());
 		dateLabel = new JLabel(dateString);
-		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		dateLabel.setForeground(new Color(255,255,255));
 		datePanel.add(dateLabel);
 
@@ -534,7 +535,7 @@ public class DeskTop extends JFrame{
 
 		//datePanel.add(conn);
 
-		JButton refreshButton = new JButton("Refresh Data");
+		JButton refreshButton = new JButton("Refresh");
 		refreshButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				refreshData(select.returnDate());
@@ -543,11 +544,11 @@ public class DeskTop extends JFrame{
 		});
 
 		refreshButton.setToolTipText("Click to refresh data");
-		datePanel.add(refreshButton);  
-
+		refreshButton.setPreferredSize(new Dimension(40, 40));
 
 		a.add(datePanel);
-		a.add(Box.createHorizontalGlue());
+		//a.add(Box.createHorizontalGlue());
+		
 
 		JDatePickerImpl datePicker;
 
@@ -563,6 +564,7 @@ public class DeskTop extends JFrame{
 		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 		datePicker.setSize(50,50);
 		a.add(datePicker);
+		a.add(refreshButton);  
 
 		select = new SelectDate(refreshButton, datePicker);
 		
@@ -872,10 +874,10 @@ public class DeskTop extends JFrame{
 	}*/
 
 	private void populateWestPanel(JPanel a){
-		a.setLayout(new GridLayout(11,1));
+		a.setLayout(new GridLayout(12,1));
 		a.setOpaque(false);
 
-		JLabel widgets = new JLabel("Display Widgets");
+		JLabel widgets = new JLabel("<html><h3>Display Widgets</h3></html>");
 		a.add(widgets);
 
 		JCheckBox calWidg = new JCheckBox("Calories");
@@ -890,6 +892,7 @@ public class DeskTop extends JFrame{
 				repaint();
          }           
       });
+
 
 
       	JCheckBox stepWidg = new JCheckBox("Steps");
@@ -988,10 +991,10 @@ public class DeskTop extends JFrame{
       	a.add(stepWidg);
       	a.add(distWidg);
       	a.add(floorWidg);
-      	a.add(stepWidg);
+      	a.add(actWidg);
       	a.add(sedwidg);
 
-      	JLabel graphs = new JLabel("Display Graphs");
+      	JLabel graphs = new JLabel("<html><h3>Display Graphs</h3></html>");
 		a.add(graphs);
 
 		JRadioButton  stepGraph = new JRadioButton("STEPS");
@@ -1005,6 +1008,23 @@ public class DeskTop extends JFrame{
             + (e.getStateChange()==1?"checked":"unchecked"));*/
 
 				addRemoveGraph(IDs.STEPS);
+				repaint();
+
+
+         }           
+      });
+
+		JRadioButton  hrGraph = new JRadioButton("HEART RATE");
+      	if(this.graphVisible[6] == true){
+			hrGraph.setSelected(true);
+		}
+      	hrGraph.setOpaque(false);
+		hrGraph.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveGraph(IDs.HEART_RATE);
 				repaint();
 
 
@@ -1054,6 +1074,8 @@ public class DeskTop extends JFrame{
       	group.add(stepGraph);
       	group.add(distGraph);
       	group.add(calGraph);
+      	group.add(hrGraph);
+      	a.add(hrGraph);
       	a.add(stepGraph);
       	a.add(distGraph);
       	a.add(calGraph);
