@@ -379,6 +379,20 @@ public class DeskTop extends JFrame{
 			repaint();
 			revalidate();
 
+			eastPanel.removeAll();
+			//eastPanel = new JPanel();
+			testCal = 40;
+
+
+	 		usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
+			
+			populateEastPanel(eastPanel, testCal);
+
+
+			mainDisplay.add(eastPanel, BorderLayout.EAST);
+			eastPanel.revalidate();
+			eastPanel.repaint();
+
 			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
 			int year = time.get(Calendar.YEAR);
@@ -405,8 +419,8 @@ public class DeskTop extends JFrame{
 				//e.printStackTrace();
 			}
 
-			eastPanel = new JPanel();
-			populateEastPanel(eastPanel, testCal);
+			/*eastPanel = new JPanel();
+			populateEastPanel(eastPanel, testCal);*/
 
 			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
 			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
@@ -792,8 +806,9 @@ public class DeskTop extends JFrame{
 
 					try
 						{
-							System.out.println("Trying live Desktop constructor populates");
 							od = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
+														System.out.println("DAILY GOALS ODWOD");
+
 										
 						}
 						catch(RateLimitExceededException e)
@@ -872,6 +887,8 @@ public class DeskTop extends JFrame{
 	        	         System.out.println(result);
 			        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
 			        	 goalsArray = usr.getDailyGoals().getGoalsArray();
+
+			        	 System.out.println("---SETTING GOAL ---" + goalsArray[0]);
 	        	         //goalsArray[0] = stepsGoal.getText();
 			        	 //goalsArray[1] = caloriesGoal.getText();
 			        	 //goalsArray[2] = distanceGoal.getText();
