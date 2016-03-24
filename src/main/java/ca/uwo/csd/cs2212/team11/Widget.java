@@ -264,7 +264,14 @@ public class Widget extends JPanel{
 
 		if(!this.testF)
 		{
-			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
+			OneDaysWorthOfData odwod = null;
+			try {
+				odwod = hfd.retrieve2(day, month+1, year);
+			} catch (RateLimitExceededException e) {
+				System.out.println("Widget.changeViewLive making server requests, hitting 429.");
+				//TODO convey info to user
+				e.printStackTrace();
+			}
 
 			System.out.println("Inside CVL...\n" + odwod.toString(false));
 			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());

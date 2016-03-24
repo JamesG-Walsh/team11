@@ -45,8 +45,9 @@ public class Graph extends javax.swing.JPanel
 
 	/**
 	 * Attach all methods in JPanel to our object
+	 * @throws RateLimitExceededException 
 	 */
-	public Graph(boolean testFlag, IDs type, HistoricalFitnessData hfd, int year, int month, int dayOfMonth)
+	public Graph(boolean testFlag, IDs type, HistoricalFitnessData hfd, int year, int month, int dayOfMonth) throws RateLimitExceededException
 	{
 		this.testFlag = testFlag;
 
@@ -133,8 +134,9 @@ public class Graph extends javax.swing.JPanel
 	/**
 	 * For testing purposes..
 	 * @param args 
+	 * @throws RateLimitExceededException 
 	 */
-	public static void main (String[] args)
+	public static void main (String[] args) throws RateLimitExceededException
 	{
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,7 +146,7 @@ public class Graph extends javax.swing.JPanel
 		frame.setVisible(true);
 	}
 
-	private void paintHRGraph(Graphics g){
+	private void paintHRGraph(Graphics g) throws RateLimitExceededException{
 		paintHRVerticleScale(g);
 
 		int plotPoint = this.offset;
@@ -177,7 +179,7 @@ public class Graph extends javax.swing.JPanel
 
 	}
 
-	private void paintHRVerticleScale(Graphics g){
+	private void paintHRVerticleScale(Graphics g) throws RateLimitExceededException{
 
 		Graphics2D g2d = (Graphics2D) g.create();
 
@@ -342,7 +344,7 @@ public class Graph extends javax.swing.JPanel
 	}
 
 
-	private int getMaxRestingHR()
+	private int getMaxRestingHR() throws RateLimitExceededException
 	{
 		if(this.testFlag)
 		{
@@ -354,7 +356,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private int getMaxFatBurnHR(){
+	private int getMaxFatBurnHR() throws RateLimitExceededException{
 		if(this.testFlag)
 		{
 			return 144;
@@ -365,7 +367,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private int getMaxCardioHR()
+	private int getMaxCardioHR() throws RateLimitExceededException
 	{
 		if(this.testFlag)
 		{
@@ -377,7 +379,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getHRData()
+	private double[] getHRData() throws RateLimitExceededException
 	{
 		if (this.testFlag)
 		{
@@ -393,7 +395,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getCaloriesData(){
+	private double[] getCaloriesData() throws RateLimitExceededException{
 		if (this.testFlag == true)
 		{
 			return SharedData.newBigD;
@@ -407,7 +409,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getStepsData()
+	private double[] getStepsData() throws RateLimitExceededException
 	{
 		if (this.testFlag == true)
 		{
@@ -422,7 +424,7 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getDistanceData()
+	private double[] getDistanceData() throws RateLimitExceededException
 	{
 		if (this.testFlag == true)
 		{

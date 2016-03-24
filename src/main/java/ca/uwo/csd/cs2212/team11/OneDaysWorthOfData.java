@@ -67,7 +67,7 @@ public class OneDaysWorthOfData
 		this.todaysTotalActiveMins = -1;
 		this.todaysTotalSedentaryMins = -1;
 		
-		this.caloriesByTheMin = new double [24][60];
+		this.caloriesByTheMin = new double [24][60]; //initialize the arrays
 		this.distanceByTheMin = new double [24][60];
 		this.stepsByTheMin = new int [24][60];
 		this.floorsByTheMin = new int [24][60];
@@ -78,7 +78,7 @@ public class OneDaysWorthOfData
 		{
 			for (int min = 0; min < 60; min++)
 			{
-				this.caloriesByTheMin[hour][min] = -1;
+				this.caloriesByTheMin[hour][min] = -1; //do the same for all minutes of time series data
 				this.distanceByTheMin[hour][min] = -1;
 				this.stepsByTheMin[hour][min] = -1;
 				this.floorsByTheMin[hour][min] = -1;
@@ -132,7 +132,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysFloors the floors climbed today by the user
 	 */
-	public void setTodaysTotalFloors( int todaysFloors ) {
+	public void setTodaysTotalFloors( int todaysFloors ) 
+	{
 		this.todaysTotalFloors = todaysFloors;
 	}
 
@@ -476,9 +477,10 @@ public class OneDaysWorthOfData
 
 
 	/**
+	 * @throws RateLimitExceededException 
 	 * 
 	 */
-	public void populateTotals()
+	public void populateTotals() throws RateLimitExceededException
 	{
 		String date = this.buildDateAsString();
 		//System.out.println("date string for populateTotals() : "+ date);
@@ -509,9 +511,10 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * @throws RateLimitExceededException 
 	 * 
 	 */
-	public void populateAllMins()
+	public void populateAllMins() throws RateLimitExceededException
 	{
 		String date = this.buildDateAsString();
 

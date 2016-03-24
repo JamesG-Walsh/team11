@@ -26,9 +26,9 @@ import org.json.JSONArray;
 
 
 /**
- * @author Team 11
+ * @author Beth Locke, James Walsh
  * Class that contains methods for making requests to the fitbit API and returning the resultant JSONObjects
- * Mostly copied from the AppRefreshTokens.java file that Beth Locke provided on confluence
+ * getSpecificData() is mostly copied from the AppRefreshTokens.java file that Beth Locke provided on confluence
  */
 public class HttpClient
 {
@@ -164,6 +164,8 @@ public class HttpClient
 		int statusCode = response.getCode();
 
 		JSONObject jo = null;
+		
+		System.out.println("-----");
 		switch(statusCode)
 		{
 		case 200:
@@ -217,7 +219,7 @@ public class HttpClient
 			System.out.println("HTTP response body:\n"+response.getBody());
 			break;
 		case 429:
-			System.out.println("Rate limit exceedgited");
+			System.out.println("Rate limit exceeded");
 			System.out.println("HTTP response body:\n"+response.getBody());
 			throw new RateLimitExceededException();
 		default:
@@ -321,6 +323,11 @@ public class HttpClient
 		return HttpClient.getSpecificData("activities/heart/date/" + date +"/1d/1min.json");
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws RateLimitExceededException
+	 */
 	public static JSONObject getTodaysHeartRateZones() throws RateLimitExceededException
 	{
 		

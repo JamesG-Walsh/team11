@@ -173,7 +173,7 @@ public class HistoricalFitnessData
 		return allOneDays.get(mid);					
 	}	
 
-	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
+	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year) throws RateLimitExceededException
 	{
 	/*	System.out.println("---------------------");
 		new Exception().printStackTrace();
@@ -300,7 +300,7 @@ public class HistoricalFitnessData
 		return bestFloorsDate;
 	}
 
-	public void populateLifetimeAndBestDays()
+	public void populateLifetimeAndBestDays() throws RateLimitExceededException
 	{
 		try 
 		{
