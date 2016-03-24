@@ -362,7 +362,7 @@ public class OneDaysWorthOfData
 			int min = Integer.parseInt(time.substring(3, 5));
 
 			this.distanceByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
-			this.distanceByTheMin[hour][min] = (this.distanceByTheMin[hour][min] * 1000);
+			this.distanceByTheMin[hour][min] = (this.distanceByTheMin[hour][min] * 1000); //convert from km to m
 		}
 	}
 
@@ -448,33 +448,7 @@ public class OneDaysWorthOfData
 		this.floorsByTheMin = floorsByTheMin;
 	}
 
-	/**
-	 * @return the totalsFullyPopulated
-	 */
-	public boolean isTotalsFullyPopulated() {
-		return totalsFullyPopulated;
-	}
 
-	/**
-	 * @param totalsFullyPopulated the totalsFullyPopulated to set
-	 */
-	public void setTotalsFullyPopulated(boolean totalsFullyPopulated) {
-		this.totalsFullyPopulated = totalsFullyPopulated;
-	}
-
-	/**
-	 * @return the byTheMinsFullyPopulated
-	 */
-	public boolean isByTheMinsFullyPopulated() {
-		return byTheMinsFullyPopulated;
-	}
-
-	/**
-	 * @param byTheMinsFullyPopulated the byTheMinsFullyPopulated to set
-	 */
-	public void setByTheMinsFullyPopulated(boolean byTheMinsFullyPopulated) {
-		this.byTheMinsFullyPopulated = byTheMinsFullyPopulated;
-	}
 
 
 	/**
@@ -508,7 +482,6 @@ public class OneDaysWorthOfData
 		{
 			System.out.println(npe.getMessage());
 		}
-		this.setTotalsFullyPopulated(true);
 	}
 
 	/**
@@ -545,7 +518,6 @@ public class OneDaysWorthOfData
 			System.out.println(npe.getMessage());
 		}
 
-		this.setByTheMinsFullyPopulated(true);
 	}
 
 

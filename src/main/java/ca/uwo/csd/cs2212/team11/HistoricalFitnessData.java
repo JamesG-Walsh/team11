@@ -316,6 +316,7 @@ public class HistoricalFitnessData
 			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
 
 			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
+			this.lifetimeDistance = (this.lifetimeDistance *1000);
 			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
 			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
 
@@ -324,6 +325,7 @@ public class HistoricalFitnessData
 			//System.out.println(bestDaysJSON.toString(1));
 
 			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
+			this.bestDistanceValue = (this.bestDistanceValue * 1000);
 			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");
 
 			this.bestFloorsValue = bestDaysJSON.getJSONObject("floors").getDouble("value");
