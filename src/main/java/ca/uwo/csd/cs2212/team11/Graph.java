@@ -238,8 +238,6 @@ public class Graph extends javax.swing.JPanel
 
 		Graphics2D g2d = (Graphics2D) g.create();
 
-
-
 		//draw scale lines at 25, 50 and 75%
 		g2d.setColor(Color.CYAN);
 		g2d.setStroke(dashed);
@@ -281,6 +279,7 @@ public class Graph extends javax.swing.JPanel
 
 				int startAvg = 0;
 				int endAvg = 0;
+				boolean plottingInvalidPoint = false; //set up flag to track if the point should not be plotted due to not being initialized because of hitting the rate limit or attempting to plot a time that hasn't happened yet
 
 				for (int count = 0; count < step; count++)
 				{
@@ -288,17 +287,23 @@ public class Graph extends javax.swing.JPanel
 					startAvg += data[i+count];
 					//System.out.println("i+count+step" + i + " " + count + " " + step);
 					endAvg += data[i + count + step];
+					if(startAvg == -1 || endAvg == -1) //check to see if any of the minutes being plotted haven't been populated with live data
+					{
+						plottingInvalidPoint = true;
+					}
 				}
-
 				startAvg = startAvg/step;
 				endAvg = endAvg/step;
 
-				g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - startAvg, plotPoint + spread, SharedData.GRAPH_HEIGHT- endAvg);
+				if(!plottingInvalidPoint)
+				{
+					g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - startAvg, plotPoint + spread, SharedData.GRAPH_HEIGHT- endAvg);
+				}
 
-			}
+			}//end if block
 			plotPoint += spread;
 			i += step;
-		}
+		}//end of while loop
 
 		g.setColor(Color.BLACK);
 		g.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
@@ -398,7 +403,8 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
-	private double[] getCaloriesData() throws RateLimitExceededException{
+	private double[] getCaloriesData() throws RateLimitExceededException
+	{
 		if (this.testFlag == true)
 		{
 			return SharedData.newBigD;
