@@ -831,9 +831,9 @@ public class DeskTop extends JFrame{
 							e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 						}
 					
-					if(od.getTodaysTotalSteps() >  usr.getDailyGoals().getStepGoal()){
+					if(od.getTodaysTotalSteps() >=  usr.getDailyGoals().getStepGoal()){
 
-							System.out.println("inside thing");
+							System.out.println(od.getTodaysTotalSteps() + " vs " + usr.getDailyGoals().getStepGoal() );
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(cmark1);
@@ -844,7 +844,9 @@ public class DeskTop extends JFrame{
 							goalsPanel.add(xmark1);
 					}
 
-					if(od.getTodaysTotalCaloriesBurned() > usr.getDailyGoals().getCalGoal()){
+					if(od.getTodaysTotalCaloriesBurned() >= usr.getDailyGoals().getCalGoal()){
+
+						System.out.println(od.getTodaysTotalCaloriesBurned() + " vs " + usr.getDailyGoals().getCalGoal() );
 
 						goalsPanel.add(new JLabel("Calories: "));
 						goalsPanel.add(goalsListLabelCal);
@@ -857,8 +859,9 @@ public class DeskTop extends JFrame{
 
 					}
 
-					if(od.getTodaysTotalDistance() > usr.getDailyGoals().getDistGoal()){
+					if(od.getTodaysTotalDistance() >= usr.getDailyGoals().getDistGoal()){
 
+						System.out.println(od.getTodaysTotalDistance() + " vs " + usr.getDailyGoals().getDistGoal() );
 						goalsPanel.add(new JLabel("Distance: "));
 						goalsPanel.add(goalsListLabelDis);
 						goalsPanel.add(cmark3);
@@ -871,8 +874,8 @@ public class DeskTop extends JFrame{
 
 					}
 
-					if(od.getTodaysTotalFloors() > usr.getDailyGoals().getFloorsGoal()){
-
+					if(od.getTodaysTotalFloors() >= usr.getDailyGoals().getFloorsGoal()){
+							System.out.println(od.getTodaysTotalFloors() + " vs " + usr.getDailyGoals().getFloorsGoal() );
 							goalsPanel.add(new JLabel("Floors: "));
 							goalsPanel.add(goalsListLabelFloors);
 							goalsPanel.add(cmark4);
