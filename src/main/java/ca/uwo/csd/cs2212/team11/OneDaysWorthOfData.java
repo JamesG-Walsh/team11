@@ -17,22 +17,22 @@ public class OneDaysWorthOfData
 	private int dayOfMonth;
 
 	private double todaysTotalCaloriesBurned;
-	private double[][] caloriesByTheMin = new double [24][60];
+	private double[][] caloriesByTheMin;
 
 	private double todaysTotalDistance;
-	private double[][] distanceByTheMin = new double [24][60];
+	private double[][] distanceByTheMin;
 
 	private int todaysTotalSteps;
-	private int[][] stepsByTheMin = new int [24][60];
+	private int[][] stepsByTheMin;
 
 	private int todaysTotalFloors;
-	private int[][] floorsByTheMin = new int [24][60];
+	private int[][] floorsByTheMin;
 
 	private int todaysTotalActiveMins;
-	private int[][] activeMinsByTheMin = new int [24][60];
+	private int[][] activeMinsByTheMin;
 
 	private int todaysTotalSedentaryMins;
-	private int[][] sedentaryMinsByTheMin = new int [24][60];
+	private int[][] sedentaryMinsByTheMin;
 
 	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
 
@@ -58,10 +58,36 @@ public class OneDaysWorthOfData
 	{
 		this.year = year;
 		this.month = month;
-		this.dayOfMonth = dayOfMonth;
-
-		this.hrdod = new HeartRateDayOfData(this.buildDateAsString()); // create separate sub-container for heart rate data
-		//TODO Set all int[][] arrays to null? initialize here?
+		this.dayOfMonth = dayOfMonth;	
+		
+		this.todaysTotalCaloriesBurned = -1;			//initialize all fitness data attributes to -1 to indicate when they have not been populated without having to check for null
+		this.todaysTotalDistance = -1;
+		this.todaysTotalSteps = -1;
+		this.todaysTotalFloors = -1;
+		this.todaysTotalActiveMins = -1;
+		this.todaysTotalSedentaryMins = -1;
+		
+		this.caloriesByTheMin = new double [24][60];
+		this.distanceByTheMin = new double [24][60];
+		this.stepsByTheMin = new int [24][60];
+		this.floorsByTheMin = new int [24][60];
+		this.activeMinsByTheMin = new int [24][60];
+		this.sedentaryMinsByTheMin = new int [24][60];
+		
+		for(int hour = 0; hour < 24; hour++)
+		{
+			for (int min = 0; min < 60; min++)
+			{
+				this.caloriesByTheMin[hour][min] = -1;
+				this.distanceByTheMin[hour][min] = -1;
+				this.stepsByTheMin[hour][min] = -1;
+				this.floorsByTheMin[hour][min] = -1;
+				this.activeMinsByTheMin[hour][min] = -1;
+				this.sedentaryMinsByTheMin[hour][min] = -1;
+			}
+		}
+		
+		this.hrdod = new HeartRateDayOfData(this.buildDateAsString()); // create separate modularized sub-container for heart rate data
 	}
 
 	/** 
