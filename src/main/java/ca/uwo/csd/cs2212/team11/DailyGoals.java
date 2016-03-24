@@ -26,10 +26,28 @@ public class DailyGoals {
 		goalsArray[1] = calGoal;
 		goalsArray[2] = distGoal;
 		goalsArray[3] = floorsGoal;
+
+		int tmp1 = Integer.parseInt(stpGoal);
+		int tmp2 = Integer.parseInt(calGoal);
+		int tmp3 = Integer.parseInt(distGoal);
+		int tmp4 = Integer.parseInt(floorsGoal);
+
+		this.setGoals(tmp1, tmp2, tmp3, tmp4);
 	}
 	
 	public void setGoalsArray( String[] goalsArray) {
 		this.goalsArray = goalsArray;
+	}
+
+	public boolean isGoal(int daily, int goal){
+
+		if(daily > goal){
+
+			return true;
+		}
+
+		return false;
+
 	}
 	
 	public int getStepGoal() {

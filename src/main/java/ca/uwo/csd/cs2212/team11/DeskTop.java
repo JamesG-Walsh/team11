@@ -75,6 +75,9 @@ public class DeskTop extends JFrame{
 	//private int stpGoal, calGoal, distGoal;
 	private String[] goalsArray;
 	private boolean testFlag;
+	private OneDaysWorthOfData odwodToday;
+	private int testCal = 500;
+	private JPanel mainDisplay;
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
@@ -126,7 +129,7 @@ public class DeskTop extends JFrame{
 		}
 		else
 		{		
-			OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
+			odwodToday = hfd.retrieve2(dayOfMonth, month, year);
 			odwodToday.populateAllMins();			
 			hfd.populateLifetimeAndBestDays();	
 			
@@ -159,7 +162,7 @@ public class DeskTop extends JFrame{
 		ImagePanel backPanel = new ImagePanel("jogger.jpg"); // replace with no copyright
 		this.setSize(backPanel.getWidth(), backPanel.getHeight());
 
-		JPanel mainDisplay = new JPanel();
+		mainDisplay = new JPanel();
 		mainDisplay.setLayout(new BorderLayout(1,1));
 		mainDisplay.setPreferredSize(new Dimension(1100, 600));
 		mainDisplay.setOpaque(false);
@@ -170,7 +173,7 @@ public class DeskTop extends JFrame{
 		populateNorthPanel(northPanel);
 		
 		eastPanel = new JPanel();
-		populateEastPanel(eastPanel);
+		populateEastPanel(eastPanel, testCal);
 
 		southPanel = new JPanel();
 		//populateSouthPanel(southPanel);
@@ -287,6 +290,15 @@ public class DeskTop extends JFrame{
 			repaint();
 			revalidate();
 
+			eastPanel.removeAll();
+			//eastPanel = new JPanel();
+			testCal = 40;
+			
+			populateEastPanel(eastPanel, testCal);
+
+			mainDisplay.add(eastPanel, BorderLayout.EAST);
+			eastPanel.revalidate();
+			eastPanel.repaint();
 
 			System.out.println( "TIME- " + time.get(Calendar.DAY_OF_MONTH) + " " +time.get(Calendar.MONTH + 1) +" "+time.get(Calendar.YEAR));
 			int year = time.get(Calendar.YEAR);
@@ -354,6 +366,9 @@ public class DeskTop extends JFrame{
 			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month, year );
 			odwod.populateTotals();
 			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
+
+			eastPanel = new JPanel();
+			populateEastPanel(eastPanel, testCal);
 
 			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
 			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
@@ -603,7 +618,9 @@ public class DeskTop extends JFrame{
 
 	
 
-	private void populateEastPanel(JPanel a){
+	private void populateEastPanel(JPanel a, int testCal){
+
+
 
 		a.setOpaque(false);
 		a.setLayout(new GridLayout(4,1));
@@ -612,10 +629,7 @@ public class DeskTop extends JFrame{
 		aTem.setLayout(new GridLayout(7,2));
 
 
-		stepsGoal = new JTextField(10);
-		distanceGoal = new JTextField(10);
-		caloriesGoal = new JTextField(10);
-		floorsGoal = new JTextField(10);
+		
 
 		ImagePanel xmark1 = new ImagePanel("xmark.png");
 		ImagePanel xmark2 = new ImagePanel("xmark.png");
@@ -630,6 +644,16 @@ public class DeskTop extends JFrame{
 
 		Serialize r = new Serialize();
 		goalsArray = ((String[]) r.readObject("./src/main/resources/desktop/setGoals.xml").readObject());
+
+		stepsGoal = new JTextField(goalsArray[0]);
+		distanceGoal = new JTextField(goalsArray[2]);
+		caloriesGoal = new JTextField(goalsArray[1]);
+		floorsGoal = new JTextField(goalsArray[3]);
+
+	 	usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
+	    goalsArray = usr.getDailyGoals().getGoalsArray();
+
+
 		/*goalsArray = new String[4];
 		goalsArray[0] = "COOL" ;
 		goalsArray[1] = "COOL";
@@ -660,6 +684,7 @@ public class DeskTop extends JFrame{
 			//IF ODWOD.TOTAL > then 
 			
 
+
 			goalsListLabelStep= new JLabel(goalsArray[0]);
 			goalsListLabelStep.setForeground(new Color(255,255,255));
 			
@@ -675,24 +700,123 @@ public class DeskTop extends JFrame{
 
 
 
-			goalsPanel.add(new JLabel("Steps: "));
-			goalsPanel.add(goalsListLabelStep);
-			goalsPanel.add(xmark1);
+			
+
+			if(this.testFlag){
+
+				if(testCal >  usr.getDailyGoals().getStepGoal()){
+							System.out.println("inside thing");
+							goalsPanel.add(new JLabel("Steps :"));
+							goalsPanel.add(goalsListLabelStep);
+							goalsPanel.add(cmark1);
+					}else{
+							System.out.println("Inside another");
+							goalsPanel.add(new JLabel("Steps :"));
+							goalsPanel.add(goalsListLabelStep);
+							goalsPanel.add(xmark1);
+					}
+
+					if(testCal > usr.getDailyGoals().getCalGoal()){
+
+						goalsPanel.add(new JLabel("Calories: "));
+						goalsPanel.add(goalsListLabelCal);
+						goalsPanel.add(cmark2);
+					}else{
+
+						goalsPanel.add(new JLabel("Calories: "));
+						goalsPanel.add(goalsListLabelCal);
+						goalsPanel.add(xmark2);
+
+					}
+
+					if(testCal > usr.getDailyGoals().getDistGoal()){
+
+						goalsPanel.add(new JLabel("Distance: "));
+						goalsPanel.add(goalsListLabelDis);
+						goalsPanel.add(cmark3);
+
+					}else{
+
+						goalsPanel.add(new JLabel("Distance: "));
+						goalsPanel.add(goalsListLabelDis);
+						goalsPanel.add(xmark3);
+
+					}
+
+					if(testCal > usr.getDailyGoals().getFloorsGoal()){
+						goalsPanel.add(new JLabel("Floors: "));
+						goalsPanel.add(goalsListLabelFloors);
+						goalsPanel.add(cmark4);
+
+					}else{
+
+						goalsPanel.add(new JLabel("Floors: "));
+						goalsPanel.add(goalsListLabelFloors);
+						goalsPanel.add(xmark4);
+
+					}
+			
+			}else{
+
+					if(odwodToday.getTodaysTotalSteps() >  usr.getDailyGoals().getStepGoal()){
+							System.out.println("inside thing");
+							goalsPanel.add(new JLabel("Steps :"));
+							goalsPanel.add(goalsListLabelStep);
+							goalsPanel.add(cmark1);
+					}else{
+							System.out.println("Inside another");
+							goalsPanel.add(new JLabel("Steps :"));
+							goalsPanel.add(goalsListLabelStep);
+							goalsPanel.add(xmark1);
+					}
+
+					if(odwodToday.getTodaysTotalCaloriesBurned() > usr.getDailyGoals().getCalGoal()){
+
+						goalsPanel.add(new JLabel("Calories: "));
+						goalsPanel.add(goalsListLabelCal);
+						goalsPanel.add(cmark2);
+					}else{
+
+						goalsPanel.add(new JLabel("Calories: "));
+						goalsPanel.add(goalsListLabelCal);
+						goalsPanel.add(xmark2);
+
+					}
+
+					if(odwodToday.getTodaysTotalDistance() > usr.getDailyGoals().getDistGoal()){
+
+						goalsPanel.add(new JLabel("Distance: "));
+						goalsPanel.add(goalsListLabelDis);
+						goalsPanel.add(cmark3);
+
+					}else{
+
+						goalsPanel.add(new JLabel("Distance: "));
+						goalsPanel.add(goalsListLabelDis);
+						goalsPanel.add(xmark3);
+
+					}
+
+					if(odwodToday.getTodaysTotalFloors() > usr.getDailyGoals().getFloorsGoal()){
+
+							goalsPanel.add(new JLabel("Floors: "));
+							goalsPanel.add(goalsListLabelFloors);
+							goalsPanel.add(cmark4);
+
+					}else{
+
+							goalsPanel.add(new JLabel("Floors: "));
+							goalsPanel.add(goalsListLabelFloors);
+							goalsPanel.add(xmark4);
+
+					}
+
+			}
+
+			
 
 
-			goalsPanel.add(new JLabel("Calories: "));
-			goalsPanel.add(goalsListLabelCal);
-			goalsPanel.add(cmark2);
-
-
-			goalsPanel.add(new JLabel("Distance: "));
-			goalsPanel.add(goalsListLabelDis);
-			goalsPanel.add(xmark3);
-
-
-			goalsPanel.add(new JLabel("Floors: "));
-			goalsPanel.add(goalsListLabelFloors);
-			goalsPanel.add(cmark4);
+			
 
 
 
@@ -758,6 +882,11 @@ public class DeskTop extends JFrame{
 		fitBitPic.setAlignmentX(fitBitPic.getAlignmentX() + 100);
 
 		a.add(fitBitPic);
+
+		repaint();
+
+
+
 
 		
 
