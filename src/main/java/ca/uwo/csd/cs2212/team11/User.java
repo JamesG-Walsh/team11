@@ -6,15 +6,13 @@ import java.io.Serializable;
  * 
  * @author Team 11
  */
-
 public class User implements Serializable
 {
 	private HistoricalFitnessData historicalData;
-	//private OneDaysWorthOfData todaysData; //get from hfd instead
 	private DailyGoals dg;
 
 	/**
-	 *  Class constructor.
+	 *  Class constructor. initializes attributes
 	 */
 	public User() 
 	{
