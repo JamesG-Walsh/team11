@@ -788,7 +788,7 @@ public class DeskTop extends JFrame{
 			
 			}else{
 
-					OneDaysWorthOfData od;
+					OneDaysWorthOfData od = null;
 
 					try
 						{
