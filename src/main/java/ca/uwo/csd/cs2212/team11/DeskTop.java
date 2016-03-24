@@ -111,7 +111,7 @@ public class DeskTop extends JFrame{
 
 		//System.out.println("Here");
 
-		if(this.testFlag)
+		if(!this.testFlag)
 		{
 			try
 			{
@@ -132,6 +132,13 @@ public class DeskTop extends JFrame{
 
 			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
 			//System.out.println(odwod.toString(false));
+		}
+		else
+		{
+			allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth); //construct canned data graphs
+			allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+			allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+			allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 		}
 
 
@@ -421,6 +428,7 @@ public class DeskTop extends JFrame{
 			}
 			catch (RateLimitExceededException e)
 			{
+				System.out.println("RateLimitExceededException thrown to refreshData()");
 				//TODO handle with frontend
 				e.printStackTrace();
 			}
