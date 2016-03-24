@@ -71,7 +71,7 @@ public class ResponseParser
 	{
 		String value = jo.getJSONArray("activities-tracker-distance").getJSONObject(0).getString("value");
 		double ret = Double.parseDouble(value);
-		return ret;
+		return (ret * 1000); //convert from km to m and return
 	}//end of method
 
 	/**

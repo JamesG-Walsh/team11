@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class User implements Serializable
 {
 	private HistoricalFitnessData historicalData;
-	//private OneDaysWorthOfData todaysData;
+	//private OneDaysWorthOfData todaysData; //get from hfd instead
 	private DailyGoals dg;
 
 	/**
@@ -34,13 +34,6 @@ public class User implements Serializable
 		return historicalData;
 	}
     
-	/**
-	 * Helps enable this user's fitness data to persist between uses of application.
-	 * Sets all of this user's historical fitness data by replacing it.
-	 * Gets this user's fitness goals and application configuration preferences.
-	 * 
-	 * @param one day's worth of fitness data
-	 */
 	
 	/**
 	 * Gets this user's daily goals.
@@ -51,11 +44,11 @@ public class User implements Serializable
 		return this.dg;
 	}
 	
-	public void setHistoricalFitnessData( HistoricalFitnessData hfd ) {
-		this.historicalData = hfd;
-	}
 
-
+	/**
+	 * sets daily goals
+	 * @param dg
+	 */
 	public void setDailyGoals( DailyGoals dg ) {
 		this.dg = dg;
 	}

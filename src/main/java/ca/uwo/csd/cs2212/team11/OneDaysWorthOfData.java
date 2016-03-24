@@ -362,6 +362,7 @@ public class OneDaysWorthOfData
 			int min = Integer.parseInt(time.substring(3, 5));
 
 			this.distanceByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
+			this.distanceByTheMin[hour][min] = (this.distanceByTheMin[hour][min] * 1000);
 		}
 	}
 
