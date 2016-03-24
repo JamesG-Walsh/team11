@@ -125,7 +125,7 @@ public class DeskTop extends JFrame{
 			}
 			catch(RateLimitExceededException e)
 			{
-				
+
 				e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 			}
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
@@ -134,7 +134,7 @@ public class DeskTop extends JFrame{
 			//System.out.println(odwod.toString(false));
 		}
 
-		
+
 
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(), IDs.CALORIES);
@@ -212,7 +212,8 @@ public class DeskTop extends JFrame{
 	 * Will add a graphing window with data plugged in as per user event
 	 * @param steps -- Data that will be plugged into the graph for steps
 	 */
-	protected void addRemoveGraph(IDs type) {
+	protected void addRemoveGraph(IDs type) 
+	{
 		//		System.err.println("DeskTop.addRemoveGraph("+ type.name()+") called");
 		//		System.err.println("\t***Does nothing yet");
 
@@ -290,12 +291,11 @@ public class DeskTop extends JFrame{
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
 
 			int i;
-			for(i = 0; i<graphVisible.length; i++){
-
-				if(graphVisible[i] == true){
-
+			for(i = 0; i<graphVisible.length; i++)
+			{
+				if(graphVisible[i] == true)
+				{
 					System.out.println(i);
-
 					break;
 				}
 			}
@@ -319,8 +319,10 @@ public class DeskTop extends JFrame{
 			}
 
 			//allGraphs[i].setVisible(true);
-			addRemoveGraph(id);
-
+			if(0<=i && i<=6)
+			{
+				addRemoveGraph(id);
+			}
 
 			repaint();
 
@@ -409,8 +411,8 @@ public class DeskTop extends JFrame{
 
 				//allGraphs[i].setVisible(true);
 
-				if(0<=i && i<=6){
-
+				if(0<=i && i<=6)
+				{
 					IDs id = allGraphs[i].getType();
 					addRemoveGraph(id);
 

@@ -7,7 +7,7 @@ package ca.uwo.csd.cs2212.team11;
  * @author James Walsh
  *
  */
-public class RateLimitExceededException extends Exception 
+public class RateLimitExceededException extends RuntimeException 
 {
 	/**
 	 * 
