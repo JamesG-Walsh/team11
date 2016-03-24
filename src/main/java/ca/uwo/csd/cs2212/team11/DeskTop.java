@@ -125,7 +125,7 @@ public class DeskTop extends JFrame{
 			catch(RateLimitExceededException e)
 			{
 				System.out.println("RateLimitExceededException thrown to Desktop constructor");
-				System.out.println("Swinging happens here");
+				this.catch429();
 				e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 			}
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
@@ -325,6 +325,7 @@ public class DeskTop extends JFrame{
 			catch (RateLimitExceededException e)
 			{
 				System.out.println("Test run is making server requests and hitting 429");
+				this.catch429();
 				e.printStackTrace();
 			}
 
@@ -374,8 +375,7 @@ public class DeskTop extends JFrame{
 			catch (RateLimitExceededException e)
 			{
 				System.out.println("RateLimitExceededException thrown to refreshData()");
-				System.out.println("This is where we do something with swing");
-				//TODO handle with frontend
+				this.catch429();
 				//e.printStackTrace();
 			}
 
@@ -941,5 +941,11 @@ public class DeskTop extends JFrame{
 				graphsPanel.remove(allCGraphs[y.ordinal()]);
 			}
 		}
+	}
+	
+	private void catch429()
+	{
+		System.out.println("Swinging happens here");
+		//TODO write method that does something in swing to let the user know that they are refreshing too much and to try again at the top of the hour
 	}
 }
