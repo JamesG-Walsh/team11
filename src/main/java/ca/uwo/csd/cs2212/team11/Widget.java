@@ -59,7 +59,7 @@ public class Widget extends JPanel{
 		this.setPreferredSize(new Dimension(130, 130));
 		content.setLayout(new BorderLayout(1,1));
 		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
-		
+
 		//this.setBackground(new Color(0,0,0,0));
 		content.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
 		this.add(content);

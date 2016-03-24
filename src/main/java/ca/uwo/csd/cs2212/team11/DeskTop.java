@@ -53,7 +53,7 @@ public class DeskTop extends JFrame{
 	private Widget[] all_widgets = new Widget[7];	
 	private boolean[] widgetVisible; /*= {false, false, false, false, false, false, false};*/
 	private JPanel goalsPanel, widgetPanel, datePanel, northPanel, westPanel, awardsPanel, eastPanel, southPanel, graphsPanel, centerPanel;
-	private JLabel goalsListLabelStep, goalsListLabelCal, goalsListLabelDis, dateLabel, awardsListLabel;
+	private JLabel goalsListLabelStep, goalsListLabelCal, goalsListLabelDis, goalsListLabelFloors, goalsListLabelActive, goalsListLabelSed, goalsListLabelHeart, dateLabel, awardsListLabel;
 	private PieChart activeChart;
 	private boolean activeChartVisible = false;
 	private Graph[] allGraphs = new Graph[7];
@@ -68,6 +68,10 @@ public class DeskTop extends JFrame{
 	private JTextField stepsGoal;
 	private JTextField distanceGoal;
 	private JTextField caloriesGoal;
+	private JTextField activeGoal;
+	private JTextField	sedGoal;
+	private JTextField	heartGoal;
+	private JTextField	floorsGoal;
 	//private int stpGoal, calGoal, distGoal;
 	private String[] goalsArray;
 	private boolean testFlag;
@@ -157,7 +161,7 @@ public class DeskTop extends JFrame{
 
 		JPanel mainDisplay = new JPanel();
 		mainDisplay.setLayout(new BorderLayout(1,1));
-		mainDisplay.setPreferredSize(new Dimension(900, 600));
+		mainDisplay.setPreferredSize(new Dimension(1100, 600));
 		mainDisplay.setOpaque(false);
 		mainDisplay.setVisible(true);
 		
@@ -302,10 +306,6 @@ public class DeskTop extends JFrame{
 				}
 			}
 
-			IDs id = allGraphs[i].getType();
-
-			System.out.println(graphVisible.length);
-	
 			this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
@@ -315,7 +315,14 @@ public class DeskTop extends JFrame{
 
 
 			//allGraphs[i].setVisible(true);
-			addRemoveGraph(id);
+
+			if(0<=i && i<=6){
+
+				IDs id = allGraphs[i].getType();
+				addRemoveGraph(id);
+
+			}
+			//addRemoveGraph(id);
 
 			
 			repaint();
@@ -548,7 +555,7 @@ public class DeskTop extends JFrame{
 
 		a.add(datePanel);
 		//a.add(Box.createHorizontalGlue());
-		
+
 
 		JDatePickerImpl datePicker;
 
@@ -597,84 +604,137 @@ public class DeskTop extends JFrame{
 	
 
 	private void populateEastPanel(JPanel a){
+
+		a.setOpaque(false);
+		a.setLayout(new GridLayout(4,1));
 		
 		aTem = new JPanel();
+		aTem.setLayout(new GridLayout(7,2));
+
+
 		stepsGoal = new JTextField(10);
 		distanceGoal = new JTextField(10);
 		caloriesGoal = new JTextField(10);
+		floorsGoal = new JTextField(10);
+
+		ImagePanel xmark1 = new ImagePanel("xmark.png");
+		ImagePanel xmark2 = new ImagePanel("xmark.png");
+		ImagePanel xmark3 = new ImagePanel("xmark.png");
+		ImagePanel xmark4 = new ImagePanel("xmark.png");
+
+		ImagePanel cmark1 = new ImagePanel("check.png");
+		ImagePanel cmark2 = new ImagePanel("check.png");
+		ImagePanel cmark3 = new ImagePanel("check.png");
+		ImagePanel cmark4 = new ImagePanel("check.png");
+
+
 		Serialize r = new Serialize();
 		goalsArray = ((String[]) r.readObject("./src/main/resources/desktop/setGoals.xml").readObject());
-		/*goalsArray = new String[3];
+		/*goalsArray = new String[4];
 		goalsArray[0] = "COOL" ;
 		goalsArray[1] = "COOL";
-		goalsArray[2] = "COOL";*/
+		goalsArray[2] = "COOL";
+		goalsArray[3] = "COOL";*/
 
-		a.setOpaque(false);
-		a.setLayout(new BoxLayout(a,1));
+		
 		aTem.add(new JLabel("Steps Goal"));
 		aTem.add(stepsGoal);
 		aTem.add(new JLabel("Distance Goal"));
 		aTem.add(distanceGoal);
 		aTem.add(new JLabel("Calories Goal"));
 		aTem.add(caloriesGoal);
+		aTem.add(new JLabel("Floors Goal"));
+		aTem.add(floorsGoal);
 
-		JButton button = new JButton();
-		button.setText("Set New Goals");
-		a.add(button);
-		button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
-                
-                if (result == JOptionPane.OK_OPTION) {
-        	         System.out.println(result);
-		        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText());
-		        	 goalsArray = usr.getDailyGoals().getGoalsArray();
-        	         //goalsArray[0] = stepsGoal.getText();
-		        	 //goalsArray[1] = caloriesGoal.getText();
-		        	 //goalsArray[2] = distanceGoal.getText();
-
-			         //Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
-		        	 usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
-			        
-			         
-			         goalsListLabelStep.setText(goalsArray[0]);
-			         goalsListLabelCal.setText(goalsArray[1]);
-			         goalsListLabelDis.setText( goalsArray[2]);
-			         //goalsListLabelStep.setText(goalsArray[0]);
-			         //goalsListLabelCal.setText(goalsArray[1]);
-			         //goalsListLabelDis.setText( goalsArray[2]);
-
-			         revalidate();
-			         repaint();
-
-			         Serialize r = new Serialize();
-			         //r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
-			         r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
-
-		      }
-            }
-        });
 		
 			goalsPanel = new JPanel();
 			goalsPanel.setBackground(SharedData.SMOKE);
-			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
+			goalsPanel.setLayout(new GridLayout(6,3));
 			JLabel goalsTitleLabel = new JLabel("Daily Goals");
 			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 			goalsTitleLabel.setForeground(new Color(255,255,255));
 			goalsPanel.add(goalsTitleLabel);
+			goalsPanel.add(Box.createHorizontalBox());
+			goalsPanel.add(Box.createHorizontalBox());
+			
+			//IF ODWOD.TOTAL > then 
+			
+
 			goalsListLabelStep= new JLabel(goalsArray[0]);
 			goalsListLabelStep.setForeground(new Color(255,255,255));
+			
 			goalsListLabelCal= new JLabel(goalsArray[1]);
 			goalsListLabelCal.setForeground(new Color(255,255,255));
+			
 			goalsListLabelDis= new JLabel(goalsArray[2]);
 			goalsListLabelDis.setForeground(new Color(255,255,255));
+			
+			goalsListLabelFloors= new JLabel(goalsArray[3]);
+			goalsListLabelFloors.setForeground(new Color(255,255,255));
+			
 
 
 
+			goalsPanel.add(new JLabel("Steps: "));
 			goalsPanel.add(goalsListLabelStep);
+			goalsPanel.add(xmark1);
+
+
+			goalsPanel.add(new JLabel("Calories: "));
 			goalsPanel.add(goalsListLabelCal);
+			goalsPanel.add(cmark2);
+
+
+			goalsPanel.add(new JLabel("Distance: "));
 			goalsPanel.add(goalsListLabelDis);
+			goalsPanel.add(xmark3);
+
+
+			goalsPanel.add(new JLabel("Floors: "));
+			goalsPanel.add(goalsListLabelFloors);
+			goalsPanel.add(cmark4);
+
+
+
+
+			JButton button = new JButton();
+			button.setText("Set New Goals");
+			goalsPanel.add(button);
+			button.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+	                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
+	                
+	                if (result == JOptionPane.OK_OPTION) {
+	        	         System.out.println(result);
+			        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
+			        	 goalsArray = usr.getDailyGoals().getGoalsArray();
+	        	         //goalsArray[0] = stepsGoal.getText();
+			        	 //goalsArray[1] = caloriesGoal.getText();
+			        	 //goalsArray[2] = distanceGoal.getText();
+
+				         //Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
+			        	 usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
+				        
+				         
+				         goalsListLabelStep.setText(goalsArray[0]);
+				         goalsListLabelCal.setText(goalsArray[1]);
+				         goalsListLabelDis.setText( goalsArray[2]);
+				         goalsListLabelFloors.setText(goalsArray[3]);
+				         //goalsListLabelStep.setText(goalsArray[0]);
+				         //goalsListLabelCal.setText(goalsArray[1]);
+				         //goalsListLabelDis.setText( goalsArray[2]);
+
+				         revalidate();
+				         repaint();
+
+				         Serialize r = new Serialize();
+				         //r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+				         r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+
+			      }
+	            }
+	        });
 		
 		a.add(goalsPanel);
 		
@@ -690,6 +750,7 @@ public class DeskTop extends JFrame{
 			awardsListLabel.setForeground(new Color(255,255,255));
 			awardsPanel.add(awardsListLabel);
 		
+		//a.add(Box.createHorizontalBox());
 		a.add(awardsPanel);
 
 		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
