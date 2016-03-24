@@ -96,7 +96,10 @@ public class Graph extends javax.swing.JPanel
 		super.paintComponent(g);
 
 
-		if (type == IDs.HEART_RATE)	{	paintHRGraph(g);	}
+		if (type == IDs.HEART_RATE)	
+		{	
+			paintHRGraph(g);	
+		}
 		else { paintGraph(this.type, g);	}
 		//		this.repaint();
 		JPanel mouseListenerPanel = new JPanel();
