@@ -375,8 +375,7 @@ public class DeskTop extends JFrame{
 			catch (RateLimitExceededException e)
 			{
 				System.out.println("RateLimitExceededException thrown to refreshData()");
-				System.out.println("This is where we do something with swing");
-				//TODO handle with frontend
+				this.catch429();
 				//e.printStackTrace();
 			}
 
