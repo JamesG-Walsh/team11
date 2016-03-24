@@ -2,4 +2,4 @@
 
 mvn compile
 mvn package
-java -jar target/TEAM11-Project-1.0-SNAPSHOT-jar-with-dependencies.jar 
+java -jar target/team11_FitbitViewer.jar 

@@ -94,7 +94,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<finalName>team11_JARname</finalName>                   
+					<finalName>team11_FitbitViewer</finalName>                   
 				</configuration>
 			</plugin>  
 		 </plugins>
