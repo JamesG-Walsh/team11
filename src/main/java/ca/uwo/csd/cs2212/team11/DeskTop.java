@@ -69,7 +69,7 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(boolean testFlag, User usr )
+	public DeskTop(boolean testFlag, User usr)
 	{
 		super("Team 11 FitBit Viewer");
 
@@ -118,6 +118,7 @@ public class DeskTop extends JFrame{
 			{
 				System.out.println("Trying live Desktop constructor populates");
 				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
+				odwodToday.populateTotals();
 				odwodToday.populateAllMins();			
 				hfd.populateLifetimeAndBestDays();
 				odwodToday.getHeartRateDayOfData().populate();				

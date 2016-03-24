@@ -182,19 +182,19 @@ public class Graph extends javax.swing.JPanel
 
 	}
 
-	private void paintHRVerticleScale(Graphics g) throws RateLimitExceededException{
-
+	private void paintHRVerticleScale(Graphics g) throws RateLimitExceededException
+	{
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		//draw 68 bpm (base healthy resting HR)
 		g2d.setColor(Color.CYAN);
 		g2d.setStroke(dashed);
-		if (this.testFlag)
+		if (this.testFlag || this.getMaxRestingHR() == -1) //for test mode or unpopulated resting heart rate
 		{
 			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-68, legend, SharedData.GRAPH_HEIGHT-68);
 			g.drawString("68 bpm", legend, SharedData.GRAPH_HEIGHT-63);
 		}
-		else
+		else //live resting heart rate
 		{
 			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-this.getMaxRestingHR());
 			g.drawString(this.getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(this.getMaxRestingHR()-5));
@@ -203,11 +203,12 @@ public class Graph extends javax.swing.JPanel
 		//draw max cardio line
 		g2d.setColor(Color.BLUE.darker());
 		g2d.setStroke(dashed);
-		if (this.testFlag)
+		if (this.testFlag || this.getMaxCardioHR() == -1) //test mode or unpopulated
 		{
 			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
 			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
 		}
+		else //live Cardio zone max
 		{
 			g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxCardioHR(), legend, SharedData.GRAPH_HEIGHT-getMaxCardioHR());
 			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
