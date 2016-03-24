@@ -16,10 +16,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.Dimension;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.io.Serializable;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
@@ -152,7 +157,7 @@ public class DeskTop extends JFrame{
 
 		JPanel mainDisplay = new JPanel();
 		mainDisplay.setLayout(new BorderLayout(1,1));
-		mainDisplay.setPreferredSize(new Dimension(1000, 600));
+		mainDisplay.setPreferredSize(new Dimension(900, 600));
 		mainDisplay.setOpaque(false);
 		mainDisplay.setVisible(true);
 		
@@ -695,9 +700,9 @@ public class DeskTop extends JFrame{
 
 	}
 
-	private void populateWestPanel(JPanel a){
+	/*private void populateWestPanel(JPanel a){
 		a.setOpaque(false);
-		a.setLayout(new GridLayout(7,3));
+		a.setLayout(new GridLayout(7,2));
 		a.setMinimumSize(new Dimension(200, 250));
 		JPanel navBtn;
 		
@@ -719,7 +724,7 @@ public class DeskTop extends JFrame{
 		});
 		a.add(navBtn);
 
-		navBtn = createNavButton(IDs.CALORIES, "<html>Calories<br/>Burned</html>");
+		navBtn = createNavButton(IDs.CALORIES, "<html><h3>Calories</h3><br/>Burned</html>");
 		navBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				addRemoveWidget(IDs.CALORIES);
@@ -727,6 +732,9 @@ public class DeskTop extends JFrame{
 			}
 		});
 		a.add(navBtn);
+
+		a.add(Box.createHorizontalBox());
+
 
 			
 		navBtn = new ImagePanel("graph2.png");
@@ -860,6 +868,203 @@ public class DeskTop extends JFrame{
 				}
 			});
 			a.add(navBtn);
+
+	}*/
+
+	private void populateWestPanel(JPanel a){
+		a.setLayout(new GridLayout(11,1));
+		a.setOpaque(false);
+
+		JLabel widgets = new JLabel("Display Widgets");
+		a.add(widgets);
+
+		JCheckBox calWidg = new JCheckBox("Calories");
+		if(this.widgetVisible[0] == true){
+			calWidg.setSelected(true);
+		}
+		calWidg.setOpaque(false);
+		calWidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+   
+				addRemoveWidget(IDs.CALORIES);
+				repaint();
+         }           
+      });
+
+
+      	JCheckBox stepWidg = new JCheckBox("Steps");
+      	if(this.widgetVisible[3] == true){
+			stepWidg.setSelected(true);
+		}
+      	stepWidg.setOpaque(false);
+		stepWidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveWidget(IDs.STEPS);
+				repaint();
+
+
+         }           
+      });
+
+      	JCheckBox distWidg = new JCheckBox("Distance");
+      	if(this.widgetVisible[1] == true){
+			distWidg.setSelected(true);
+		}
+      	distWidg.setOpaque(false);
+		distWidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveWidget(IDs.DISTANCE);
+				repaint();
+
+
+         }           
+      });
+
+      	JCheckBox floorWidg = new JCheckBox("Floors");
+      	if(this.widgetVisible[2] == true){
+			floorWidg.setSelected(true);
+		}
+      	floorWidg.setOpaque(false);
+		floorWidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveWidget(IDs.CLIMB);
+				repaint();
+
+
+         }           
+      });
+
+      	JCheckBox actWidg = new JCheckBox("Active");
+      	if(this.widgetVisible[4] == true){
+			actWidg.setSelected(true);
+		}
+      	actWidg.setOpaque(false);
+		actWidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveWidget(IDs.ACTIVE);
+				repaint();
+
+
+         }           
+      });
+
+      	JCheckBox sedwidg = new JCheckBox("Sedentary");
+      	if(this.widgetVisible[5] == true){
+			sedwidg.setSelected(true);
+		}
+      	sedwidg.setOpaque(false);
+		sedwidg.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveWidget(IDs.SEDENTARY);
+				repaint();
+
+
+         }           
+      });
+
+      	calWidg.setMnemonic(KeyEvent.VK_C);
+      	stepWidg.setMnemonic(KeyEvent.VK_M);
+      	distWidg.setMnemonic(KeyEvent.VK_P);
+      	floorWidg.setMnemonic(KeyEvent.VK_C);
+      	stepWidg.setMnemonic(KeyEvent.VK_M);
+      	sedwidg.setMnemonic(KeyEvent.VK_P);
+
+      	a.add(calWidg);
+      	a.add(stepWidg);
+      	a.add(distWidg);
+      	a.add(floorWidg);
+      	a.add(stepWidg);
+      	a.add(sedwidg);
+
+      	JLabel graphs = new JLabel("Display Graphs");
+		a.add(graphs);
+
+		JRadioButton  stepGraph = new JRadioButton("STEPS");
+      	if(this.graphVisible[3] == true){
+			stepGraph.setSelected(true);
+		}
+      	stepGraph.setOpaque(false);
+		stepGraph.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveGraph(IDs.STEPS);
+				repaint();
+
+
+         }           
+      });
+
+		JRadioButton  distGraph = new JRadioButton("DISTANCE");
+      	if(this.graphVisible[3] == true){
+			distGraph.setSelected(true);
+		}
+      	distGraph.setOpaque(false);
+		distGraph.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveGraph(IDs.DISTANCE);
+				repaint();
+
+
+         }           
+      });
+
+		JRadioButton  calGraph = new JRadioButton("CALORIES");
+      	if(this.graphVisible[3] == true){
+			calGraph.setSelected(true);
+		}
+      	calGraph.setOpaque(false);
+		calGraph.addItemListener(new ItemListener() {
+         public void itemStateChanged(ItemEvent e) {         
+            /*statusLabel.setText("Calories Checkbox: " 
+            + (e.getStateChange()==1?"checked":"unchecked"));*/
+
+				addRemoveGraph(IDs.CALORIES);
+				repaint();
+
+
+         }           
+      });
+
+		ButtonGroup group = new ButtonGroup();
+
+		/*stepGraph.setMnemonic(KeyEvent.VK_C);
+      	distGraph.setMnemonic(KeyEvent.VK_M);
+      	calGraph.setMnemonic(KeyEvent.VK_P);*/
+
+      	group.add(stepGraph);
+      	group.add(distGraph);
+      	group.add(calGraph);
+      	a.add(stepGraph);
+      	a.add(distGraph);
+      	a.add(calGraph);
+
+
+      	
+
+
+
+
+
 
 	}
 
