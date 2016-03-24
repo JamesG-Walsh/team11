@@ -44,6 +44,14 @@ public class HistoricalFitnessData
 	public HistoricalFitnessData() 
 	{
 		allOneDays = new ArrayList<OneDaysWorthOfData>();
+		
+		bestDistanceValue = -1;
+		bestStepsValue = -1;
+		bestFloorsValue = -1;
+		
+		lifetimeDistance = -1;
+		lifetimeSteps = -1;
+		lifetimeFloors = -1; //initialize to -1 to show when these been live populated due to 429
 	}
 
 	/** 

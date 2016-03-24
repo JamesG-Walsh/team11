@@ -276,7 +276,7 @@ public class DeskTop extends JFrame{
 	 */
 	private void refreshData(Date date)
 	{
-		if(this.testFlag) //refresh in test mode (effetively changes displayed data as the canned data used is the same for all days.)
+		if(this.testFlag) //refresh in test mode (effectively just changes displayed data as the canned data used is the same for all days.)
 		{
 			System.err.println("DeskTop.refreshData() called in test mode");
 			System.err.println("\t***Does nothing yet");
