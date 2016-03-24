@@ -59,8 +59,9 @@ public class Widgets extends JPanel
 	/**
 	 * Class constructor -- Set size of container
 	 * @param type	the type of the widget
+	 * @throws RateLimitExceededException 
 	 */
-	public Widgets(boolean testFlag, int type)
+	public Widgets(boolean testFlag, int type) throws RateLimitExceededException
 	{
 			super();
 			this.testFlag = testFlag;
@@ -328,8 +329,9 @@ public class Widgets extends JPanel
 	
       /**
        * makes a graph for time series data
+     * @throws RateLimitExceededException 
        */
-	private JPanel makeGraph(){
+	private JPanel makeGraph() throws RateLimitExceededException{
 		this.setSize(500, 200);
 		JPanel a = new JPanel();
 		a.setSize(500, 200);

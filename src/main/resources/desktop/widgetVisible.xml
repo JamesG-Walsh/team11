@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_20" class="java.beans.XMLDecoder">
  <array class="boolean" length="7">
-  <void index="2">
+  <void index="0">
+   <boolean>true</boolean>
+  </void>
+  <void index="1">
    <boolean>true</boolean>
   </void>
   <void index="3">

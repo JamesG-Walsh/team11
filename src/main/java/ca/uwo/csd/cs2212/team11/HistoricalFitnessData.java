@@ -44,6 +44,14 @@ public class HistoricalFitnessData
 	public HistoricalFitnessData() 
 	{
 		allOneDays = new ArrayList<OneDaysWorthOfData>();
+		
+		bestDistanceValue = -1;
+		bestStepsValue = -1;
+		bestFloorsValue = -1;
+		
+		lifetimeDistance = -1;
+		lifetimeSteps = -1;
+		lifetimeFloors = -1; //initialize to -1 to show when these been live populated due to 429
 	}
 
 	/** 
@@ -195,7 +203,7 @@ public class HistoricalFitnessData
 
 			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
 			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
-			odwod.populateTotals();
+			//odwod.populateTotals();
 			this.addDay(odwod);
 			System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
 			System.out.println(odwod.toString(false));
@@ -300,7 +308,7 @@ public class HistoricalFitnessData
 		return bestFloorsDate;
 	}
 
-	public void populateLifetimeAndBestDays()
+	public void populateLifetimeAndBestDays() throws RateLimitExceededException
 	{
 		try 
 		{

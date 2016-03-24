@@ -69,12 +69,12 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(boolean testFlag, User usr ){
-	
+	public DeskTop(boolean testFlag, User usr )
+	{
 		super("Team 11 FitBit Viewer");
-		
+
 		this.testFlag = testFlag;
-		
+
 		Serialize r = new Serialize();
 		this.widgetVisible = (boolean[]) r.readObject("./src/main/resources/desktop/widgetVisible.xml").readObject();
 		addWindowListener(new java.awt.event.WindowAdapter() 
@@ -88,8 +88,8 @@ public class DeskTop extends JFrame{
 			}
 		});
 
-		
-/*		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		/*		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(IDs.CALORIES);
 		all_widgets[IDs.DISTANCE.ordinal()] = new Widget(IDs.DISTANCE);
 		all_widgets[IDs.CLIMB.ordinal()] = new Widget(IDs.CLIMB);
@@ -97,6 +97,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);*/
+		
 		activeChart = new PieChart();
 
 		this.setWorkingDate();
@@ -107,26 +108,39 @@ public class DeskTop extends JFrame{
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
 		this.usr = usr;
-		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();		
+		HistoricalFitnessData hfd = this.usr.getHistoricalFitnessData();		
 
 		//System.out.println("Here");
 
-		if(this.testFlag)
+		if(!this.testFlag) //live run
 		{
-			System.out.println("Other things");
-		}
-		else
-		{		
-			OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
-			odwodToday.populateAllMins();			
-			hfd.populateLifetimeAndBestDays();	
-			
+			try
+			{
+				System.out.println("Trying live Desktop constructor populates");
+				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
+				odwodToday.populateAllMins();			
+				hfd.populateLifetimeAndBestDays();
+				odwodToday.getHeartRateDayOfData().populate();				
+			}
+			catch(RateLimitExceededException e)
+			{
+				System.out.println("RateLimitExceededException thrown to Desktop constructor");
+				System.out.println("Swinging happens here");
+				e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
+			}
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
 			//System.out.println(odwod.toString(false));
 		}
-		
+		else//test run
+		{
+			allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth); //construct canned data graphs
+			allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+			allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+			allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
+		}
+
 		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
 		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
 		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
@@ -142,7 +156,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.HEART_RATE);
 
 		//System.out.println(System.getProperty("user.dir"));
-		
+
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
 		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
 		allCGraphs[IDs.STEPS.ordinal()] = new CGraph(IDs.STEPS);
@@ -155,11 +169,11 @@ public class DeskTop extends JFrame{
 		mainDisplay.setPreferredSize(new Dimension(1000, 600));
 		mainDisplay.setOpaque(false);
 		mainDisplay.setVisible(true);
-		
+
 
 		northPanel = new JPanel();
 		populateNorthPanel(northPanel);
-		
+
 		eastPanel = new JPanel();
 		populateEastPanel(eastPanel);
 
@@ -182,7 +196,7 @@ public class DeskTop extends JFrame{
 		graphsPanel.setOpaque(false);
 		centerPanel.add(widgetPanel);
 		centerPanel.add(graphsPanel);
-		
+
 		configWidgetVisibilityToUsersPref(IDs.CALORIES);
 		configWidgetVisibilityToUsersPref(IDs.CLIMB);
 		configWidgetVisibilityToUsersPref(IDs.ACTIVE);
@@ -190,27 +204,28 @@ public class DeskTop extends JFrame{
 		configWidgetVisibilityToUsersPref(IDs.STEPS);
 		configWidgetVisibilityToUsersPref(IDs.SEDENTARY);
 		configWidgetVisibilityToUsersPref(IDs.DISTANCE);
-		
-		
 
-		
+
+
+
 		mainDisplay.add(northPanel, BorderLayout.NORTH);
 		mainDisplay.add(eastPanel, BorderLayout.EAST);
 		//mainDisplay.add(southPanel, BorderLayout.SOUTH);
 		mainDisplay.add(westPanel, BorderLayout.WEST);
 		mainDisplay.add(centerPanel, BorderLayout.CENTER);
-		
+
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
 	}
-	
+
 	/**
 	 * Will add a graphing window with data plugged in as per user event
 	 * @param steps -- Data that will be plugged into the graph for steps
 	 */
-	protected void addRemoveGraph(IDs type) {
-//		System.err.println("DeskTop.addRemoveGraph("+ type.name()+") called");
-//		System.err.println("\t***Does nothing yet");
+	protected void addRemoveGraph(IDs type) 
+	{
+		//		System.err.println("DeskTop.addRemoveGraph("+ type.name()+") called");
+		//		System.err.println("\t***Does nothing yet");
 
 		if (type == IDs.ACTIVE){
 			if(activeChartVisible == true){
@@ -237,10 +252,10 @@ public class DeskTop extends JFrame{
 		validate();
 		repaint();
 	}
-	
+
 	private void addRemoveCGraph(IDs type){
-//		System.err.println("DeskTop.addRemoveCGraph("+ type.name()+") called");
-//		System.err.println("\t***Does nothing yet");
+		//		System.err.println("DeskTop.addRemoveCGraph("+ type.name()+") called");
+		//		System.err.println("\t***Does nothing yet");
 		if(cGraphVisible[type.ordinal()] == true){
 			cGraphVisible[type.ordinal()] = false;
 			allCGraphs[type.ordinal()].setVisible(false);
@@ -255,25 +270,23 @@ public class DeskTop extends JFrame{
 		validate();
 		repaint();
 	}
-	
+
 	/**
 	 * Button that will refresh the data -- Make request to api and store new values in all containers
 	 */
-
 	private void refreshData(Date date)
 	{
-		if(this.testFlag)
+		if(this.testFlag) //refresh in test mode (effectively just changes displayed data as the canned data used is the same for all days.)
 		{
-			System.err.println("DeskTop.refreshData() called");
+			System.err.println("DeskTop.refreshData() called in test mode");
 			System.err.println("\t***Does nothing yet");
 
-			System.out.println("Starting live call of refreshData();");
 			//this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
 
-   			time.setTime(date);
-   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			time.setTime(date);
+			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
 			dateLabel.setText(dateString);
 			repaint();
 			revalidate();
@@ -283,16 +296,15 @@ public class DeskTop extends JFrame{
 			int year = time.get(Calendar.YEAR);
 			int month = (time.get(Calendar.MONTH) + 1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
-			
+
 			HistoricalFitnessData hfd = new HistoricalFitnessData();
 
 			int i;
-			for(i = 0; i<graphVisible.length; i++){
-
-				if(graphVisible[i] == true){
-
+			for(i = 0; i<graphVisible.length; i++)
+			{
+				if(graphVisible[i] == true)
+				{
 					System.out.println(i);
-
 					break;
 				}
 			}
@@ -300,54 +312,73 @@ public class DeskTop extends JFrame{
 			IDs id = allGraphs[i].getType();
 
 			System.out.println(graphVisible.length);
-	
+
 			this.removeVisibleGraphs();
 
-			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
-			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
-			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
-			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
-
+			try
+			{
+				this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+				this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+				this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+				this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+			}
+			catch (RateLimitExceededException e)
+			{
+				System.out.println("Test run is making server requests and hitting 429");
+				e.printStackTrace();
+			}
 
 			//allGraphs[i].setVisible(true);
-			addRemoveGraph(id);
+			if(0<=i && i<=6)
+			{
+				addRemoveGraph(id);
+			}
 
-			
 			repaint();
 
 			//System.out.println(year);
 			//repaint();
 		}
-		else
+		else //refresh in live mode
 		{
 			System.out.println("Starting live call of refreshData();");
+
 			this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
-   			time.setTime(date);
-   			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			time.setTime(date);
+			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
 			dateLabel.setText(dateString);
 			repaint();
 			revalidate();
 
 			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
-			usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
-			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
-
 			int year = time.get(Calendar.YEAR);
 			int month = (time.get(Calendar.MONTH)+1);
 			int day = time.get(Calendar.DAY_OF_MONTH);
-
-			OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month, year );
-			odwod.populateTotals();
-			System.out.println("Inside refreshData()...\n" + odwod.toString(false));
-
-			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
-			System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
 			
-			OneDaysWorthOfData odwodCurr = hfd.retrieve2(day, month, year);
-			odwodCurr.populateAllMins();
+			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+			try 
+			{
+				hfd.populateLifetimeAndBestDays();	
+				System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
+				//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
+
+				OneDaysWorthOfData odwod = hfd.retrieve2(day, month, year );
+				odwod.populateTotals();
+				System.out.println("Inside refreshData()...\n" + odwod.toString(false));
+
+				odwod.populateAllMins();
+			}
+			catch (RateLimitExceededException e)
+			{
+				System.out.println("RateLimitExceededException thrown to refreshData()");
+				System.out.println("This is where we do something with swing");
+				//TODO handle with frontend
+				//e.printStackTrace();
+			}
+
 
 			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
 			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
@@ -356,7 +387,7 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
 			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
-			
+
 			/*addRemoveGraph(IDs.CALORIES);
 			repaint();
 			addRemoveGraph(IDs.DISTANCE);
@@ -365,9 +396,9 @@ public class DeskTop extends JFrame{
 			repaint();
 			addRemoveGraph(IDs.HEART_RATE);
 			repaint();*/
-			
+
 			//this.removeVisibleGraphs();
-			
+
 			int i;
 			for(i = 0; i < graphVisible.length; i++){
 
@@ -382,7 +413,7 @@ public class DeskTop extends JFrame{
 
 
 			System.out.println(graphVisible.length);
-	
+
 			this.removeVisibleGraphs();
 
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
@@ -393,18 +424,22 @@ public class DeskTop extends JFrame{
 
 			//allGraphs[i].setVisible(true);
 
-			if(0<=i && i<=6){
-
+			if(0<=i && i<=6)
+			{
 				IDs id = allGraphs[i].getType();
 				addRemoveGraph(id);
 
 			}
-			
 
-			
+
 			repaint();		
 		}
 	}
+
+	/**
+	 * 
+	 * @param type
+	 */
 	private void configWidgetVisibilityToUsersPref(IDs type){
 		if(widgetVisible[type.ordinal()] == false){
 			widgetPanel.remove(all_widgets[type.ordinal()]);
@@ -432,7 +467,7 @@ public class DeskTop extends JFrame{
 		validate();
 		repaint();
 	}
-	
+
 	/**
 	 * This will set our last refresh label and will be called whenever the refresh button is hit
 	 * @return
@@ -450,12 +485,12 @@ public class DeskTop extends JFrame{
 		//Calendar cal = Calendar.getInstance();
 		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
-		
+
 		Calendar time = this.getWorkingDate();
 		int year = time.get(Calendar.YEAR);
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
-		
+
 		System.out.println("Working Date set to---  " +dayOfMonth + "-" + month + "-"+ year);
 		//System.out.println(this.workingDate.toString());
 		//Date date = new Date(116, 02, 1);
@@ -469,16 +504,16 @@ public class DeskTop extends JFrame{
 		System.err.println("DeskTop.openSettingsPanel() called");
 		System.err.println("\t***Does nothing yet");
 	}
-	
+
 	private void populateNorthPanel(JPanel a){
-		
+
 		a.setLayout(new BoxLayout(northPanel, BoxLayout.LINE_AXIS));
 		a.setOpaque(false);
-		
+
 
 		//add FitBit logo
 
-		
+
 		// create the welcome to user
 		/*JPanel hello = new JPanel();
 		hello.setBackground(SharedData.SMOKE);
@@ -488,7 +523,7 @@ public class DeskTop extends JFrame{
 		hello.add(helloLabel);
 		a.add(hello);
 		a.add(Box.createHorizontalGlue());
-*/
+		 */
 		//add controller buttons
 		//add settings button
 		/*
@@ -560,7 +595,7 @@ public class DeskTop extends JFrame{
 		a.add(datePicker);
 
 		select = new SelectDate(refreshButton, datePicker);
-		
+
 	}
 
 	private void populateSouthPanel(JPanel a){
@@ -587,10 +622,10 @@ public class DeskTop extends JFrame{
 
 	}
 
-	
+
 
 	private void populateEastPanel(JPanel a){
-		
+
 		aTem = new JPanel();
 		stepsGoal = new JTextField(10);
 		distanceGoal = new JTextField(10);
@@ -615,74 +650,74 @@ public class DeskTop extends JFrame{
 		button.setText("Set New Goals");
 		a.add(button);
 		button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
-                
-                if (result == JOptionPane.OK_OPTION) {
-        	         System.out.println(result);
-		        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText());
-		        	 goalsArray = usr.getDailyGoals().getGoalsArray();
-        	         //goalsArray[0] = stepsGoal.getText();
-		        	 //goalsArray[1] = caloriesGoal.getText();
-		        	 //goalsArray[2] = distanceGoal.getText();
+				result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
 
-			         //Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
-		        	 usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
-			        
-			         
-			         goalsListLabelStep.setText(goalsArray[0]);
-			         goalsListLabelCal.setText(goalsArray[1]);
-			         goalsListLabelDis.setText( goalsArray[2]);
-			         //goalsListLabelStep.setText(goalsArray[0]);
-			         //goalsListLabelCal.setText(goalsArray[1]);
-			         //goalsListLabelDis.setText( goalsArray[2]);
+				if (result == JOptionPane.OK_OPTION) {
+					System.out.println(result);
+					usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText());
+					goalsArray = usr.getDailyGoals().getGoalsArray();
+					//goalsArray[0] = stepsGoal.getText();
+					//goalsArray[1] = caloriesGoal.getText();
+					//goalsArray[2] = distanceGoal.getText();
 
-			         revalidate();
-			         repaint();
-
-			         Serialize r = new Serialize();
-			         //r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
-			         r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
-
-		      }
-            }
-        });
-		
-			goalsPanel = new JPanel();
-			goalsPanel.setBackground(SharedData.SMOKE);
-			goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
-			JLabel goalsTitleLabel = new JLabel("Daily Goals");
-			goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			goalsTitleLabel.setForeground(new Color(255,255,255));
-			goalsPanel.add(goalsTitleLabel);
-			goalsListLabelStep= new JLabel(goalsArray[0]);
-			goalsListLabelStep.setForeground(new Color(255,255,255));
-			goalsListLabelCal= new JLabel(goalsArray[1]);
-			goalsListLabelCal.setForeground(new Color(255,255,255));
-			goalsListLabelDis= new JLabel(goalsArray[2]);
-			goalsListLabelDis.setForeground(new Color(255,255,255));
+					//Integer.parseInt(goalsArray[0]) Integer.parseInt(goalsArray[1])  Integer.parseInt(goalsArray[2]) )
+					usr.getDailyGoals().goalsStingToInt();  /* Integer values now match strings, if strings were integers */
 
 
+					goalsListLabelStep.setText(goalsArray[0]);
+					goalsListLabelCal.setText(goalsArray[1]);
+					goalsListLabelDis.setText( goalsArray[2]);
+					//goalsListLabelStep.setText(goalsArray[0]);
+					//goalsListLabelCal.setText(goalsArray[1]);
+					//goalsListLabelDis.setText( goalsArray[2]);
 
-			goalsPanel.add(goalsListLabelStep);
-			goalsPanel.add(goalsListLabelCal);
-			goalsPanel.add(goalsListLabelDis);
-		
+					revalidate();
+					repaint();
+
+					Serialize r = new Serialize();
+					//r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+					r.writeObject(goalsArray, "./src/main/resources/desktop/setGoals.xml");
+
+				}
+			}
+		});
+
+		goalsPanel = new JPanel();
+		goalsPanel.setBackground(SharedData.SMOKE);
+		goalsPanel.setLayout(new BoxLayout(goalsPanel,1));
+		JLabel goalsTitleLabel = new JLabel("Daily Goals");
+		goalsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		goalsTitleLabel.setForeground(new Color(255,255,255));
+		goalsPanel.add(goalsTitleLabel);
+		goalsListLabelStep= new JLabel(goalsArray[0]);
+		goalsListLabelStep.setForeground(new Color(255,255,255));
+		goalsListLabelCal= new JLabel(goalsArray[1]);
+		goalsListLabelCal.setForeground(new Color(255,255,255));
+		goalsListLabelDis= new JLabel(goalsArray[2]);
+		goalsListLabelDis.setForeground(new Color(255,255,255));
+
+
+
+		goalsPanel.add(goalsListLabelStep);
+		goalsPanel.add(goalsListLabelCal);
+		goalsPanel.add(goalsListLabelDis);
+
 		a.add(goalsPanel);
-		
 
-			awardsPanel = new JPanel();
-			awardsPanel.setBackground(SharedData.SMOKE);
-			awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
-			JLabel awardsTitleLabel = new JLabel("Achievements");
-			awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
-			awardsTitleLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsTitleLabel);
-			awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
-			awardsListLabel.setForeground(new Color(255,255,255));
-			awardsPanel.add(awardsListLabel);
-		
+
+		awardsPanel = new JPanel();
+		awardsPanel.setBackground(SharedData.SMOKE);
+		awardsPanel.setLayout(new BoxLayout(awardsPanel,1));
+		JLabel awardsTitleLabel = new JLabel("Achievements");
+		awardsTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+		awardsTitleLabel.setForeground(new Color(255,255,255));
+		awardsPanel.add(awardsTitleLabel);
+		awardsListLabel= new JLabel("<html>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/>Blah<br/></html>");
+		awardsListLabel.setForeground(new Color(255,255,255));
+		awardsPanel.add(awardsListLabel);
+
 		a.add(awardsPanel);
 
 		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
@@ -691,7 +726,7 @@ public class DeskTop extends JFrame{
 
 		a.add(fitBitPic);
 
-		
+
 
 	}
 
@@ -700,7 +735,7 @@ public class DeskTop extends JFrame{
 		a.setLayout(new GridLayout(7,3));
 		a.setMinimumSize(new Dimension(200, 250));
 		JPanel navBtn;
-		
+
 		navBtn = new ImagePanel("graph2.png");
 		navBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -709,7 +744,7 @@ public class DeskTop extends JFrame{
 			}
 		});
 		a.add(navBtn);
-		
+
 		navBtn = new ImagePanel("graph.png");
 		navBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -728,18 +763,18 @@ public class DeskTop extends JFrame{
 		});
 		a.add(navBtn);
 
-			
+
 		navBtn = new ImagePanel("graph2.png");
 		navBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-					Component source = (Component)e.getSource();
-					source.getParent().dispatchEvent(e);
-					addRemoveCGraph(IDs.DISTANCE);
-					repaint();
+				Component source = (Component)e.getSource();
+				source.getParent().dispatchEvent(e);
+				addRemoveCGraph(IDs.DISTANCE);
+				repaint();
 			}
 		});
 		a.add(navBtn);
-			
+
 		navBtn = new ImagePanel("graph.png");
 		navBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -750,116 +785,116 @@ public class DeskTop extends JFrame{
 			}
 		});
 		a.add(navBtn);
-			
-
-			navBtn = createNavButton(IDs.DISTANCE, "<html>Distance<br/>Travelled</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.DISTANCE);
-					repaint();
-
-				}
-			});
-			a.add(navBtn);
-
-			
-			
-			a.add(Box.createHorizontalBox());
-			a.add(Box.createHorizontalBox());
-
-			navBtn = createNavButton(IDs.CLIMB, "<html>Floors<br/>Climbed</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.CLIMB);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-
-			
-			navBtn = new ImagePanel("graph2.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveCGraph(IDs.STEPS);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-			
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.STEPS);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = createNavButton(IDs.STEPS, "<html>Steps<br/>Taken</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.STEPS);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-
-			
-			a.add(Box.createHorizontalBox());
-
-			
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.ACTIVE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
-
-			navBtn = createNavButton(IDs.ACTIVE, "<html>Minutes<br/>Active</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.ACTIVE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
 
 
-			a.add(Box.createHorizontalBox());
-			a.add(Box.createHorizontalBox());
-			
-			navBtn = createNavButton(IDs.SEDENTARY, "<html>Sedentary<br/>Minutes</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.SEDENTARY);
-					repaint();
+		navBtn = createNavButton(IDs.DISTANCE, "<html>Distance<br/>Travelled</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.DISTANCE);
+				repaint();
 
-				}
-			});
-			a.add(navBtn);
+			}
+		});
+		a.add(navBtn);
 
-			
-			a.add(Box.createHorizontalBox());
-			
-			navBtn = new ImagePanel("graph.png");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveGraph(IDs.HEART_RATE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
 
-			navBtn = createNavButton(IDs.HEART_RATE, "<html>Heart<br/>Rate</html>");
-			navBtn.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					addRemoveWidget(IDs.HEART_RATE);
-					repaint();
-				}
-			});
-			a.add(navBtn);
+
+		a.add(Box.createHorizontalBox());
+		a.add(Box.createHorizontalBox());
+
+		navBtn = createNavButton(IDs.CLIMB, "<html>Floors<br/>Climbed</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.CLIMB);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+
+		navBtn = new ImagePanel("graph2.png");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveCGraph(IDs.STEPS);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+		navBtn = new ImagePanel("graph.png");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveGraph(IDs.STEPS);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+		navBtn = createNavButton(IDs.STEPS, "<html>Steps<br/>Taken</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.STEPS);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+
+		a.add(Box.createHorizontalBox());
+
+
+		navBtn = new ImagePanel("graph.png");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveGraph(IDs.ACTIVE);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+		navBtn = createNavButton(IDs.ACTIVE, "<html>Minutes<br/>Active</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.ACTIVE);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+
+		a.add(Box.createHorizontalBox());
+		a.add(Box.createHorizontalBox());
+
+		navBtn = createNavButton(IDs.SEDENTARY, "<html>Sedentary<br/>Minutes</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.SEDENTARY);
+				repaint();
+
+			}
+		});
+		a.add(navBtn);
+
+
+		a.add(Box.createHorizontalBox());
+
+		navBtn = new ImagePanel("graph.png");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveGraph(IDs.HEART_RATE);
+				repaint();
+			}
+		});
+		a.add(navBtn);
+
+		navBtn = createNavButton(IDs.HEART_RATE, "<html>Heart<br/>Rate</html>");
+		navBtn.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				addRemoveWidget(IDs.HEART_RATE);
+				repaint();
+			}
+		});
+		a.add(navBtn);
 
 	}
 
@@ -880,13 +915,13 @@ public class DeskTop extends JFrame{
 		a.add(new JLabel(tag));
 		return a;
 	}
-	
+
 	private String getUserName(){
 		return "User";
 	}
-	
+
 	private void removeVisibleGraphs(){
-//		System.err.println("DeskTop.removeVisibleGraphs() called");
+		//		System.err.println("DeskTop.removeVisibleGraphs() called");
 		if(activeChartVisible == true){
 			activeChartVisible = false;
 			activeChart.setVisible(false);
