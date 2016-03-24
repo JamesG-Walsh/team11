@@ -43,8 +43,9 @@ public class HeartRateDayOfData
 	
 	/**
 	 * @param restingHeartRate the restingHeartRate to set
+	 * @throws RateLimitExceededException 
 	 */
-	public void populate() 
+	public void populate() throws RateLimitExceededException 
 	{
 		
 		try 

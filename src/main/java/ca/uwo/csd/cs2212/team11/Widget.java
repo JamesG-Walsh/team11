@@ -258,7 +258,8 @@ public class Widget extends JPanel{
 	}
 
 	
-	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type){
+	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type) throws RateLimitExceededException
+	{
 		
 		calen = cal;
 		int year = cal.get(Calendar.YEAR);
@@ -268,7 +269,10 @@ public class Widget extends JPanel{
 
 		if(!this.testF)
 		{
-			OneDaysWorthOfData odwod = hfd.retrieve2(day, month+1, year);
+			OneDaysWorthOfData odwod = null;
+			
+			odwod = hfd.retrieve2(day, month+1, year);
+			
 
 			System.out.println("Inside CVL...\n" + odwod.toString(false));
 			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
