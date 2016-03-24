@@ -392,7 +392,7 @@ public class Graph extends javax.swing.JPanel
 		{
 			int[][] in;
 			HeartRateDayOfData hrdod = hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData();
-			hrdod.populate();
+			//hrdod.populate(); //Desktop constructor will do this
 			in = hrdod.getHeartRateByTheMin();
 			return this.convert2Dto1D(in);		
 		}

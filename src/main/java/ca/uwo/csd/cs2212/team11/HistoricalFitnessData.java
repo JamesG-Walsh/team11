@@ -173,7 +173,7 @@ public class HistoricalFitnessData
 		return allOneDays.get(mid);					
 	}	
 
-	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year) throws RateLimitExceededException
+	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
 	/*	System.out.println("---------------------");
 		new Exception().printStackTrace();
@@ -195,7 +195,7 @@ public class HistoricalFitnessData
 
 			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
 			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
-			odwod.populateTotals();
+			//odwod.populateTotals();
 			this.addDay(odwod);
 			System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
 			System.out.println(odwod.toString(false));

@@ -97,6 +97,7 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.ACTIVE.ordinal()] = new Widget(IDs.ACTIVE);
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(IDs.HEART_RATE);*/
+		
 		activeChart = new PieChart();
 
 		this.setWorkingDate();
@@ -107,25 +108,24 @@ public class DeskTop extends JFrame{
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
 		this.usr = usr;
-		HistoricalFitnessData hfd = usr.getHistoricalFitnessData();		
+		HistoricalFitnessData hfd = this.usr.getHistoricalFitnessData();		
 
 		//System.out.println("Here");
 
-		if(!this.testFlag)
+		if(!this.testFlag) //live run
 		{
 			try
 			{
+				System.out.println("Trying live Desktop constructor populates");
 				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
 				odwodToday.populateAllMins();			
-				hfd.populateLifetimeAndBestDays();	
-				allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
-				allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
-				allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
-				allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
+				hfd.populateLifetimeAndBestDays();
+				odwodToday.getHeartRateDayOfData().populate();				
 			}
 			catch(RateLimitExceededException e)
 			{
-
+				System.out.println("RateLimitExceededException thrown to Desktop constructor");
+				System.out.println("Swinging happens here");
 				e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 			}
 			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
@@ -133,7 +133,7 @@ public class DeskTop extends JFrame{
 			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
 			//System.out.println(odwod.toString(false));
 		}
-		else
+		else//test run
 		{
 			allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth); //construct canned data graphs
 			allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
@@ -141,7 +141,10 @@ public class DeskTop extends JFrame{
 			allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 		}
 
-
+		allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, dayOfMonth);
+		allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, dayOfMonth);
 
 
 		all_widgets[IDs.CALORIES.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(), IDs.CALORIES);
@@ -273,12 +276,11 @@ public class DeskTop extends JFrame{
 	 */
 	private void refreshData(Date date)
 	{
-		if(this.testFlag)
+		if(this.testFlag) //refresh in test mode (effetively changes displayed data as the canned data used is the same for all days.)
 		{
-			System.err.println("DeskTop.refreshData() called");
+			System.err.println("DeskTop.refreshData() called in test mode");
 			System.err.println("\t***Does nothing yet");
 
-			System.out.println("Starting live call of refreshData();");
 			//this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
@@ -312,6 +314,7 @@ public class DeskTop extends JFrame{
 			System.out.println(graphVisible.length);
 
 			this.removeVisibleGraphs();
+
 			try
 			{
 				this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
@@ -336,53 +339,56 @@ public class DeskTop extends JFrame{
 			//System.out.println(year);
 			//repaint();
 		}
-		else
+		else //refresh in live mode
 		{
 			System.out.println("Starting live call of refreshData();");
-			try
+
+			this.setWorkingDate();
+			Calendar time =  Calendar.getInstance();
+			//Date date = new Date(116, 02, 3);
+			time.setTime(date);
+			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			dateLabel.setText(dateString);
+			repaint();
+			revalidate();
+
+			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
+
+			int year = time.get(Calendar.YEAR);
+			int month = (time.get(Calendar.MONTH)+1);
+			int day = time.get(Calendar.DAY_OF_MONTH);
+			
+			HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
+			try 
 			{
-				this.setWorkingDate();
-				Calendar time =  Calendar.getInstance();
-				//Date date = new Date(116, 02, 3);
-				time.setTime(date);
-				String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
-				dateLabel.setText(dateString);
-				repaint();
-				revalidate();
-
-				System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
-
-				int year = time.get(Calendar.YEAR);
-				int month = (time.get(Calendar.MONTH)+1);
-				int day = time.get(Calendar.DAY_OF_MONTH);
-
-				usr.getHistoricalFitnessData().populateLifetimeAndBestDays();		
+				hfd.populateLifetimeAndBestDays();	
+				System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
 				//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
-
-
-				OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(day, month, year );
-
+				OneDaysWorthOfData odwod = hfd.retrieve2(day, month, year );
 				odwod.populateTotals();
-
-
 				System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
-				HistoricalFitnessData hfd = usr.getHistoricalFitnessData();
-				System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
+				odwod.populateAllMins();
+			}
+			catch (RateLimitExceededException e)
+			{
+				System.out.println("RateLimitExceededException thrown to refreshData()");
+				System.out.println("This is where we do something with swing");
+				//TODO handle with frontend
+				//e.printStackTrace();
+			}
 
-				OneDaysWorthOfData odwodCurr = hfd.retrieve2(day, month, year);
-				odwodCurr.populateAllMins();
 
-				this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
-				this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
-				this.all_widgets[IDs.ACTIVE.ordinal()].changeViewLive(hfd, time, 0, IDs.ACTIVE);
-				this.all_widgets[IDs.HEART_RATE.ordinal()].changeViewLive(hfd, time, 0, IDs.HEART_RATE);
-				this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
-				this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
-				this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
+			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
+			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
+			this.all_widgets[IDs.ACTIVE.ordinal()].changeViewLive(hfd, time, 0, IDs.ACTIVE);
+			this.all_widgets[IDs.HEART_RATE.ordinal()].changeViewLive(hfd, time, 0, IDs.HEART_RATE);
+			this.all_widgets[IDs.STEPS.ordinal()].changeViewLive(hfd, time, 0, IDs.STEPS);
+			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
+			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
 
-				/*addRemoveGraph(IDs.CALORIES);
+			/*addRemoveGraph(IDs.CALORIES);
 			repaint();
 			addRemoveGraph(IDs.DISTANCE);
 			repaint();
@@ -391,47 +397,40 @@ public class DeskTop extends JFrame{
 			addRemoveGraph(IDs.HEART_RATE);
 			repaint();*/
 
-				//this.removeVisibleGraphs();
+			//this.removeVisibleGraphs();
 
-				int i;
-				for(i = 0; i < graphVisible.length; i++){
+			int i;
+			for(i = 0; i < graphVisible.length; i++){
 
-					if(graphVisible[i] == true)
-					{
-
-						System.out.println(i);
-
-						break;
-					}
-				}
-
-
-				System.out.println(graphVisible.length);
-
-				this.removeVisibleGraphs();
-
-				this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
-				this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
-				this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
-				this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
-
-
-				//allGraphs[i].setVisible(true);
-
-				if(0<=i && i<=6)
+				if(graphVisible[i] == true)
 				{
-					IDs id = allGraphs[i].getType();
-					addRemoveGraph(id);
 
+					System.out.println(i);
+
+					break;
 				}
+			}
+
+
+			System.out.println(graphVisible.length);
+
+			this.removeVisibleGraphs();
+
+			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
+			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
+			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
+			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
+
+
+			//allGraphs[i].setVisible(true);
+
+			if(0<=i && i<=6)
+			{
+				IDs id = allGraphs[i].getType();
+				addRemoveGraph(id);
 
 			}
-			catch (RateLimitExceededException e)
-			{
-				System.out.println("RateLimitExceededException thrown to refreshData()");
-				//TODO handle with frontend
-				e.printStackTrace();
-			}
+
 
 			repaint();		
 		}
