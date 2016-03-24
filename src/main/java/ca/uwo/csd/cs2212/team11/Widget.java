@@ -255,6 +255,7 @@ public class Widget extends JPanel{
 	private void changeView(int i) {
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
+
 	}
 
 	

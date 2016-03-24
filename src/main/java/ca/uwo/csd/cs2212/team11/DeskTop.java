@@ -608,9 +608,22 @@ public class DeskTop extends JFrame{
 
 		JButton refreshButton = new JButton("Refresh");
 		refreshButton.addMouseListener(new MouseAdapter(){
+
+
 			public void mouseClicked(MouseEvent e){
-				refreshData(select.returnDate());
-				System.out.println(select.getDate());
+
+			 try{
+
+					refreshData(select.returnDate());
+					System.out.println(select.getDate());
+
+			 }catch(NullPointerException f){
+
+			 		System.out.println("Please select valid time");
+			 }
+
+				
+				
 			}
 		});
 
