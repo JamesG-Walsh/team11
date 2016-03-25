@@ -80,8 +80,6 @@ public void actionPerformed(ActionEvent e) throws NullPointerException
         selectedDate = (Date) dtePick.getModel().getValue();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         reportDate = df.format(selectedDate);
-        System.out.println(reportDate);
-        System.out.println("Hey");
         }
     }
 

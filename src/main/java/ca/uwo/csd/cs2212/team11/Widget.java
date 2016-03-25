@@ -53,7 +53,6 @@ public class Widget extends JPanel{
 		calen = cal;
 		typeLive = type;
 		r = new Serialize();
-		System.out.println(typeLive);
 		JPanel content = new JPanel();
 		this.setLayout(new BoxLayout(this, 1));
 		this.setPreferredSize(new Dimension(130, 130));
@@ -236,7 +235,6 @@ public class Widget extends JPanel{
 					currentView = (currentView + 1) % maxView;
 					Serialize writeTo = new Serialize();
 					writeTo.writeObject(currentView, "./src/main/resources/desktop/currentView_"+typeLive.toString()+".xml");
-					System.out.println(currentView);
 					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, typeLive);
 				}
 
@@ -273,12 +271,6 @@ public class Widget extends JPanel{
 			OneDaysWorthOfData odwod = null;
 			
 			odwod = hfd.retrieve2(day, month+1, year);
-			
-
-			System.out.println("Inside CVL...\n" + odwod.toString(false));
-			System.out.println("CVL hfd...\n" + hfd.lifetimeAndBestDaysToString());
-			System.out.println("i = " + i);
-
 		
 
 				switch(type){

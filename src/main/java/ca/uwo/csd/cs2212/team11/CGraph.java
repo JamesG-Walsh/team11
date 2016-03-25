@@ -47,7 +47,6 @@ public class CGraph extends JPanel{
 			prepData(getDistanceData());
 			break;
 		default:
-			System.err.println("Error in graph creation " + type.name() + " is not recognized");
 		}
 		hourlyData = normalizeData(hourlyData);
 		qtrHourlyData = normalizeData(qtrHourlyData);

@@ -511,11 +511,9 @@ public class OneDaysWorthOfData
 		}
 		catch (JSONException je)
 		{
-			System.out.println(je.getMessage());
 		}
 		catch (NullPointerException npe)
 		{
-			System.out.println(npe.getMessage());
 		}
 
 	}

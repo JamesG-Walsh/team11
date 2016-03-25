@@ -29,12 +29,10 @@ public class Team11_FitBitViewer implements Serializable
 		boolean testFlag = false;
 		if(args.length >= 1 && args[0].equals("test"))
 		{
-			System.out.println("Running in test mode ......");
 			testFlag = true;
 		}
 		else
 		{
-			System.out.println("Running in live mode.....");
 			
 		}
 			User usr = new User();

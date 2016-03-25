@@ -317,7 +317,6 @@ public class DeskTop extends JFrame{
 			{
 				if(graphVisible[i] == true)
 				{
-					System.out.println(i);
 					break;
 				}
 			}
@@ -407,8 +406,6 @@ public class DeskTop extends JFrame{
 				if(graphVisible[i] == true)
 				{
 
-					System.out.println(i);
-
 					break;
 				}
 			}
@@ -492,8 +489,6 @@ public class DeskTop extends JFrame{
 	 * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
 	 */
 	private void openSettingsPanel(){
-		System.err.println("DeskTop.openSettingsPanel() called");
-		System.err.println("\t***Does nothing yet");
 	}
 
 	private void populateNorthPanel(JPanel a){
@@ -523,11 +518,9 @@ public class DeskTop extends JFrame{
 			 try{
 
 					refreshData(select.returnDate());
-					System.out.println(select.getDate());
 
 			 }catch(NullPointerException f){
 
-			 		System.out.println("Please select valid time");
 			 }
 
 				
