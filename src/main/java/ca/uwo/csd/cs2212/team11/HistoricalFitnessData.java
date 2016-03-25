@@ -8,8 +8,7 @@ import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 
 /**
  * This class contains this user's fitness data from all past days and from today, 
- * accolades earned, accumulated fitness item values over the lifetime of program use
- * (for example, total distance traveled), and best days for particular fitness 
+ * accolades earned, it also store the users lifetime totals and best days for particular fitness 
  * data items.
  * 
  * @author Team 11
@@ -316,6 +315,7 @@ public class HistoricalFitnessData
 			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
 
 			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
+			this.lifetimeDistance = (this.lifetimeDistance *1000);
 			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
 			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
 
@@ -324,6 +324,7 @@ public class HistoricalFitnessData
 			//System.out.println(bestDaysJSON.toString(1));
 
 			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
+			this.bestDistanceValue = (this.bestDistanceValue * 1000);
 			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");
 
 			this.bestFloorsValue = bestDaysJSON.getJSONObject("floors").getDouble("value");

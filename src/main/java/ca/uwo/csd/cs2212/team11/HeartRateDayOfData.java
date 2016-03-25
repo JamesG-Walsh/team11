@@ -38,7 +38,35 @@ public class HeartRateDayOfData
 	public HeartRateDayOfData(String date)
 	{
 		this.date = date;
+		
+		
+		restingHeartRate = -1;
+		
+		outOfRangeZoneMaximum = -1;
+		outOfRangeZoneMinimum = -1;
+		outOfRangeZoneMinutes = -1;
+		
+		fatBurnZoneMaximum = -1;
+		fatBurnZoneMinimum = -1;
+		fatBurnZoneMinutes = -1;
+		
+		cardioZoneMaximum = -1;
+		cardioZoneMinimum = -1;
+		cardioZoneMinutes = -1;
+		
+		peakZoneMaximum = -1;
+		peakZoneMinimum = -1;
+		peakZoneMinutes = -1;
+		
 		heartRateByTheMin = new int [24][60];
+		
+		for (int hour = 0; hour < 24; hour++)
+		{
+			for (int min = 0; min < 60; min++)
+			{
+				heartRateByTheMin[hour][min] = -1;
+			}
+		}
 	}
 	
 	/**

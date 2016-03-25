@@ -85,7 +85,7 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(boolean testFlag, User usr )
+	public DeskTop(boolean testFlag, User usr)
 	{
 		super("Team 11 FitBit Viewer");
 
@@ -946,7 +946,7 @@ public class DeskTop extends JFrame{
 			awardsPanel.add(awardsListLabel);
 		
 		//a.add(Box.createHorizontalBox());
-		a.add(awardsPanel);
+		//a.add(awardsPanel);
 
 		ImagePanel fitBitPic = new ImagePanel("Fitbit.png");
 		fitBitPic.setSize(fitBitPic.getWidth(), fitBitPic.getHeight());
