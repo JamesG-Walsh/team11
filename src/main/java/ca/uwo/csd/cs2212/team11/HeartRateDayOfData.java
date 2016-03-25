@@ -2,6 +2,8 @@
  * Container class that stores all data pertaining to heart rate info for a given day
  */
 package ca.uwo.csd.cs2212.team11;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,5 +1,7 @@
 package ca.uwo.csd.cs2212.team11;
 import java.io.BufferedReader;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

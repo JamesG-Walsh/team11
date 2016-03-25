@@ -40,7 +40,8 @@ import java.util.Properties;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.text.DateFormat; 
 import java.text.SimpleDateFormat;
-import java.util.Calendar; 
+import java.util.Calendar;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
 
 
 /**

@@ -1,5 +1,7 @@
 package ca.uwo.csd.cs2212.team11;
 import java.io.Serializable;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 //import org.json.JSONException;
 //import org.json.JSONObject;
 import ca.uwo.csd.cs2212.team11.DeskTop;
