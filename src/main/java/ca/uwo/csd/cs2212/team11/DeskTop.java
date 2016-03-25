@@ -130,19 +130,13 @@ public class DeskTop extends JFrame{
 
 		if(!this.testFlag) //live run
 		{
-			try
-			{
+			
 				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
 				odwodToday.populateTotals();
 				odwodToday.populateAllMins();			
 				hfd.populateLifetimeAndBestDays();
 				odwodToday.getHeartRateDayOfData().populate();				
-			}
-			catch(RateLimitExceededException e)
-			{
-				this.catch429();
-				e.printStackTrace(); 
-			}
+			
 		}
 		else//test run
 		{
