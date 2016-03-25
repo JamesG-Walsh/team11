@@ -7,17 +7,18 @@ import org.json.JSONArray;
 import java.util.Date;
 
 /**
- * Class that contains all numerical data for the dashboard & time series displays
+ * Class that contains all numerical data for the dashboard & time series displays (except lifetime an best days which is stored in HistoricalFitnessData)
+ * 
  * @author Alecia DeBoeck, James Walsh, Dara Amin, Abdi Ibrahim
  */
 public class OneDaysWorthOfData 
 {
 	private int year;
 	private int month;
-	private int dayOfMonth;
+	private int dayOfMonth; //the date that this object encapsulates
 
-	private double todaysTotalCaloriesBurned;
-	private double[][] caloriesByTheMin;
+	private double todaysTotalCaloriesBurned; //the days total calories burned
+	private double[][] caloriesByTheMin; //a 2D array that will hold minute by minute values for calories
 
 	private double todaysTotalDistance;
 	private double[][] distanceByTheMin;
@@ -36,10 +37,8 @@ public class OneDaysWorthOfData
 
 	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
 
-	private Date lastUpdated;
+	private Date lastUpdated; //not used, desktop to keep track itself
 
-	private boolean totalsFullyPopulated;
-	private boolean byTheMinsFullyPopulated;
 
 	/**
 	 *  Class constructor.
@@ -51,7 +50,7 @@ public class OneDaysWorthOfData
 	/**
 	 *  Class constructor.
 	 *  @param year the current year
-	 *  @param month the current month of the year
+	 *  @param month the current month of the year (1 = jan, 12 = Dec)
 	 *  @param dayOfMonth the current day of the month
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
@@ -95,7 +94,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysCaloriesBurned the calories burned today by the user
 	 */
-	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned ) {
+	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned )
+	{
 		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
 	}
 
