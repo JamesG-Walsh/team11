@@ -85,7 +85,7 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(boolean testFlag, User usr)
+	public DeskTop(boolean testFlag, User usr, boolean recoveringFrom429) throws RateLimitExceededException
 	{
 		super("Team 11 FitBit Viewer");
 
@@ -142,7 +142,6 @@ public class DeskTop extends JFrame{
 				this.catch429();
 				e.printStackTrace(); 
 			}
-			
 		}
 		else//test run
 		{
@@ -226,6 +225,11 @@ public class DeskTop extends JFrame{
 
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
+		
+		if(recoveringFrom429)
+		{
+			this.catch429();
+		}
 	}
 
 	/**
@@ -352,7 +356,7 @@ public class DeskTop extends JFrame{
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
 			time.setTime(date);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time.getTime());
 			dateLabel.setText(dateString);
 			repaint();
 			revalidate();
@@ -412,12 +416,16 @@ public class DeskTop extends JFrame{
 			}
 
 			this.removeVisibleGraphs();
-
+			try{
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
-
+			}
+			catch (RateLimitExceededException e)
+			{
+				this.catch429();
+			}
 
 			if(0<=i && i<=6)
 			{
@@ -665,12 +673,10 @@ public class DeskTop extends JFrame{
 			if(this.testFlag){
 
 				if(testCal >  usr.getDailyGoals().getStepGoal()){
-							System.out.println("inside thing");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(cmark1);
 					}else{
-							System.out.println("Inside another");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(xmark1);
@@ -723,25 +729,21 @@ public class DeskTop extends JFrame{
 					try
 						{
 							od = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
-														System.out.println("DAILY GOALS ODWOD");
 
 										
 						}
 						catch(RateLimitExceededException e)
 						{
-							System.out.println("RateLimitExceededException thrown to Desktop constructor");
 							this.catch429();
 							e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 						}
 					
 					if(od.getTodaysTotalSteps() >=  usr.getDailyGoals().getStepGoal()){
 
-							System.out.println(od.getTodaysTotalSteps() + " ---------------vs ------------------" + usr.getDailyGoals().getStepGoal() );
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(cmark1);
 					}else{
-							System.out.println("Inside another");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(xmark1);
@@ -749,7 +751,6 @@ public class DeskTop extends JFrame{
 
 					if(od.getTodaysTotalCaloriesBurned() >= usr.getDailyGoals().getCalGoal()){
 
-						System.out.println(od.getTodaysTotalCaloriesBurned() + " ------------------------vs------------------- " + usr.getDailyGoals().getCalGoal() );
 
 						goalsPanel.add(new JLabel("Calories: "));
 						goalsPanel.add(goalsListLabelCal);
@@ -764,7 +765,6 @@ public class DeskTop extends JFrame{
 
 					if(od.getTodaysTotalDistance() >= usr.getDailyGoals().getDistGoal()){
 
-						System.out.println(od.getTodaysTotalDistance() + " ------------------------------vs ---------------------------------- " + usr.getDailyGoals().getDistGoal() );
 						goalsPanel.add(new JLabel("Distance: "));
 						goalsPanel.add(goalsListLabelDis);
 						goalsPanel.add(cmark3);
@@ -778,7 +778,6 @@ public class DeskTop extends JFrame{
 					}
 
 					if(od.getTodaysTotalFloors() >= usr.getDailyGoals().getFloorsGoal()){
-							System.out.println(od.getTodaysTotalFloors() + " ---------------------------------- vs  -----------------------------" + usr.getDailyGoals().getFloorsGoal() );
 							goalsPanel.add(new JLabel("Floors: "));
 							goalsPanel.add(goalsListLabelFloors);
 							goalsPanel.add(cmark4);
@@ -803,11 +802,9 @@ public class DeskTop extends JFrame{
 	                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
 	                
 	                if (result == JOptionPane.OK_OPTION) {
-	        	         System.out.println(result);
 			        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
 			        	 goalsArray = usr.getDailyGoals().getGoalsArray();
 
-			        	 System.out.println("---SETTING GOAL ---" + goalsArray[0]);
 	        	         //goalsArray[0] = stepsGoal.getText();
 			        	 //goalsArray[1] = caloriesGoal.getText();
 			        	 //goalsArray[2] = distanceGoal.getText();
@@ -1128,9 +1125,9 @@ public class DeskTop extends JFrame{
 		}
 	}
 	
+	
 	private void catch429()
 	{
-		System.out.println("Swinging happens here");
 		dateLabel.setText("Maxed out! Wait..");
 
 		//TODO write method that does something in swing to let the user know that they are refreshing too much and to try again at the top of the hour

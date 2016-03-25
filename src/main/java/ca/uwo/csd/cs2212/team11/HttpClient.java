@@ -39,7 +39,7 @@ public class HttpClient
 
 	/**
 	 * 
-	 * @param urlSuffix
+	 * @param urlSuffix describes the data to be requested as specified by the fitbit api
 	 * @return
 	 * @throws RateLimitExceededException
 	 */
@@ -75,6 +75,7 @@ public class HttpClient
 			bufferedReader.close();
 
 			String workingDir = System.getProperty("user.dir");
+			//System.out.println("Current working directory : " + workingDir);
 			fileReader = new FileReader("./src/main/resources/Team11Tokens.txt");
 
 			bufferedReader = new BufferedReader(fileReader);
@@ -86,12 +87,12 @@ public class HttpClient
 			rawResponse = bufferedReader.readLine();
 
 		}
-		catch(FileNotFoundException ex) {
-		
+		catch(FileNotFoundException ex) {		
 			System.exit(1);
 		}
 		catch(IOException ex) {
 			
+			//System.out.println("Unable to open file\n"+ex.getMessage());
 			System.exit(1);
 		}
 		finally{
@@ -101,7 +102,7 @@ public class HttpClient
 					bufferedReader.close(); 
 			}
 			catch(Exception e){
-				
+				//System.out.println("Error closing file\n"+e.getMessage()); 
 			}
 		}
 		//  Create the Fitbit service - you will ask this to ask for access/refresh pairs
@@ -125,6 +126,8 @@ public class HttpClient
 				expiresIn,
 				rawResponse);
 		// Now let's go and ask for a protected resource!
+		//System.out.println("Now we're going to access a protected resource...");
+		//System.out.println();
 		//Example request:
 		//    This is always the prefix (for my account)
 		
@@ -143,6 +146,9 @@ public class HttpClient
 		// See: https://dev.fitbit.com/docs/oauth2/#making-requests
 		service.signRequest(accessToken, request);
 		//  If you are curious
+		//System.out.println(request.toString());
+		//System.out.println(request.getHeaders());
+		//System.out.println(request.getBodyContents());
 
 
 		//  This actually sends the request:
@@ -150,15 +156,18 @@ public class HttpClient
 
 		//  The HTTP response from fitbit will be in HTTP format, meaning that it has a numeric code indicating
 		//     whether is was successful (200) or not (400's or 500's), each code has a different meaning
+		//System.out.println();
+		//System.out.println("HTTP response code: "+response.getCode());
 		int statusCode = response.getCode();
 
 		JSONObject jo = null;
 		
+		//System.out.println("-----");
 		switch(statusCode)
 		{
 		case 200:
-			System.out.println("Success!");
-			System.out.println("HTTP response body:\n"+response.getBody());
+			//System.out.println("Success!");
+			//System.out.println("HTTP response body:\n"+response.getBody());
 
 			try 
 			{
@@ -166,19 +175,20 @@ public class HttpClient
 			}
 			catch (JSONException e1)
 			{
-				System.out.println("JSON Exception when generating JSONObject from successful request response body.  Null JSONObject returned.");
-				e1.printStackTrace();
+
+				//System.out.println("JSON Exception when generating JSONObject from successful request response body.  Null JSONObject returned.");
+				//e1.printStackTrace();
 			}
 
 			break;
 		case 400:
-			System.out.println("Bad Request - may have to talk to Beth (or bad URL in request)");
-			System.out.println("HTTP response body:\n"+response.getBody());
+			//System.out.println("Bad Request - may have to talk to Beth (or bad URL in request)");
+			//System.out.println("HTTP response body:\n"+response.getBody());
 			break;
 		case 401:
-			System.out.println("Likely Expired Token");
-			System.out.println("HTTP response body:\n"+response.getBody()); 
-			System.out.println("Try to refresh");
+			//System.out.println("Likely Expired Token");
+			//System.out.println("HTTP response body:\n"+response.getBody()); 
+			//System.out.println("Try to refresh");
 
 			// This uses the refresh token to get a completely new accessToken object
 			//   See:  https://dev.fitbit.com/docs/oauth2/#refreshing-tokens           
@@ -198,21 +208,21 @@ public class HttpClient
 			}
 			catch (JSONException e1) 
 			{
-				System.out.println("JSON Exception when generating JSONObject from response body.  Null JSONObject to be returned;");
-				e1.printStackTrace();
+				//System.out.println("JSON Exception when generating JSONObject from response body.  Null JSONObject to be returned;");
+				//e1.printStackTrace();
 			}
 
 			// Hopefully got a response this time:
-			System.out.println("HTTP response code: "+response.getCode());
-			System.out.println("HTTP response body:\n"+response.getBody());
+			//System.out.println("HTTP response code: "+response.getCode());
+			//System.out.println("HTTP response body:\n"+response.getBody());
 			break;
 		case 429:
-			System.out.println("Rate limit exceeded");
-			System.out.println("HTTP response body:\n"+response.getBody());
+			//System.out.println("Rate limit exceeded");
+			//System.out.println("HTTP response body:\n"+response.getBody());
 			throw new RateLimitExceededException();
 		default:
-			System.out.println("HTTP response code: "+response.getCode());
-			System.out.println("HTTP response body:\n"+response.getBody());
+			//System.out.println("HTTP response code: "+response.getCode());
+			//System.out.println("HTTP response body:\n"+response.getBody());
 		}
 
 		BufferedWriter bufferedWriter=null;
@@ -240,12 +250,11 @@ public class HttpClient
 			bufferedWriter.close();
 		}
 		catch(FileNotFoundException ex) {
-			System.out.println(
-					"Unable to open file\n"+ex.getMessage());               
+
+			//System.out.println("Unable to open file\n"+ex.getMessage());               
 		}
 		catch(IOException ex) {
-			System.out.println(
-					"Error reading/write file\n"+ex.getMessage());                 
+			//System.out.println("Error reading/write file\n"+ex.getMessage());                 
 		}
 		finally
 		{
@@ -256,15 +265,14 @@ public class HttpClient
 			}
 			catch(Exception e)
 			{
-				System.out.println(
-						"Error closing file\n"+e.getMessage()); 
+
 			}
 		}//end try
 		return jo;
 	}//end of method
 
 	/**
-	 * 
+	 * makes request for a specified daily total (calories, steps etc.) as specified by fitbit api
 	 * @param activity
 	 * @param date
 	 * @return
@@ -276,7 +284,7 @@ public class HttpClient
 	}
 
 	/**
-	 * 
+	 * makes server request for by the minute data as specified by fitbit api
 	 * @param activity
 	 * @param date
 	 * @param interval
@@ -291,7 +299,7 @@ public class HttpClient
 	}
 	
 	/**
-	 * 
+	 * makes server request for lifetime totals and best days as specified by fitbit api
 	 * @return
 	 * @throws RateLimitExceededException
 	 */
@@ -301,7 +309,7 @@ public class HttpClient
 	}
 	
 	/**
-	 * 
+	 * makes server request for heart rate data as specified by fitbit api
 	 * @param date
 	 * @return
 	 * @throws RateLimitExceededException
@@ -312,15 +320,15 @@ public class HttpClient
 	}
 
 	/**
-	 * 
+	 * makes server request for heart rate data as specified by fitbit api
 	 * @return
 	 * @throws RateLimitExceededException
-	 */
+	 *//*
 	public static JSONObject getTodaysHeartRateZones() throws RateLimitExceededException
 	{
 		
 		return HttpClient.getSpecificData("activities/heart/date/today/1d/1min.json");
-	}
+	}*/
 	
 	
 	
