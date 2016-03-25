@@ -610,6 +610,7 @@ public class DeskTop extends JFrame{
 		refreshButton.addMouseListener(new MouseAdapter(){
 
 
+
 			public void mouseClicked(MouseEvent e){
 
 			 try{
@@ -625,6 +626,7 @@ public class DeskTop extends JFrame{
 				
 				
 			}
+
 		});
 
 		refreshButton.setToolTipText("Click to refresh data");
@@ -1398,6 +1400,8 @@ public class DeskTop extends JFrame{
 	private void catch429()
 	{
 		System.out.println("Swinging happens here");
+		dateLabel.setText("Maxed out! Wait..");
+
 		//TODO write method that does something in swing to let the user know that they are refreshing too much and to try again at the top of the hour
 	}
 }

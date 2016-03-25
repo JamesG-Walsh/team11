@@ -49,7 +49,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar; 
 
-public class SelectDate extends JFrame implements ActionListener
+public class SelectDate extends JFrame implements ActionListener  
 {
 JButton checkBtn;
 public JDatePickerImpl dtePick;
@@ -59,7 +59,7 @@ Date selectedDate;
 public UtilDateModel model;
 public JDatePanelImpl datePanel;
 public JDatePickerImpl datePicker;*/
-public SelectDate(JButton check, JDatePickerImpl datePicker)
+public SelectDate(JButton check, JDatePickerImpl datePicker) 
     {
 
 
@@ -68,7 +68,7 @@ public SelectDate(JButton check, JDatePickerImpl datePicker)
     checkBtn.addActionListener(this);
 
     }
-public void actionPerformed(ActionEvent e) 
+public void actionPerformed(ActionEvent e) throws NullPointerException 
     {
         if(checkBtn==e.getSource())
         {
@@ -80,15 +80,15 @@ public void actionPerformed(ActionEvent e)
         }
     }
 
-    public String getDate(){
+    public String getDate() throws NullPointerException{
+
 
         return this.reportDate;
     }
 
-    public Date returnDate(){
+    public Date returnDate() throws NullPointerException{
 
-        return this.selectedDate;
-
+             return this.selectedDate;
     }
 
 }
