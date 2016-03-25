@@ -303,7 +303,7 @@ public class DeskTop extends JFrame{
 			//Date date = new Date(116, 02, 3);
 
 			time.setTime(date);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time.getTime());
 			dateLabel.setText(dateString);
 			repaint();
 			revalidate();
