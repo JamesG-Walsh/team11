@@ -75,7 +75,6 @@ public class HttpClient
 			bufferedReader.close();
 
 			String workingDir = System.getProperty("user.dir");
-			System.out.println("Current working directory : " + workingDir);
 			fileReader = new FileReader("./src/main/resources/Team11Tokens.txt");
 
 			bufferedReader = new BufferedReader(fileReader);
@@ -88,13 +87,11 @@ public class HttpClient
 
 		}
 		catch(FileNotFoundException ex) {
-			System.out.println(
-					"Unable to open file\n"+ex.getMessage());
+		
 			System.exit(1);
 		}
 		catch(IOException ex) {
-			System.out.println(
-					"Error reading/write file\n"+ex.getMessage());  
+			
 			System.exit(1);
 		}
 		finally{
@@ -104,8 +101,7 @@ public class HttpClient
 					bufferedReader.close(); 
 			}
 			catch(Exception e){
-				System.out.println(
-						"Error closing file\n"+e.getMessage()); 
+				
 			}
 		}
 		//  Create the Fitbit service - you will ask this to ask for access/refresh pairs
@@ -129,8 +125,6 @@ public class HttpClient
 				expiresIn,
 				rawResponse);
 		// Now let's go and ask for a protected resource!
-		System.out.println("Now we're going to access a protected resource...");
-		System.out.println();
 		//Example request:
 		//    This is always the prefix (for my account)
 		
@@ -149,9 +143,6 @@ public class HttpClient
 		// See: https://dev.fitbit.com/docs/oauth2/#making-requests
 		service.signRequest(accessToken, request);
 		//  If you are curious
-		System.out.println(request.toString());
-		System.out.println(request.getHeaders());
-		System.out.println(request.getBodyContents());
 
 
 		//  This actually sends the request:
@@ -159,13 +150,10 @@ public class HttpClient
 
 		//  The HTTP response from fitbit will be in HTTP format, meaning that it has a numeric code indicating
 		//     whether is was successful (200) or not (400's or 500's), each code has a different meaning
-		System.out.println();
-		System.out.println("HTTP response code: "+response.getCode());
 		int statusCode = response.getCode();
 
 		JSONObject jo = null;
 		
-		System.out.println("-----");
 		switch(statusCode)
 		{
 		case 200:

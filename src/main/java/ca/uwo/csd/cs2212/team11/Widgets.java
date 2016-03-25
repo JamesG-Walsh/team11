@@ -65,8 +65,6 @@ public class Widgets extends JPanel
 	{
 			super();
 			this.testFlag = testFlag;
-//			System.err.println("Widget constructor entered");
-//			this.setSize(500, 150);
 			this.setVisible(true);
 			Border b = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
 			this.setBorder(b);
@@ -239,7 +237,6 @@ public class Widgets extends JPanel
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
-				System.out.println("Here");
 				revalidate();
 				repaint();
 
@@ -254,7 +251,6 @@ public class Widgets extends JPanel
 			public void mouseClicked(MouseEvent e){
 				/*currentView = (currentView + 1) % 3;
 				changeView(currentView);*/
-				System.out.println("Here");
 			}
 		});
 		

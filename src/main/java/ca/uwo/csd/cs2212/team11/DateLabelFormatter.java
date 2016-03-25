@@ -7,6 +7,15 @@ import java.util.Calendar;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
+/**
+ * Class used to display datepicker
+ * @author Andrew Hall, James Walsh, Dara Amin
+ *
+ */
+
+/**
+* Used to formate date selected by user
+*/
 public class DateLabelFormatter extends AbstractFormatter {
 
     private String datePattern = "yyyy-MM-dd";

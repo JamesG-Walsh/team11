@@ -120,7 +120,6 @@ public class HistoricalFitnessData
 	 */
 	public boolean addDay(OneDaysWorthOfData odwodNew)
 	{
-		System.out.println("Entering addDay");
 		Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
 
 		while (itr.hasNext())
@@ -128,11 +127,9 @@ public class HistoricalFitnessData
 			OneDaysWorthOfData odwodOld = itr.next();
 			if(odwodOld.compareTo(odwodNew) == 0)
 			{
-				System.out.println("odwod : " + odwodOld.buildDateAsString() + "Already in ArrayList container.\n");
 				return false;
 			}
 		}
-		System.out.println("odwod : " + odwodNew.buildDateAsString() + " Not Already in ArrayList container. Adding to container.\n");
 		allOneDays.add(odwodNew);
 		return true;
 	}

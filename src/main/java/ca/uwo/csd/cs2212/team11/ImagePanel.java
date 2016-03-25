@@ -33,7 +33,6 @@ public class ImagePanel extends JPanel {
 		        this.height = image.getHeight();
 		        this.width = image.getWidth();
 	        } catch (IOException ex) {
-	             System.err.println("File: \'" + source + "\', not found!");
 	        }
 	        this.setOpaque(false);
 	}
@@ -68,7 +67,6 @@ public class ImagePanel extends JPanel {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Testing");
 		JFrame f = new JFrame();
 		ImagePanel i = new ImagePanel("./src/main/resources/imgs/Fitbit.png");
 		i.setSize(200, 50);

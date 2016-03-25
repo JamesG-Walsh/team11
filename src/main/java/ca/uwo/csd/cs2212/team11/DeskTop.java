@@ -126,13 +126,11 @@ public class DeskTop extends JFrame{
 		this.usr = usr;
 		HistoricalFitnessData hfd = this.usr.getHistoricalFitnessData();		
 
-		//System.out.println("Here");
 
 		if(!this.testFlag) //live run
 		{
 			try
 			{
-				System.out.println("Trying live Desktop constructor populates");
 				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
 				odwodToday.populateTotals();
 				odwodToday.populateAllMins();			
@@ -141,14 +139,9 @@ public class DeskTop extends JFrame{
 			}
 			catch(RateLimitExceededException e)
 			{
-				System.out.println("RateLimitExceededException thrown to Desktop constructor");
 				this.catch429();
-				e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
-			}
-			//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
-
-			//OneDaysWorthOfData odwod = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
-			//System.out.println(odwod.toString(false));
+				e.printStackTrace(); 
+			
 		}
 		else//test run
 		{
@@ -172,7 +165,6 @@ public class DeskTop extends JFrame{
 		all_widgets[IDs.SEDENTARY.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.SEDENTARY);
 		all_widgets[IDs.HEART_RATE.ordinal()] = new Widget(this.testFlag, usr, getWorkingDate(),IDs.HEART_RATE);
 
-		//System.out.println(System.getProperty("user.dir"));
 
 		allCGraphs[IDs.CALORIES.ordinal()] = new CGraph(IDs.CALORIES);
 		allCGraphs[IDs.DISTANCE.ordinal()] = new CGraph(IDs.DISTANCE);
@@ -241,8 +233,6 @@ public class DeskTop extends JFrame{
 	 */
 	protected void addRemoveGraph(IDs type) 
 	{
-		//		System.err.println("DeskTop.addRemoveGraph("+ type.name()+") called");
-		//		System.err.println("\t***Does nothing yet");
 
 		if (type == IDs.ACTIVE){
 			if(activeChartVisible == true){
@@ -270,9 +260,12 @@ public class DeskTop extends JFrame{
 		repaint();
 	}
 
+	/**
+	* Function will remove cumalitve graphs -- not used
+	*/
+
 	private void addRemoveCGraph(IDs type){
-		//		System.err.println("DeskTop.addRemoveCGraph("+ type.name()+") called");
-		//		System.err.println("\t***Does nothing yet");
+		
 		if(cGraphVisible[type.ordinal()] == true){
 			cGraphVisible[type.ordinal()] = false;
 			allCGraphs[type.ordinal()].setVisible(false);
@@ -295,13 +288,8 @@ public class DeskTop extends JFrame{
 	{
 		if(this.testFlag) //refresh in test mode (effectively just changes displayed data as the canned data used is the same for all days.)
 		{
-			System.err.println("DeskTop.refreshData() called in test mode");
-			System.err.println("\t***Does nothing yet");
 
-			//this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
-			//Date date = new Date(116, 02, 3);
-
 			time.setTime(date);
 			String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time.getTime());
 			dateLabel.setText(dateString);
@@ -309,7 +297,6 @@ public class DeskTop extends JFrame{
 			revalidate();
 
 			eastPanel.removeAll();
-			//eastPanel = new JPanel();
 			testCal = 40;
 			
 			populateEastPanel(eastPanel, testCal);
@@ -330,14 +317,9 @@ public class DeskTop extends JFrame{
 			{
 				if(graphVisible[i] == true)
 				{
-					System.out.println(i);
 					break;
 				}
 			}
-
-
-
-			System.out.println(graphVisible.length);
 
 			this.removeVisibleGraphs();
 
@@ -350,7 +332,6 @@ public class DeskTop extends JFrame{
 			}
 			catch (RateLimitExceededException e)
 			{
-				System.out.println("Test run is making server requests and hitting 429");
 				this.catch429();
 				e.printStackTrace();
 			}
@@ -362,13 +343,9 @@ public class DeskTop extends JFrame{
 			}
 
 			repaint();
-
-			//System.out.println(year);
-			//repaint();
 		}
 		else //refresh in live mode
 		{
-			System.out.println("Starting live call of refreshData();");
 
 			this.setWorkingDate();
 			Calendar time =  Calendar.getInstance();
@@ -393,7 +370,6 @@ public class DeskTop extends JFrame{
 			eastPanel.revalidate();
 			eastPanel.repaint();
 
-			System.out.println( time.get(Calendar.DAY_OF_MONTH) + time.get(Calendar.MONTH + 1) + time.get(Calendar.YEAR));
 
 			int year = time.get(Calendar.YEAR);
 			int month = (time.get(Calendar.MONTH)+1);
@@ -403,24 +379,18 @@ public class DeskTop extends JFrame{
 			try 
 			{
 				hfd.populateLifetimeAndBestDays();	
-				System.out.println("refreshData() hfd...\n" + hfd.lifetimeAndBestDaysToString());
 				//usr.getHistoricalFitnessData().retrieveDay( time.DAY_OF_MONTH,(time.MONTH + 1) ,time.YEAR ).populateTotals();
 
 				OneDaysWorthOfData odwod = hfd.retrieve2(day, month, year );
 				odwod.populateTotals();
-				System.out.println("Inside refreshData()...\n" + odwod.toString(false));
 
 				odwod.populateAllMins();
 			}
 			catch (RateLimitExceededException e)
 			{
-				System.out.println("RateLimitExceededException thrown to refreshData()");
 				this.catch429();
 				//e.printStackTrace();
 			}
-
-			/*eastPanel = new JPanel();
-			populateEastPanel(eastPanel, testCal);*/
 
 			this.all_widgets[IDs.CALORIES.ordinal()].changeViewLive(hfd, time, 0, IDs.CALORIES);
 			this.all_widgets[IDs.CLIMB.ordinal()].changeViewLive(hfd, time, 0, IDs.CLIMB);
@@ -430,31 +400,15 @@ public class DeskTop extends JFrame{
 			this.all_widgets[IDs.SEDENTARY.ordinal()].changeViewLive(hfd, time, 0, IDs.SEDENTARY);
 			this.all_widgets[IDs.DISTANCE.ordinal()].changeViewLive(hfd, time, 0, IDs.DISTANCE);
 
-			/*addRemoveGraph(IDs.CALORIES);
-			repaint();
-			addRemoveGraph(IDs.DISTANCE);
-			repaint();
-			addRemoveGraph(IDs.STEPS);
-			repaint();
-			addRemoveGraph(IDs.HEART_RATE);
-			repaint();*/
-
-			//this.removeVisibleGraphs();
-
 			int i;
 			for(i = 0; i < graphVisible.length; i++){
 
 				if(graphVisible[i] == true)
 				{
 
-					System.out.println(i);
-
 					break;
 				}
 			}
-
-
-			System.out.println(graphVisible.length);
 
 			this.removeVisibleGraphs();
 
@@ -463,8 +417,6 @@ public class DeskTop extends JFrame{
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
 
-
-			//allGraphs[i].setVisible(true);
 
 			if(0<=i && i<=6)
 			{
@@ -480,7 +432,7 @@ public class DeskTop extends JFrame{
 
 	/**
 	 * 
-	 * @param type
+	 * @param type -- Id type
 	 */
 	private void configWidgetVisibilityToUsersPref(IDs type){
 		if(widgetVisible[type.ordinal()] == false){
@@ -524,8 +476,6 @@ public class DeskTop extends JFrame{
 
 	public void setWorkingDate()
 	{
-		//Calendar cal = Calendar.getInstance();
-		//	cal.setTime(javaSqlDate);
 		this.workingDate = Calendar.getInstance();
 
 		Calendar time = this.getWorkingDate();
@@ -533,18 +483,12 @@ public class DeskTop extends JFrame{
 		int month = (time.get(Calendar.MONTH) + 1);
 		int dayOfMonth = time.get(Calendar.DAY_OF_MONTH);
 
-		System.out.println("Working Date set to---  " +dayOfMonth + "-" + month + "-"+ year);
-		//System.out.println(this.workingDate.toString());
-		//Date date = new Date(116, 02, 1);
-		//this.workingDate.setTime(date);
 	}
 
 	/**
 	 * OpenSettingsPanel will be attached to a button that will display the users preferences and they can interact with settings to their liking
 	 */
 	private void openSettingsPanel(){
-		System.err.println("DeskTop.openSettingsPanel() called");
-		System.err.println("\t***Does nothing yet");
 	}
 
 	private void populateNorthPanel(JPanel a){
@@ -552,46 +496,6 @@ public class DeskTop extends JFrame{
 		a.setPreferredSize(new Dimension(850, 27));
 		a.setOpaque(false);
 
-
-		//add FitBit logo
-
-
-		// create the welcome to user
-		/*JPanel hello = new JPanel();
-		hello.setBackground(SharedData.SMOKE);
-		JLabel helloLabel = new JLabel("Welcome, " + getUserName() + "!");
-		helloLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-		helloLabel.setForeground(new Color(255,255,255));
-		hello.add(helloLabel);
-		a.add(hello);
-		a.add(Box.createHorizontalGlue());
-		 */
-		//add controller buttons
-		//add settings button
-		/*
-		ImagePanel settingsButton = new ImagePanel("Settings.png");
-		settingsButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				openSettingsPanel();
-			}
-		});*/
-		//settingsButton.setToolTipText("Click to open settings panel");
-		//a.add(settingsButton);
-
-		//add exit button
-		/*ImagePanel exitButton = new ImagePanel("Exit_Button.png");
-		exitButton.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				System.exit(0);
-			}
-		});
-		exitButton.setToolTipText("Click to exit FitBit Viewer");
-		a.add(exitButton);*/
-
-		//a.setOpaque(false);
-		//a.setLayout(new BoxLayout(southPanel, BoxLayout.LINE_AXIS));
-
-		//Create panel to display last update date
 		datePanel = new JPanel();
 		datePanel.setBackground(SharedData.SMOKE);
 
@@ -604,8 +508,6 @@ public class DeskTop extends JFrame{
 
 
 
-		//datePanel.add(conn);
-
 		JButton refreshButton = new JButton("Refresh");
 		refreshButton.addMouseListener(new MouseAdapter(){
 
@@ -616,11 +518,9 @@ public class DeskTop extends JFrame{
 			 try{
 
 					refreshData(select.returnDate());
-					System.out.println(select.getDate());
 
 			 }catch(NullPointerException f){
 
-			 		System.out.println("Please select valid time");
 			 }
 
 				
@@ -960,182 +860,13 @@ public class DeskTop extends JFrame{
 
 	}
 
-	/*private void populateWestPanel(JPanel a){
-		a.setOpaque(false);
-		a.setLayout(new GridLayout(7,2));
-		a.setMinimumSize(new Dimension(200, 250));
-		JPanel navBtn;
-
-		navBtn = new ImagePanel("graph2.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveCGraph(IDs.CALORIES);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = new ImagePanel("graph.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveGraph(IDs.CALORIES);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = createNavButton(IDs.CALORIES, "<html><h3>Calories</h3><br/>Burned</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.CALORIES);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-<<<<<<< HEAD
-		a.add(Box.createHorizontalBox());
-
-
-			
-=======
-
->>>>>>> dev
-		navBtn = new ImagePanel("graph2.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
-				source.getParent().dispatchEvent(e);
-				addRemoveCGraph(IDs.DISTANCE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = new ImagePanel("graph.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				Component source = (Component)e.getSource();
-				source.getParent().dispatchEvent(e);
-				addRemoveGraph(IDs.DISTANCE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-
-		navBtn = createNavButton(IDs.DISTANCE, "<html>Distance<br/>Travelled</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.DISTANCE);
-				repaint();
-
-			}
-		});
-		a.add(navBtn);
-
-
-
-		a.add(Box.createHorizontalBox());
-		a.add(Box.createHorizontalBox());
-
-		navBtn = createNavButton(IDs.CLIMB, "<html>Floors<br/>Climbed</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.CLIMB);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-
-		navBtn = new ImagePanel("graph2.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveCGraph(IDs.STEPS);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = new ImagePanel("graph.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveGraph(IDs.STEPS);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = createNavButton(IDs.STEPS, "<html>Steps<br/>Taken</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.STEPS);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-
-		a.add(Box.createHorizontalBox());
-
-
-		navBtn = new ImagePanel("graph.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveGraph(IDs.ACTIVE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = createNavButton(IDs.ACTIVE, "<html>Minutes<br/>Active</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.ACTIVE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-
-		a.add(Box.createHorizontalBox());
-		a.add(Box.createHorizontalBox());
-
-		navBtn = createNavButton(IDs.SEDENTARY, "<html>Sedentary<br/>Minutes</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.SEDENTARY);
-				repaint();
-
-			}
-		});
-		a.add(navBtn);
-
-
-		a.add(Box.createHorizontalBox());
-
-		navBtn = new ImagePanel("graph.png");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveGraph(IDs.HEART_RATE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-		navBtn = createNavButton(IDs.HEART_RATE, "<html>Heart<br/>Rate</html>");
-		navBtn.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				addRemoveWidget(IDs.HEART_RATE);
-				repaint();
-			}
-		});
-		a.add(navBtn);
-
-	}*/
+	/**
+	* Jpanel that uses a grid system to populate daily goals
+	*/
 
 	private void populateWestPanel(JPanel a){
+
+
 		a.setLayout(new GridLayout(12,1));
 		a.setOpaque(false);
 
@@ -1147,6 +878,10 @@ public class DeskTop extends JFrame{
 			calWidg.setSelected(true);
 		}
 		calWidg.setOpaque(false);
+
+		/**
+		*Listener for adding and removing graphs
+		*/
 		calWidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
    
@@ -1155,8 +890,9 @@ public class DeskTop extends JFrame{
          }           
       });
 
-
-
+		/**
+		*Listener for adding and removing graphs
+		*/
       	JCheckBox stepWidg = new JCheckBox("Steps");
       	if(this.widgetVisible[3] == true){
 			stepWidg.setSelected(true);
@@ -1164,13 +900,9 @@ public class DeskTop extends JFrame{
       	stepWidg.setOpaque(false);
 		stepWidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
-            /*statusLabel.setText("Calories Checkbox: " 
-            + (e.getStateChange()==1?"checked":"unchecked"));*/
 
 				addRemoveWidget(IDs.STEPS);
 				repaint();
-
-
          }           
       });
 
@@ -1179,10 +911,13 @@ public class DeskTop extends JFrame{
 			distWidg.setSelected(true);
 		}
       	distWidg.setOpaque(false);
+
+      	/**
+		*Listener for adding and removing graphs
+		*/
 		distWidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
-            /*statusLabel.setText("Calories Checkbox: " 
-            + (e.getStateChange()==1?"checked":"unchecked"));*/
+          
 
 				addRemoveWidget(IDs.DISTANCE);
 				repaint();
@@ -1196,10 +931,13 @@ public class DeskTop extends JFrame{
 			floorWidg.setSelected(true);
 		}
       	floorWidg.setOpaque(false);
+
+      	/**
+		*Listener for adding and removing widgets
+		*/
 		floorWidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
-            /*statusLabel.setText("Calories Checkbox: " 
-            + (e.getStateChange()==1?"checked":"unchecked"));*/
+         
 
 				addRemoveWidget(IDs.CLIMB);
 				repaint();
@@ -1213,10 +951,12 @@ public class DeskTop extends JFrame{
 			actWidg.setSelected(true);
 		}
       	actWidg.setOpaque(false);
+
+      	/**
+		*Listener for adding and removing widgets
+		*/
 		actWidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
-            /*statusLabel.setText("Calories Checkbox: " 
-            + (e.getStateChange()==1?"checked":"unchecked"));*/
 
 				addRemoveWidget(IDs.ACTIVE);
 				repaint();
@@ -1225,6 +965,9 @@ public class DeskTop extends JFrame{
          }           
       });
 
+		/**
+		*Listener for adding and removing widgets
+		*/
       	JCheckBox sedwidg = new JCheckBox("Sedentary");
       	if(this.widgetVisible[5] == true){
 			sedwidg.setSelected(true);
@@ -1232,8 +975,6 @@ public class DeskTop extends JFrame{
       	sedwidg.setOpaque(false);
 		sedwidg.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
-            /*statusLabel.setText("Calories Checkbox: " 
-            + (e.getStateChange()==1?"checked":"unchecked"));*/
 
 				addRemoveWidget(IDs.SEDENTARY);
 				repaint();
@@ -1329,9 +1070,6 @@ public class DeskTop extends JFrame{
 
 		ButtonGroup group = new ButtonGroup();
 
-		/*stepGraph.setMnemonic(KeyEvent.VK_C);
-      	distGraph.setMnemonic(KeyEvent.VK_M);
-      	calGraph.setMnemonic(KeyEvent.VK_P);*/
 
       	group.add(stepGraph);
       	group.add(distGraph);
@@ -1341,14 +1079,6 @@ public class DeskTop extends JFrame{
       	a.add(stepGraph);
       	a.add(distGraph);
       	a.add(calGraph);
-
-
-      	
-
-
-
-
-
 
 	}
 

@@ -1,5 +1,4 @@
 package ca.uwo.csd.cs2212.team11;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,12 +7,20 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
+
+
+/**
+ * Class that will display components on a JFRAME dashboard 
+ * @author Andrew Hall, James Walsh, Dara Amin
+ *
+ */
+
+
+
 
 public class CGraph extends JPanel{
 	
@@ -40,11 +47,16 @@ public class CGraph extends JPanel{
 			prepData(getDistanceData());
 			break;
 		default:
-			System.err.println("Error in graph creation " + type.name() + " is not recognized");
 		}
 		hourlyData = normalizeData(hourlyData);
 		qtrHourlyData = normalizeData(qtrHourlyData);
 	}
+
+
+	/**
+	* Used to paint cumulative graph
+	*@param graphics g
+	*/
 	
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -85,6 +97,11 @@ public class CGraph extends JPanel{
 		frame.setVisible(true);
 
 	}
+
+	/**
+	*Paint cumulative graph by the hour
+	*
+	*/
 	
 	private void paintCGraph(){
 		if (hourView == true){ paintHourGraph();	}
@@ -104,6 +121,10 @@ public class CGraph extends JPanel{
 		}
 		repaint();
 	}
+
+	/**
+	* Paint graph at 15 min intervals
+	*/
 	
 	private void paintQtrHourGraph(){
 		invalidate();
@@ -115,6 +136,11 @@ public class CGraph extends JPanel{
 		repaint();
 	}
 	
+	/**
+	*
+	*Paint vertical scale graph
+	*
+	*/
 	private void paintVerticleScale(){
 		q.drawString(type.name(), 10, 20);
 		q.drawString("Noon", 235, 50);
@@ -141,6 +167,10 @@ public class CGraph extends JPanel{
 		q.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
 	
+	/**
+	*
+	*Take one day array and plot on graph
+	*/
 	private void prepData(double[] array)
 	{
 		double hourAccumulator=0, qtrAccumulator=0;
@@ -160,7 +190,10 @@ public class CGraph extends JPanel{
 		}
 	}
 
-	
+	/**
+	*Average date out for plotting
+	*@return int array
+	*/
 	private int[] normalizeData(int[] array){
 		double maxVal = (double)array[array.length-1];
 		maxVal = maxVal * 1.1;
@@ -173,13 +206,28 @@ public class CGraph extends JPanel{
 		return array;
 	}
 	
+	/**
+	*
+	*@return canned data for calories
+	*/
 	private double[] getCaloriesData(){
 		return SharedData.newBigD;
 	}
 
+
+	/**
+	*
+	*@return canned data for steps
+	*/
 	private double[] getStepsData(){
 		return SharedData.newBigD;
 	}
+
+
+	/**
+	*
+	*@return canned data for distance
+	*/
 	
 	private double[] getDistanceData(){
 		return SharedData.newBigD;
