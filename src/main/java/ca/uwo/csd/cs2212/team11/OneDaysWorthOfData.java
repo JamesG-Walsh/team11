@@ -1,6 +1,8 @@
 package ca.uwo.csd.cs2212.team11;
 
 import org.json.JSONException;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 

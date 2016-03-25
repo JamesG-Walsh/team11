@@ -1,4 +1,6 @@
 package ca.uwo.csd.cs2212.team11;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 
 import java.util.*;
 

@@ -1,6 +1,9 @@
 package ca.uwo.csd.cs2212.team11; 
 
 import java.awt.BasicStroke;
+
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

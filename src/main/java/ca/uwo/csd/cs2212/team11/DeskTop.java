@@ -40,7 +40,8 @@ import java.util.Properties;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.text.DateFormat; 
 import java.text.SimpleDateFormat;
-import java.util.Calendar; 
+import java.util.Calendar;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
 
 
 /**
@@ -129,19 +130,13 @@ public class DeskTop extends JFrame{
 
 		if(!this.testFlag) //live run
 		{
-			try
-			{
+			
 				OneDaysWorthOfData odwodToday = hfd.retrieve2(dayOfMonth, month, year);
 				odwodToday.populateTotals();
 				odwodToday.populateAllMins();			
 				hfd.populateLifetimeAndBestDays();
 				odwodToday.getHeartRateDayOfData().populate();				
-			}
-			catch(RateLimitExceededException e)
-			{
-				this.catch429();
-				e.printStackTrace(); 
-			}
+			
 		}
 		else//test run
 		{
