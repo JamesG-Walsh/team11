@@ -2,5 +2,5 @@
 
 mvn compile
 mvn package
-java -jar target/team11_FitbitViewer.jar test
+java -jar target/Team11_FitBitViewer-jar-with-dependencies.jar test
 

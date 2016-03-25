@@ -1,7 +1,7 @@
  <project>
   <modelVersion> 4.0.0 </modelVersion>
   <groupId> ca.uwo.csd.cs2212.TEAM11 </groupId>
-  <artifactId> team11_FitbitViewer </artifactId>
+  <artifactId> Team11_FitBitViewer </artifactId>
   <packaging> jar </packaging>
   <version> 1.0-SNAPSHOT </version>
   <repositories>
@@ -52,7 +52,8 @@
 	    </dependency>
 	    </dependencies>
   </dependencyManagement>
-	  <build> 
+	  <build>
+	   <finalName>${project.artifactId}</finalName> 
 		<plugins>
 			<plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
@@ -89,14 +90,6 @@
 			</archive>
 		   </configuration>
 		  </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<finalName>team11_FitbitViewer</finalName>                   
-				</configuration>
-			</plugin>  
 		 </plugins>
 	</build>
 </project>
