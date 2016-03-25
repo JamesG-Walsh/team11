@@ -1,5 +1,4 @@
 package ca.uwo.csd.cs2212.team11;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,12 +7,20 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import ca.uwo.csd.cs2212.team11.SharedData.IDs;
+
+
+/**
+ * Class that will display components on a JFRAME dashboard 
+ * @author Andrew Hall, James Walsh, Dara Amin
+ *
+ */
+
+
+
 
 public class CGraph extends JPanel{
 	
