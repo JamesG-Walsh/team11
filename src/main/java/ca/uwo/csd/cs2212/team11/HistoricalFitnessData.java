@@ -205,7 +205,7 @@ public class HistoricalFitnessData
 				odwod = itr.next();
 				if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
 				{
-					System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
+					//System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
 					return odwod;
 				}
 			}				
@@ -380,26 +380,26 @@ public class HistoricalFitnessData
 	 * @return      integer value indicating result of comparison: -1, 0, or 1 if given date is earlier than, 
 	 * 				same as, or later than date of OneDaysWorthOfData object
 	 */
-	/*private int compareDate( int dayOfMonth, int month, int year, OneDaysWorthOfData odwod ) {
+	private int compareDate( int dayOfMonth, int month, int year, OneDaysWorthOfData odwod ) {
 
-		 Compare years of the dates 
+		/* Compare years of the dates */
 		if ( year < odwod.getYear() )
 			return -1;
 		if ( year > odwod.getYear() )
 			return 1;
-		 Years are the same, so compare months of the dates 
+		/* Years are the same, so compare months of the dates */
 		if ( month < odwod.getMonth() )
 			return -1;
 		if ( month > odwod.getMonth() )
 			return 1;
-		 Months are the same, so compare days-of-month of the dates 
+		/* Months are the same, so compare days-of-month of the dates */
 		if ( dayOfMonth < odwod.getDayOfMonth() )
 			return -1;
 		if ( dayOfMonth > odwod.getDayOfMonth() )
 			return 1;
-		 Dates are the same 
+		/* Dates are the same */
 		return 0;
-	}*/
+	}
 	
 	
 

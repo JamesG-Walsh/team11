@@ -296,7 +296,7 @@ public class Graph extends javax.swing.JPanel
 				startAvg = startAvg/step;
 				endAvg = endAvg/step;
 
-				if(!plottingInvalidPoint)
+				if(!plottingInvalidPoint && this.type != IDs.HEART_RATE)
 				{
 					g.drawLine(plotPoint, SharedData.GRAPH_HEIGHT - startAvg, plotPoint + spread, SharedData.GRAPH_HEIGHT- endAvg);
 				}
@@ -398,7 +398,7 @@ public class Graph extends javax.swing.JPanel
 		{
 			int[][] in;
 			HeartRateDayOfData hrdod = hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData();
-			//hrdod.populate(); //Desktop constructor will do this
+			hrdod.populate(); //Desktop constructor will do this
 			in = hrdod.getHeartRateByTheMin();
 			return this.convert2Dto1D(in);		
 		}
