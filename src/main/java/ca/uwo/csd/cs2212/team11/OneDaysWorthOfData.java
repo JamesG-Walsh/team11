@@ -41,14 +41,14 @@ public class OneDaysWorthOfData
 
 
 	/**
-	 *  Class constructor.
+	 *  Class constructor. only exists for serialization purposes
 	 */
 	public OneDaysWorthOfData() 
 	{
 	}
 
 	/**
-	 *  Class constructor.
+	 *  Class constructor. sets all fitness values to -1 to show that they haven't been populated with live data.
 	 *  @param year the current year
 	 *  @param month the current month of the year (1 = jan, 12 = Dec)
 	 *  @param dayOfMonth the current day of the month
@@ -197,7 +197,7 @@ public class OneDaysWorthOfData
 	 * @param floorsByTheMin 
 	 * @param jo the JSON object that contains the data for floors
 	 * 
-	 * @throws JSONException if the JSON object cannot be found          
+	 * @throws JSONException if the JSON object cannot be parsed properly        
 	 */
 	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -217,7 +217,7 @@ public class OneDaysWorthOfData
 	/**
 	 * sets the steps taken by the user in every minute
 	 * @param jo			the JSON object that contains the data for steps by the minute
-	 * @throws Exception 	if the object cannot be found
+	 * @throws JSONException 	if the JSON object cannot be parsed properly  
 	 */
 	public void setStepsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -266,6 +266,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * gets the year of this instance of the class
 	 * @return the year
 	 */
 	public int getYear() {
@@ -273,6 +274,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 *
 	 * @param year 
 	 * sets the current year
 	 */
@@ -281,6 +283,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * gets the month (jan =1 , dec = 12)
 	 * @return the current month
 	 */
 	public int getMonth() {
@@ -288,6 +291,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * 
 	 * @param month
 	 * sets the current month of the year
 	 */
@@ -296,6 +300,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * gets the day of the month
 	 * @return the dayOfMonth
 	 */
 	public int getDayOfMonth() {
@@ -376,6 +381,7 @@ public class OneDaysWorthOfData
 
 
 	/**
+	 * 
 	 * @return the activeMinsByTheMin
 	 */
 	public int[][] getActiveMinsByTheMin() {
@@ -417,7 +423,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
-	 * @return the hrdod
+	 * @return the object that contains today's heart rate data
 	 */
 	public HeartRateDayOfData getHeartRateDayOfData() {
 		return hrdod;
@@ -430,18 +436,10 @@ public class OneDaysWorthOfData
 		this.hrdod = hrdod;
 	}
 
-	/**
-	 * sets the time when the user's data was last updated
-	 * @param lastUpdated 
-	 */
-	public void setLastUpdated(Date lastUpdated) {
-		//TODO???
-		this.lastUpdated = lastUpdated;
-	}
+
 
 	/**
 	 * sets the floors the user has climbed in every minute
-	 * Method may be used later in the development
 	 * @param floorsByTheMin 
 	 */
 	public void setFloorsByTheMin(int[][] floorsByTheMin) {
@@ -452,6 +450,7 @@ public class OneDaysWorthOfData
 
 
 	/**
+	 * Makes live server requests and sets the daily total attributes of this object to the live data
 	 * @throws RateLimitExceededException 
 	 * 
 	 */
@@ -485,8 +484,8 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * Makes live server requests and sets the dby the min attributes of this object to the live data
 	 * @throws RateLimitExceededException 
-	 * 
 	 */
 	public void populateAllMins() throws RateLimitExceededException
 	{
@@ -522,6 +521,10 @@ public class OneDaysWorthOfData
 
 
 
+	/**
+	 * method that returns the int attributes of this obj to the format needed for the URL for server requests
+	 * @return
+	 */
 	public String buildDateAsString()
 	{
 		//System.out.println("Entered build date as string");
@@ -589,6 +592,11 @@ public class OneDaysWorthOfData
 		return relDate;
 	}
 
+	/**
+	 * makes a string that shows the attributes of this object in an easy to read format
+	 * @param includeMins
+	 * @return
+	 */
 	public String toString(boolean includeMins)
 	{
 		String str = "\nTOTALS for "+ this.buildDateAsString() +"\n\n";

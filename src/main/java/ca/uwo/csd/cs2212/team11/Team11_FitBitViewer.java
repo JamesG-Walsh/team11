@@ -35,53 +35,61 @@ public class Team11_FitBitViewer implements Serializable
 		else
 		{
 			System.out.println("Running in live mode.....");
-			
+
 		}
-			User usr = new User();
-			
-			GUI = new DeskTop(testFlag, usr);
+		User usr = new User();
+
+		try
+		{
+			GUI = new DeskTop(testFlag, usr, false);
+			GUI.setVisible(true);				
+		}
+		catch (RateLimitExceededException e)
+		{
+			GUI = new DeskTop(true, usr, true);
 			GUI.setVisible(true);
-			
-			//Accolades acc = new Accolades();
-			//acc.checkAccolades(GUI, hfd);//
-			//hfd = new HistoricalFitnessData();
-			
-			
-			//User usrs = new User();
+		}
 
-			//hfd = usrs.getHistoricalFitnessData();
-			//odwod = hfd.retrieveDay(20, 3, 2016);
-			//odwod.populateTotals();
-			
-			//odwod.toString(false);
+		//Accolades acc = new Accolades();
+		//acc.checkAccolades(GUI, hfd);//
+		//hfd = new HistoricalFitnessData();
 
-			//hfd.populateLifetimeAndBestDays();
-						
-			//System.out.println(odwod.toString(false));
-			//GUI = new DeskTop();			
-			
-			//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
-			//Accolades acc = new Accolades();
-			//acc.checkAccolades(GUI, hfd);
-			//System.out.println(hfd.lifetimeAndBestDaysToString());
 
-			//System.out.println(hfd.getLifetimeAndBestDays());
-			
-			//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
-			//HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
-			
-			//String startTime = "23:00";
-			//String endTime = "23:59";
-			
-			//odwod.populateTotals();
-			//odwod.populateAllMins();
-			
-			//System.out.println(odwod.toString(true));
-			
-			//hrdod.populate();
-			//System.out.println(hrdod.toString());
+		//User usrs = new User();
 
-			
+		//hfd = usrs.getHistoricalFitnessData();
+		//odwod = hfd.retrieveDay(20, 3, 2016);
+		//odwod.populateTotals();
+
+		//odwod.toString(false);
+
+		//hfd.populateLifetimeAndBestDays();
+
+		//System.out.println(odwod.toString(false));
+		//GUI = new DeskTop();			
+
+		//GUI = (DeskTop) r.readObject("./src/main/resources/desktop/desktop.xml").readObject();
+		//Accolades acc = new Accolades();
+		//acc.checkAccolades(GUI, hfd);
+		//System.out.println(hfd.lifetimeAndBestDaysToString());
+
+		//System.out.println(hfd.getLifetimeAndBestDays());
+
+		//OneDaysWorthOfData odwod = new OneDaysWorthOfData(2016, 3, 14);
+		//HeartRateDayOfData hrdod = odwod.getHeartRateDayOfData();
+
+		//String startTime = "23:00";
+		//String endTime = "23:59";
+
+		//odwod.populateTotals();
+		//odwod.populateAllMins();
+
+		//System.out.println(odwod.toString(true));
+
+		//hrdod.populate();
+		//System.out.println(hrdod.toString());
+
+
 		/*	try
 			{
 				odwod.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(h.getSpecificDataDailyTotal("floors", "2016-03-01")));
@@ -107,18 +115,18 @@ public class Team11_FitBitViewer implements Serializable
 			System.out.println("Distance: " + odwod.getTodaysTotalDistance());
 			System.out.println("SedentaryMins: " + odwod.getTodaysTotalSedentaryMins());
 			System.out.println("ActiveMins: " + odwod.getTodaysTotalActiveMins());
-			 
+
 			odwod.setStepsByTheMin(h.getSpecificDataByTheMin("steps", "2016-03-01", "1min", startTime, endTime));	
 			odwod.setCaloriesByTheMin(h.getSpecificDataByTheMin("calories", "2016-03-01", "1min", startTime, endTime));
 			odwod.setDistanceByTheMin(h.getSpecificDataByTheMin("distance", "2016-03-01", "1min", startTime, endTime));
 			odwod.setFloorsByTheMin(h.getSpecificDataByTheMin("floors", "2016-03-01", "1min", startTime, endTime));
 			odwod.setSedentaryMinsByTheMin(h.getSpecificDataByTheMin("minutesSedentary", "2016-03-01", "1min", startTime, endTime));
-			
-			
+
+
 			odwod.populateTotals();
-			
+
 			odwod.populateAllMins();
-			
+
 			for (int hour = 0; hour < 24; hour++)
 			{
 				for (int min = 0; min < 60; min++)
@@ -132,6 +140,6 @@ public class Team11_FitBitViewer implements Serializable
 					System.out.print("\t|||" + "active mins: " + odwod.getActiveMinsByTheMin()[hour][min]);
 				}
 			}*/
-		
+
 	}//end of main method
 }//end of class
