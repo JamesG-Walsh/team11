@@ -85,7 +85,7 @@ public class DeskTop extends JFrame{
 	/**
 	 * Constructor to create Desktop with all widgets hidden (for now)
 	 */
-	public DeskTop(boolean testFlag, User usr)
+	public DeskTop(boolean testFlag, User usr, boolean recoveringFrom429) throws RateLimitExceededException
 	{
 		super("Team 11 FitBit Viewer");
 
@@ -142,7 +142,6 @@ public class DeskTop extends JFrame{
 				this.catch429();
 				e.printStackTrace(); 
 			}
-			
 		}
 		else//test run
 		{
@@ -226,6 +225,11 @@ public class DeskTop extends JFrame{
 
 		backPanel.add(mainDisplay);
 		this.add(backPanel);
+		
+		if(recoveringFrom429)
+		{
+			this.catch429();
+		}
 	}
 
 	/**
@@ -412,12 +416,16 @@ public class DeskTop extends JFrame{
 			}
 
 			this.removeVisibleGraphs();
-
+			try{
 			this.allGraphs[IDs.CALORIES.ordinal()] = new Graph(this.testFlag, IDs.CALORIES, hfd, year, month, day);
 			this.allGraphs[IDs.DISTANCE.ordinal()] = new Graph(this.testFlag, IDs.DISTANCE, hfd, year, month, day);
 			this.allGraphs[IDs.STEPS.ordinal()] = new Graph(this.testFlag, IDs.STEPS, hfd, year, month, day);
 			this.allGraphs[IDs.HEART_RATE.ordinal()] = new Graph(this.testFlag, IDs.HEART_RATE, hfd, year, month, day);
-
+			}
+			catch (RateLimitExceededException e)
+			{
+				this.catch429();
+			}
 
 			if(0<=i && i<=6)
 			{
@@ -1116,6 +1124,7 @@ public class DeskTop extends JFrame{
 			}
 		}
 	}
+	
 	
 	private void catch429()
 	{

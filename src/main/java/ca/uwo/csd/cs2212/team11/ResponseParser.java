@@ -109,6 +109,13 @@ public class ResponseParser
 		return (LAMins+FAMins+VAMins);
 	}//end of method
 
+	/**
+	 * static method that takes JSON Objects containing the data for the 3 types of active minutes and returns an int[][] containing the total by the min data
+	 * @param joLightlyActive
+	 * @param joFairlyActive
+	 * @param joVeryActive
+	 * @return
+	 */
 	public static int[][] parseActiveMinsByTheMin (JSONObject joLightlyActive, JSONObject joFairlyActive, JSONObject joVeryActive)
 	{
 		int[][] lightlyActiveMins = new int[24][60];
