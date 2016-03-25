@@ -8,9 +8,10 @@ import ca.uwo.csd.cs2212.team11.Team11_FitBitViewer.*;
 
 /**
  * This class contains this user's fitness data from all past days and from today, 
- * accolades earned, accumulated fitness item values over the lifetime of program use
- * (for example, total distance traveled), and best days for particular fitness 
+ * accolades earned, it also store the users lifetime totals and best days for particular fitness 
  * data items.
+ * 
+ * Note: some getter/setter methods are never called and only were created in the early stages of the project to allow serialization of this Object.  This idea was later scrapped but the methods are still here in case we change our mind
  * 
  * @author Team 11
  */
@@ -59,17 +60,18 @@ public class HistoricalFitnessData
 	 * 
 	 * @return    Number of days that have fitness day recorded for
 	 */
-	public int getNumDays() 
+	public int getNumDays()
 	{
 		return allOneDays.size();
 	}
-	/** Adds given day to this user's list of days for which fitness data is recorded
+	
+	/** Adds given day to this user's list of days for which fitness data has already been populated during the current run of the program
 	 * 
 	 * @param odwod 	fitness data collected on one specific day
 	 * @return boolean value	true if day added, and false if day already in historical set of days  
-	 */
+	 *//*
 	public boolean addDay2( OneDaysWorthOfData odwod ){
-		/* Add day to ordered list of days */
+		 Add day to ordered list of days 
 		int i = allOneDays.size() - 1;
 
 		if ( i < 0 ) {
@@ -81,35 +83,41 @@ public class HistoricalFitnessData
 		int compare;
 		while (!foundPos) {
 			compare = odwod.compareTo(allOneDays.get(i)); 
-			/* If odwod date is earlier than day at index i */
+			 If odwod date is earlier than day at index i 
 			if (compare == -1){ 
-				/* If odwod date is earlier than earliest stored day */
+				 If odwod date is earlier than earliest stored day 
 				if (i==0) {
 					foundPos = true;					
 				}
-				/* If odwod date is earlier than day at index i */
+				 If odwod date is earlier than day at index i 
 				else
 					i--;
 			}
 			else {
-				/* If odwod date is later than latest stored day */
+				 If odwod date is later than latest stored day 
 				if (compare == 1) {
-					/* Add latest day to end of list */
+					 Add latest day to end of list 
 					foundPos = true;
 					allOneDays.add(odwod); 
 				}
-				/* If we already have this day */
+				 If we already have this day 
 				if (compare == 0 ){
 					foundPos = true;
-					/* Error: Adding a day we already have */
+					 Error: Adding a day we already have 
 					return false;
 				}
 			}
 		}
 		allOneDays.add(i, odwod);
 		return true;
-	}
+	}*/
 
+	/**
+	 * Adds a OneDayaWorthOfData to the ArrayList container attribute of the HIstoricalFitnessData class so that it can be reaccessed later.  Helps to keep object instantiation consistent throughout the program
+	 * 
+	 * @param odwodNew the OneDaysWorthOfData Object to add
+	 * @return true if successful, false if an OneDaysWorthOfData object for that day is already present
+	 */
 	public boolean addDay(OneDaysWorthOfData odwodNew)
 	{
 		System.out.println("Entering addDay");
@@ -128,6 +136,7 @@ public class HistoricalFitnessData
 		allOneDays.add(odwodNew);
 		return true;
 	}
+	
 	/** 
 	 * Gets this user's fitness data for requested day. 
 	 * 
@@ -136,17 +145,17 @@ public class HistoricalFitnessData
 	 * @param year	year of date that want daily fitness data for
 	 * @return 	One day's worth of fitness data for requested date
 	 * @exception Throw exception if no recorded fitness data for requested day
-	 */
-	/* Change method:THROW exception if day not present */
+	 *//*
+	 Change method:THROW exception if day not present 
 	public OneDaysWorthOfData retrieveDay(int dayOfMonth, int month, int year ) 
 	{		
-		/* To find day of interest, binary search sorted array of days. */
+		 To find day of interest, binary search sorted array of days. 
 		int size = allOneDays.size();
 		int max = size - 1;
 		int min = 0;
 		int mid; 
-		/* Bias first search point to a more recent day on assumption that user more likely  
-		 * to review more recent days. This reduces average time of method; worst case time unaltered.*/
+		 Bias first search point to a more recent day on assumption that user more likely  
+		 * to review more recent days. This reduces average time of method; worst case time unaltered.
 		if ( size > 30 )
 			mid = 15;
 		else
@@ -154,40 +163,40 @@ public class HistoricalFitnessData
 		int compare;
 		boolean found = false;
 		while (!found) {
-			/* If date is not among recorded historical days */
+			 If date is not among recorded historical days 
 			if ((mid < 0) || (mid > (size - 1))) {
-				/* throw error, instead? */
+				 throw error, instead? 
 				OneDaysWorthOfData odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
 				this.addDay(odwod);
 				return odwod;
 			}			
 			compare = compareDate(dayOfMonth, month, year, allOneDays.get(mid));
-			/* If desired date is earlier than date at index i */
+			 If desired date is earlier than date at index i 
 			if ( compare == -1 ) {
 				max = mid - 1;
-				mid = (max + min)/2; /* Average location */
+				mid = (max + min)/2;  Average location 
 			}
 			else { 
-				/* If desired date is later than day at index i */
+				 If desired date is later than day at index i 
 				if (compare == 1) {
 					min = mid + 1; 
-					mid = (max + min)/2; /* Average location */
+					mid = (max + min)/2;  Average location 
 				}
-				/* Found date */
+				 Found date 
 				else 
 					found = true;
 			}
 		}
 		return allOneDays.get(mid);					
-	}	
+	}	*/
 
 	public OneDaysWorthOfData retrieve2(int dayOfMonth, int month, int year)
 	{
 	/*	System.out.println("---------------------");
 		new Exception().printStackTrace();
 		System.out.println("---------------------");*/
-			System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
-			System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
+			//System.out.println("entering retrieve2.  Size of container is " + this.allOneDays.size() + "...\n");
+			//System.out.println("looking for: " + dayOfMonth + " " + month + " " + year);
 			Iterator<OneDaysWorthOfData> itr = this.getAllOneDays().iterator();
 			OneDaysWorthOfData odwod = null;
 
@@ -196,18 +205,18 @@ public class HistoricalFitnessData
 				odwod = itr.next();
 				if(year == odwod.getYear() && month == odwod.getMonth() && dayOfMonth == odwod.getDayOfMonth())
 				{
-					System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
+					//System.out.println("Found odwod : " + odwod.buildDateAsString() + " in ArrayList container.\n Returning from retreive2.");
 					return odwod;
 				}
 			}				
 
 			odwod = new OneDaysWorthOfData(year, month, dayOfMonth);
-			System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
-			//odwod.populateTotals();
+			//System.out.println("Odwod for " + odwod.buildDateAsString() + "not in ArrayList container.  Creating new odwod and adding to container.");
+			//odwod.populateTotals(); //Desktop constructor and refreshData() will call this
 			this.addDay(odwod);
-			System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
-			System.out.println(odwod.toString(false));
-			System.out.println("Returning from retrieve2");
+			//System.out.print("New Size is " + this.getAllOneDays().size() + "\n");
+			//System.out.println(odwod.toString(false));
+			//System.out.println("Returning from retrieve2");
 			return odwod;
 	}//end of retreive2 method
 
@@ -217,7 +226,7 @@ public class HistoricalFitnessData
 	 * 
 	 * @param List of single days worth of fitness data. 
 	 */
-	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){ //TODO why is this public method needed? for serialization?
+	public void setAllOneDays(ArrayList<OneDaysWorthOfData> allOneDays){
 		this.allOneDays = allOneDays;
 	}
 
@@ -308,6 +317,10 @@ public class HistoricalFitnessData
 		return bestFloorsDate;
 	}
 
+	/**
+	 * Makes a live server request and populates the attributes of this class relating to lifetime totals and best days
+	 * @throws RateLimitExceededException	if user has hit the rate limit
+	 */
 	public void populateLifetimeAndBestDays() throws RateLimitExceededException
 	{
 		try 
@@ -316,6 +329,7 @@ public class HistoricalFitnessData
 			JSONObject lifetimeTotalsJSON = jo.getJSONObject("lifetime").getJSONObject("total");
 
 			this.lifetimeDistance = lifetimeTotalsJSON.getDouble("distance");
+			this.lifetimeDistance = (this.lifetimeDistance *1000);
 			this.lifetimeFloors = lifetimeTotalsJSON.getDouble("floors");
 			this.lifetimeSteps = lifetimeTotalsJSON.getInt("steps");
 
@@ -324,6 +338,7 @@ public class HistoricalFitnessData
 			//System.out.println(bestDaysJSON.toString(1));
 
 			this.bestDistanceValue = bestDaysJSON.getJSONObject("distance").getDouble("value");
+			this.bestDistanceValue = (this.bestDistanceValue * 1000);
 			this.bestDistanceDate = bestDaysJSON.getJSONObject("distance").getString("date");
 
 			this.bestFloorsValue = bestDaysJSON.getJSONObject("floors").getDouble("value");
@@ -339,6 +354,10 @@ public class HistoricalFitnessData
 		}
 	}
 
+	/**
+	 * Allows quick output of what is currently stored in the lifetime and best day attributes
+	 * @return
+	 */
 	public String lifetimeAndBestDaysToString()
 	{
 		String str = "\nLifetime totals\n";
@@ -354,10 +373,10 @@ public class HistoricalFitnessData
 	/**
 	 * Compares a given date to the date of a given set of daily fitness data.
 	 * 
-	 * @param dayOfMonth
-	 * @param month
-	 * @param year
-	 * @param oswod
+	 * @param dayOfMonth	the day of the month
+	 * @param month			the month (1 = Jan, 12 = Dec)
+	 * @param year			the year
+	 * @param odwod			the odwod object that provides the date to be compared
 	 * @return      integer value indicating result of comparison: -1, 0, or 1 if given date is earlier than, 
 	 * 				same as, or later than date of OneDaysWorthOfData object
 	 */

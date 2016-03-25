@@ -98,7 +98,7 @@ public class Widgets extends JPanel
 	 */
 	private JPanel makePrimative(){
 		JPanel a = new JPanel();
-		a.setBackground(Color.WHITE);
+		a.setBackground(new Color(0,0,0,0));
 		
 		BorderLayout layout = new BorderLayout(2,2);
 		a.setLayout(layout);
@@ -109,37 +109,40 @@ public class Widgets extends JPanel
 		JPanel middle = new JPanel();
 		BoxLayout l = new BoxLayout(middle, 1);
 		middle.setLayout(l);
-		middle.setOpaque(false);
+		//middle.setOpaque(false);
 		
 		JPanel daily = new JPanel();
-		daily.setOpaque(false);
+		//daily.setOpaque(false);
 		label[1] = new JLabel("Daily: ");
 		box[1] = new JTextField(20);
 		box[1].setText(showValue(0, "yards", false));
 		box[1].setEditable(false);
 		box[1].setToolTipText(showValue(0, "", true));
+		box[1].setBackground(new Color(0,0,0,0));
 		daily.add(label[1]);
 		daily.add(box[1]);
 		middle.add(daily);
 		
 		JPanel record = new JPanel();
-		record.setOpaque(false);
+		//record.setOpaque(false);
 		label[2] = new JLabel("Record: ");
 		box[2] = new JTextField(20);
 		box[2].setText(showValue(1, "yards", false));
 		box[2].setEditable(false);
 		box[2].setToolTipText(showValue(1, "", true));
+		box[2].setBackground(new Color(0,0,0,0));
 		record.add(label[2]);
 		record.add(box[2]);
 		middle.add(record);
 		
 		JPanel life = new JPanel();
-		life.setOpaque(false);
+		//life.setOpaque(false);
 		label[3] = new JLabel ("Lifetime: ");
 		box[3] = new JTextField(20);
 		box[3].setText(showValue(2, "yards", false));
 		box[3].setEditable(false);
 		box[3].setToolTipText(showValue(2, "", true));
+		box[3].setBackground(new Color(0,0,0,0));
 		life.add(label[3]);
 		life.add(box[3]);
 		middle.add(life);
@@ -156,6 +159,7 @@ public class Widgets extends JPanel
 		box[4] = new JTextField(10);
 		box[4].setText(showGoals());
 		box[4].setEditable(false);
+		box[4].setBackground(new Color(0,0,0,0));
 		goalPanel.add(box[4]);
 		button[4] = new JButton("Set Goal");
 		button[4].addActionListener(new ActionListener(){
@@ -193,11 +197,13 @@ public class Widgets extends JPanel
 		JPanel dataPanel = new JPanel();
 		BoxLayout l = new BoxLayout(dataPanel, 1);
 		dataPanel.setLayout(l);
-		dataPanel.setOpaque(false);
+		//dataPanel.setOpaque(false);
 		dataPanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().dispatchEvent(e);
+				revalidate();
+				repaint();
 				
 			}
 		});
@@ -208,6 +214,8 @@ public class Widgets extends JPanel
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
+				revalidate();
+				repaint();
 
 			}
 		});
@@ -219,6 +227,8 @@ public class Widgets extends JPanel
 			public void mouseClicked(MouseEvent e){
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
+				revalidate();
+				repaint();
 			}
 		});
 		dataPanel.add(box[2]);
@@ -230,6 +240,8 @@ public class Widgets extends JPanel
 				Component source = (Component)e.getSource();
 				source.getParent().getParent().dispatchEvent(e);
 				System.out.println("Here");
+				revalidate();
+				repaint();
 
 			}
 		});
@@ -348,11 +360,13 @@ public class Widgets extends JPanel
 	 * @param v The type of data
 	 */
 	private void changeView(int v) {
-		panel.setBackground(color_set[v*2]); // glitch in startup
+		//panel.setBackground(color_set[v*2]); // glitch in startup
 		label[8].setText(views[v]);
 		box[1].setText(data[v] + " yards");
 		box[2].setText(((int)(data[currentView] / YARDS_PER_MILE * 100)) / 100.0 + " Miles");
 		box[3].setText(((int)(data[currentView] / METERS_PER_YARD * 100)) / 100.0 + " Meters");
+		revalidate();
+		repaint();
 	}
 	
 	  /**

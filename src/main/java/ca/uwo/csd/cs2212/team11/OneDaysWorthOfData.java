@@ -7,17 +7,18 @@ import org.json.JSONArray;
 import java.util.Date;
 
 /**
- * Class that contains all numerical data for the dashboard & time series displays
+ * Class that contains all numerical data for the dashboard & time series displays (except lifetime an best days which is stored in HistoricalFitnessData)
+ * 
  * @author Alecia DeBoeck, James Walsh, Dara Amin, Abdi Ibrahim
  */
 public class OneDaysWorthOfData 
 {
 	private int year;
 	private int month;
-	private int dayOfMonth;
+	private int dayOfMonth; //the date that this object encapsulates
 
-	private double todaysTotalCaloriesBurned;
-	private double[][] caloriesByTheMin;
+	private double todaysTotalCaloriesBurned; //the days total calories burned
+	private double[][] caloriesByTheMin; //a 2D array that will hold minute by minute values for calories
 
 	private double todaysTotalDistance;
 	private double[][] distanceByTheMin;
@@ -36,10 +37,8 @@ public class OneDaysWorthOfData
 
 	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
 
-	private Date lastUpdated;
+	private Date lastUpdated; //not used, desktop to keep track itself
 
-	private boolean totalsFullyPopulated;
-	private boolean byTheMinsFullyPopulated;
 
 	/**
 	 *  Class constructor.
@@ -51,7 +50,7 @@ public class OneDaysWorthOfData
 	/**
 	 *  Class constructor.
 	 *  @param year the current year
-	 *  @param month the current month of the year
+	 *  @param month the current month of the year (1 = jan, 12 = Dec)
 	 *  @param dayOfMonth the current day of the month
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
@@ -95,7 +94,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysCaloriesBurned the calories burned today by the user
 	 */
-	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned ) {
+	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned )
+	{
 		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
 	}
 
@@ -362,6 +362,7 @@ public class OneDaysWorthOfData
 			int min = Integer.parseInt(time.substring(3, 5));
 
 			this.distanceByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
+			this.distanceByTheMin[hour][min] = (this.distanceByTheMin[hour][min] * 1000); //convert from km to m
 		}
 	}
 
@@ -447,33 +448,7 @@ public class OneDaysWorthOfData
 		this.floorsByTheMin = floorsByTheMin;
 	}
 
-	/**
-	 * @return the totalsFullyPopulated
-	 */
-	public boolean isTotalsFullyPopulated() {
-		return totalsFullyPopulated;
-	}
 
-	/**
-	 * @param totalsFullyPopulated the totalsFullyPopulated to set
-	 */
-	public void setTotalsFullyPopulated(boolean totalsFullyPopulated) {
-		this.totalsFullyPopulated = totalsFullyPopulated;
-	}
-
-	/**
-	 * @return the byTheMinsFullyPopulated
-	 */
-	public boolean isByTheMinsFullyPopulated() {
-		return byTheMinsFullyPopulated;
-	}
-
-	/**
-	 * @param byTheMinsFullyPopulated the byTheMinsFullyPopulated to set
-	 */
-	public void setByTheMinsFullyPopulated(boolean byTheMinsFullyPopulated) {
-		this.byTheMinsFullyPopulated = byTheMinsFullyPopulated;
-	}
 
 
 	/**
@@ -507,7 +482,6 @@ public class OneDaysWorthOfData
 		{
 			System.out.println(npe.getMessage());
 		}
-		this.setTotalsFullyPopulated(true);
 	}
 
 	/**
@@ -544,7 +518,6 @@ public class OneDaysWorthOfData
 			System.out.println(npe.getMessage());
 		}
 
-		this.setByTheMinsFullyPopulated(true);
 	}
 
 

@@ -59,7 +59,7 @@ public class Widget extends JPanel{
 		this.setPreferredSize(new Dimension(130, 130));
 		content.setLayout(new BorderLayout(1,1));
 		content.setBackground(SharedData.COLOR_SET[type.ordinal()]);
-		
+
 		//this.setBackground(new Color(0,0,0,0));
 		content.setBorder(BorderFactory.createLineBorder(SharedData.COLOR_SET[type.ordinal()].darker()));
 		this.add(content);
@@ -150,9 +150,13 @@ public class Widget extends JPanel{
 		//changeView(0);
 		switch(type){
 			case CALORIES:
-				data = getData(type);
-				changeView(currentView);
-				break;
+				if(this.testF){
+					data = getDistanceData(type);
+					changeView(currentView);
+				}else{
+					changeViewLive(user.getHistoricalFitnessData(), calen, currentView, type);
+
+				}
 			case DISTANCE:
 				if(this.testF){
 					data = getDistanceData(type);
@@ -251,6 +255,7 @@ public class Widget extends JPanel{
 	private void changeView(int i) {
 		dataBox.setText(this.data[i] + " " + this.units);
 		viewLabel.setText(Widget.views[i]);
+
 	}
 
 	
@@ -277,6 +282,13 @@ public class Widget extends JPanel{
 		
 
 				switch(type){
+						case CALORIES:
+									if(i==0){ //Get day calorie
+										String convert = String.valueOf(odwod.getTodaysTotalCaloriesBurned());
+										dataBox.setText(convert);
+										viewLabel.setText(Widget.views[i]);
+									}
+									break;
 						case STEPS: 
 									System.out.print("Getting steps...");
 									if(i==0){ //Get day calorie
