@@ -352,7 +352,7 @@ public class DeskTop extends JFrame{
 			Calendar time =  Calendar.getInstance();
 			//Date date = new Date(116, 02, 3);
 			time.setTime(date);
-			String dateString = new SimpleDateFormat("yyyy-MM-dd").format(time.getTime());
+			String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time.getTime());
 			dateLabel.setText(dateString);
 			repaint();
 			revalidate();
@@ -665,12 +665,10 @@ public class DeskTop extends JFrame{
 			if(this.testFlag){
 
 				if(testCal >  usr.getDailyGoals().getStepGoal()){
-							System.out.println("inside thing");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(cmark1);
 					}else{
-							System.out.println("Inside another");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(xmark1);
@@ -723,25 +721,21 @@ public class DeskTop extends JFrame{
 					try
 						{
 							od = usr.getHistoricalFitnessData().retrieve2(dayOfMonth, month, year);
-														System.out.println("DAILY GOALS ODWOD");
 
 										
 						}
 						catch(RateLimitExceededException e)
 						{
-							System.out.println("RateLimitExceededException thrown to Desktop constructor");
 							this.catch429();
 							e.printStackTrace(); //Graphs do not get constructed if Desktop constructor hits 429
 						}
 					
 					if(od.getTodaysTotalSteps() >=  usr.getDailyGoals().getStepGoal()){
 
-							System.out.println(od.getTodaysTotalSteps() + " ---------------vs ------------------" + usr.getDailyGoals().getStepGoal() );
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(cmark1);
 					}else{
-							System.out.println("Inside another");
 							goalsPanel.add(new JLabel("Steps :"));
 							goalsPanel.add(goalsListLabelStep);
 							goalsPanel.add(xmark1);
@@ -749,7 +743,6 @@ public class DeskTop extends JFrame{
 
 					if(od.getTodaysTotalCaloriesBurned() >= usr.getDailyGoals().getCalGoal()){
 
-						System.out.println(od.getTodaysTotalCaloriesBurned() + " ------------------------vs------------------- " + usr.getDailyGoals().getCalGoal() );
 
 						goalsPanel.add(new JLabel("Calories: "));
 						goalsPanel.add(goalsListLabelCal);
@@ -764,7 +757,6 @@ public class DeskTop extends JFrame{
 
 					if(od.getTodaysTotalDistance() >= usr.getDailyGoals().getDistGoal()){
 
-						System.out.println(od.getTodaysTotalDistance() + " ------------------------------vs ---------------------------------- " + usr.getDailyGoals().getDistGoal() );
 						goalsPanel.add(new JLabel("Distance: "));
 						goalsPanel.add(goalsListLabelDis);
 						goalsPanel.add(cmark3);
@@ -778,7 +770,6 @@ public class DeskTop extends JFrame{
 					}
 
 					if(od.getTodaysTotalFloors() >= usr.getDailyGoals().getFloorsGoal()){
-							System.out.println(od.getTodaysTotalFloors() + " ---------------------------------- vs  -----------------------------" + usr.getDailyGoals().getFloorsGoal() );
 							goalsPanel.add(new JLabel("Floors: "));
 							goalsPanel.add(goalsListLabelFloors);
 							goalsPanel.add(cmark4);
@@ -803,11 +794,9 @@ public class DeskTop extends JFrame{
 	                result = JOptionPane.showConfirmDialog(null, aTem, "Please Enter Goals", JOptionPane.OK_CANCEL_OPTION);
 	                
 	                if (result == JOptionPane.OK_OPTION) {
-	        	         System.out.println(result);
 			        	 usr.getDailyGoals().setGoalsStr( stepsGoal.getText(), caloriesGoal.getText(), distanceGoal.getText(), floorsGoal.getText());
 			        	 goalsArray = usr.getDailyGoals().getGoalsArray();
 
-			        	 System.out.println("---SETTING GOAL ---" + goalsArray[0]);
 	        	         //goalsArray[0] = stepsGoal.getText();
 			        	 //goalsArray[1] = caloriesGoal.getText();
 			        	 //goalsArray[2] = distanceGoal.getText();
@@ -1130,7 +1119,6 @@ public class DeskTop extends JFrame{
 	
 	private void catch429()
 	{
-		System.out.println("Swinging happens here");
 		dateLabel.setText("Maxed out! Wait..");
 
 		//TODO write method that does something in swing to let the user know that they are refreshing too much and to try again at the top of the hour

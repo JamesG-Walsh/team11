@@ -126,7 +126,6 @@ public class ResponseParser
 		} 
 		catch (JSONException e) 
 		{
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -141,12 +140,10 @@ public class ResponseParser
 			} 
 			catch (NumberFormatException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			} 
 			catch (JSONException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}	
 		}
@@ -157,7 +154,6 @@ public class ResponseParser
 		} 
 		catch (JSONException e) 
 		{
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -172,12 +168,10 @@ public class ResponseParser
 			} 
 			catch (NumberFormatException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			} 
 			catch (JSONException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}	
 		}
@@ -188,7 +182,6 @@ public class ResponseParser
 		} 
 		catch (JSONException e) 
 		{
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -203,12 +196,10 @@ public class ResponseParser
 			} 
 			catch (NumberFormatException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			} 
 			catch (JSONException e) 
 			{
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}	
 		}

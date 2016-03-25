@@ -287,10 +287,8 @@ public class Widget extends JPanel{
 									}
 									break;
 						case STEPS: 
-									System.out.print("Getting steps...");
 									if(i==0){ //Get day calorie
 										String convert = String.valueOf(odwod.getTodaysTotalSteps());
-										System.out.println(convert);
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 	
@@ -327,8 +325,6 @@ public class Widget extends JPanel{
 						case CLIMB: 
 									if(i==0){ //Get day calorie
 										String convert = String.valueOf(odwod.getTodaysTotalFloors());
-										System.out.println("CONVERT:- " + convert);
-										System.out.println("ODWOD TOTAL FLOORS - " + odwod.getTodaysTotalFloors());
 										dataBox.setText(convert);
 										viewLabel.setText(Widget.views[i]);
 		

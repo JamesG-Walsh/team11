@@ -157,8 +157,6 @@ public class HttpClient
 		switch(statusCode)
 		{
 		case 200:
-			System.out.println("Success!");
-			System.out.println("HTTP response body:\n"+response.getBody());
 
 			try 
 			{
@@ -166,19 +164,13 @@ public class HttpClient
 			}
 			catch (JSONException e1)
 			{
-				System.out.println("JSON Exception when generating JSONObject from successful request response body.  Null JSONObject returned.");
 				e1.printStackTrace();
 			}
 
 			break;
 		case 400:
-			System.out.println("Bad Request - may have to talk to Beth (or bad URL in request)");
-			System.out.println("HTTP response body:\n"+response.getBody());
 			break;
 		case 401:
-			System.out.println("Likely Expired Token");
-			System.out.println("HTTP response body:\n"+response.getBody()); 
-			System.out.println("Try to refresh");
 
 			// This uses the refresh token to get a completely new accessToken object
 			//   See:  https://dev.fitbit.com/docs/oauth2/#refreshing-tokens           
@@ -198,21 +190,17 @@ public class HttpClient
 			}
 			catch (JSONException e1) 
 			{
-				System.out.println("JSON Exception when generating JSONObject from response body.  Null JSONObject to be returned;");
 				e1.printStackTrace();
 			}
 
 			// Hopefully got a response this time:
-			System.out.println("HTTP response code: "+response.getCode());
-			System.out.println("HTTP response body:\n"+response.getBody());
+			
 			break;
 		case 429:
-			System.out.println("Rate limit exceeded");
-			System.out.println("HTTP response body:\n"+response.getBody());
+			
 			throw new RateLimitExceededException();
 		default:
-			System.out.println("HTTP response code: "+response.getCode());
-			System.out.println("HTTP response body:\n"+response.getBody());
+			
 		}
 
 		BufferedWriter bufferedWriter=null;
@@ -240,12 +228,10 @@ public class HttpClient
 			bufferedWriter.close();
 		}
 		catch(FileNotFoundException ex) {
-			System.out.println(
-					"Unable to open file\n"+ex.getMessage());               
+			              
 		}
 		catch(IOException ex) {
-			System.out.println(
-					"Error reading/write file\n"+ex.getMessage());                 
+			                
 		}
 		finally
 		{
@@ -256,8 +242,7 @@ public class HttpClient
 			}
 			catch(Exception e)
 			{
-				System.out.println(
-						"Error closing file\n"+e.getMessage()); 
+				
 			}
 		}//end try
 		return jo;
