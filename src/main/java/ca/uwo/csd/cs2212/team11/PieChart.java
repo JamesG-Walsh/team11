@@ -106,17 +106,33 @@ public class PieChart extends javax.swing.JPanel {
 		return times;
 	}
 
+	/**
+	*@return sedentary minutes 
+	*/
+
 	private int getSedentaryMinutes(){
 		return 237;
 	}
+
+	/**
+	*@return light active minutes
+	*/
 	
 	private int getLightActivityMinutes(){
 		return 321;
 	}
+
+	/**
+	*@return medium active minutes
+	*/
 	
 	private int getMediumActivityMinutes(){
 		return 98;
 	}
+
+	/**
+	*@return heavy active minutes
+	*/
 	
 	private int getHeavyActivityMinutes(){
 		return 12;

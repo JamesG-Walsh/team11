@@ -84,7 +84,6 @@ public class Graph extends javax.swing.JPanel
 			data = plot(normalizeData(getDistanceData()));
 			break;
 		default:
-			System.err.println("Error in graph creation " + type.name() + " is not recognized");
 		}
 	}
 	/**
@@ -115,7 +114,6 @@ public class Graph extends javax.swing.JPanel
 						updateOffset(e.getX(), zoom * 2);
 						zoom = zoom * 2;
 						step = 16 / zoom;
-						//System.err.println("zoom is now " + zoom + "\tstep is now " + step);
 					}
 				}
 				if(e.getButton() == MouseEvent.BUTTON3)
@@ -125,7 +123,6 @@ public class Graph extends javax.swing.JPanel
 						updateOffset(e.getX(), zoom / 2);
 						zoom = zoom / 2;
 						step = 16 / zoom;
-						//System.err.println("zoom is now " + zoom + "\tstep is now " + step);
 					}
 				}
 				repaint();
@@ -148,6 +145,11 @@ public class Graph extends javax.swing.JPanel
 		frame.setSize(SharedData.GRAPH_WIDTH, SharedData.GRAPH_HEIGHT);
 		frame.setVisible(true);
 	}
+
+	/**
+	*Used to paint the heart rate graph
+	* @param g
+	*/
 
 	private void paintHRGraph(Graphics g) throws RateLimitExceededException{
 		paintHRVerticleScale(g);
@@ -182,6 +184,10 @@ public class Graph extends javax.swing.JPanel
 
 	}
 
+	/**
+	*Used to paint the heart rate veritcal scale
+	* @param g
+	*/
 	private void paintHRVerticleScale(Graphics g) throws RateLimitExceededException
 	{
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -214,13 +220,7 @@ public class Graph extends javax.swing.JPanel
 			g.drawString(getMaxCardioHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxCardioHR()-5));
 		}
 
-		/*//draw fat burn line
-		g2d.setColor(Color.GREEN);
-		g2d.setStroke(dashed);
-		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxRestingHR(), legend, SharedData.GRAPH_HEIGHT-getMaxRestingHR());
-		g.drawString(getMaxRestingHR() + " bpm", legend, SharedData.GRAPH_HEIGHT-(getMaxRestingHR()-5));*/
-
-		//draw max fatburn line
+		
 		g2d.setColor(Color.BLUE);
 		g2d.setStroke(dashed);
 		g2d.drawLine(0, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR(), legend, SharedData.GRAPH_HEIGHT-getMaxFatBurnHR());
@@ -233,6 +233,11 @@ public class Graph extends javax.swing.JPanel
 		//gets rid of the copy
 		g2d.dispose();
 	}
+
+	/**
+	*Used to paint Graphs
+	* @param g and type
+	*/
 
 	private void paintGraph(IDs type, Graphics g){
 		g.drawString(type.name(), 10, 20);
@@ -258,7 +263,6 @@ public class Graph extends javax.swing.JPanel
 		int i = 0;
 		while(i + step < data.length)
 		{
-			//System.out.println("i = " + i);
 			if ( plotPoint >= 0 && plotPoint + spread <= endOfGraph)
 			{
 				if ((i/60) != (i+step)/60)// falls on hour check for scale markers
@@ -284,9 +288,7 @@ public class Graph extends javax.swing.JPanel
 
 				for (int count = 0; count < step; count++)
 				{
-					//System.out.println("i+ count = " + (i+count));
 					startAvg += data[i+count];
-					//System.out.println("i+count+step" + i + " " + count + " " + step);
 					endAvg += data[i + count + step];
 					if(startAvg == -1 || endAvg == -1) //check to see if any of the minutes being plotted haven't been populated with live data
 					{
@@ -309,6 +311,11 @@ public class Graph extends javax.swing.JPanel
 		g.setColor(Color.BLACK);
 		g.drawLine(endOfGraph, 0, endOfGraph, SharedData.GRAPH_HEIGHT);
 	}
+
+	/**
+	*Used to average out data for plotting
+	* @param array of double plots
+	*/
 
 	private double[] normalizeData(double[] array)
 	{
@@ -334,6 +341,11 @@ public class Graph extends javax.swing.JPanel
 		}*/
 	}
 
+	/**
+	*Used to plot on graphs
+	* @param array 
+	*/
+
 	private int[] plot(double[] array)
 	{
 		int [] newArray = new int[array.length];
@@ -344,6 +356,10 @@ public class Graph extends javax.swing.JPanel
 		return newArray;
 	}
 
+	/**
+	*Used to update offset for bar graphs
+	* @param x, newZoom
+	*/
 
 	private void updateOffset(int x, int newZoom){
 		if (x > endOfGraph) {	x = endOfGraph;	}
@@ -352,7 +368,10 @@ public class Graph extends javax.swing.JPanel
 		if (newZoom == 1) {	this.offset = 0;	}
 	}
 
-
+	/**
+	*
+	* @return int -- max resting heart rate
+	*/
 	private int getMaxRestingHR() throws RateLimitExceededException
 	{
 		if(this.testFlag)
@@ -365,6 +384,10 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
+/**
+	*
+	* @return int -- max fatburn heart rate
+	*/
 	private int getMaxFatBurnHR() throws RateLimitExceededException{
 		if(this.testFlag)
 		{
@@ -376,6 +399,10 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
+/**
+	*
+	* @return int -- max cardio heart rate
+	*/
 	private int getMaxCardioHR() throws RateLimitExceededException
 	{
 		if(this.testFlag)
@@ -387,6 +414,11 @@ public class Graph extends javax.swing.JPanel
 			return hfd.retrieve2(dayOfMonth, month, year).getHeartRateDayOfData().getCardioZoneMaximum();
 		}
 	}
+
+	/**
+	*
+	* @return double Array -- get heart rate array from day
+	*/
 
 	private double[] getHRData() throws RateLimitExceededException
 	{
@@ -403,7 +435,10 @@ public class Graph extends javax.swing.JPanel
 			return this.convert2Dto1D(in);		
 		}
 	}
-
+/**
+	*
+	* @return double Array-- calories data for day
+	*/
 	private double[] getCaloriesData() throws RateLimitExceededException
 	{
 		if (this.testFlag == true)
@@ -418,6 +453,11 @@ public class Graph extends javax.swing.JPanel
 			return this.convert2Dto1D(in);		
 		}
 	}
+
+	/**
+	*
+	* @return double Array -- steps data for day
+	*/
 
 	private double[] getStepsData() throws RateLimitExceededException
 	{
@@ -434,6 +474,11 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
+	/**
+	*
+	* @return double Array -- distance data for day
+	*/
+
 	private double[] getDistanceData() throws RateLimitExceededException
 	{
 		if (this.testFlag == true)
@@ -449,6 +494,11 @@ public class Graph extends javax.swing.JPanel
 		}
 	}
 
+	/**
+	*
+	* @return double Array -- used to convert 2d to 1d for graphing
+	*/
+
 	private double[] convert2Dto1D(double[][] in)
 	{
 		double[] ret = new double[1440];
@@ -458,18 +508,26 @@ public class Graph extends javax.swing.JPanel
 			for(int minOfHour = 0; minOfHour < 60; minOfHour++, minOfDay++)
 			{
 				ret[minOfDay] = in[hour][minOfHour]; 
-				//System.out.println(hour + ":" + minOfHour + "\t" + ret[minOfDay]);
 			}
 		}		
 		return ret;
 	}
 
+/**
+	*
+	* @return Type -- Id
+	*/
 
 	public IDs getType()
 	{
 
 		return this.type;
 	}
+
+	/**
+	*
+	* @return doubleArray -- used to convert 2d to 1d for array
+	*/
 
 	private double[] convert2Dto1D(int[][] inArr)
 	{
@@ -480,7 +538,6 @@ public class Graph extends javax.swing.JPanel
 			for(int minOfHour = 0; minOfHour < 60; minOfHour++, minOfDay++)
 			{
 				ret[minOfDay] = inArr[hour][minOfHour]; 
-				//System.out.println(hour + ":" + minOfHour + "\t" + ret[minOfDay]);
 			}
 		}		
 		return ret;

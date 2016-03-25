@@ -106,22 +106,43 @@ public class DailyGoals {
 		return distGoal;
 	}
 
+	/**
+	*
+	*@return floorsGoal -- user set floors goal
+	*/
+
 	public int getFloorsGoal() {
 		return floorsGoal;
 	}
+
+	/**
+	*@return goalArray -- returns array containing all goals
+	*/
 
 	
 	public String getStepGoalStr() {
 		return goalsArray[0];
 	}
 
+	/**
+	*@return string of calories goal
+	*/
+
 	public String getCalGoalStr() {
 		return goalsArray[1];
 	}
+
+	/**
+	*@return string of distance string
+	*/
 	
 	public String getDistGoalStr() {
 		return goalsArray[2];
 	}
+
+	/**
+	*@return string of goals array
+	*/
 	
 	public String[] getGoalsArray() {
 		return goalsArray;
@@ -129,6 +150,10 @@ public class DailyGoals {
 	
 	/* Update integers to match strings */
 	/*   QUESTION: If strings are not integers, then is there an error, or are there junk numbers put in?  */
+
+	/**
+	* Used to turn strings into ints
+	*/
 	public void goalsStingToInt() {
 		stpGoal = Integer.parseInt(goalsArray[0]);
 		calGoal = Integer.parseInt(goalsArray[1]);
