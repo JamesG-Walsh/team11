@@ -95,10 +95,6 @@ public class HttpClient
 			//System.out.println("Unable to open file\n"+ex.getMessage());
 			System.exit(1);
 		}
-		catch(IOException ex) {
-			//System.out.println("Error reading/write file\n"+ex.getMessage());  
-			System.exit(1);
-		}
 		finally{
 			try{
 				if (bufferedReader!=null)
