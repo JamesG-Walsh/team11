@@ -11,6 +11,9 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.BufferedInputStream;
 
+/**
+*@Author Dara Amin -- Class used to persist data
+*/
 
 public class Serialize implements Serializable{
 	

@@ -65,8 +65,6 @@ public class Widgets extends JPanel
 	{
 			super();
 			this.testFlag = testFlag;
-//			System.err.println("Widget constructor entered");
-//			this.setSize(500, 150);
 			this.setVisible(true);
 			Border b = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
 			this.setBorder(b);

@@ -256,6 +256,11 @@ public class Widget extends JPanel{
 
 	}
 
+/**
+*
+*@param HistoricalFitnessData, Calender, i, Type 
+*@throws RateLimitExceededException
+*/
 	
 	public void changeViewLive(HistoricalFitnessData hfd, Calendar cal, int i, IDs type) throws RateLimitExceededException
 	{
