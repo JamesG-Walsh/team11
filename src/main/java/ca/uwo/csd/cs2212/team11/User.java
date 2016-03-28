@@ -1,56 +1,54 @@
 package ca.uwo.csd.cs2212.team11;
-
-
-/* When UserPreferences class exists: */
-/* import ca.uwo.csd.cs2212.team11.UserPreferences.*;  */
+import java.io.Serializable;
 
 /** 
  * This class contains all information and data unique to this user. 
  * 
  * @author Team 11
  */
+public class User implements Serializable
+{
+	private HistoricalFitnessData historicalData;
+	private DailyGoals dg;
 
-public class User {
+	/**
+	 *  Class constructor. initializes attributes
+	 */
+	public User() 
+	{
+		historicalData = new HistoricalFitnessData();
+
+		dg = new DailyGoals();
+	}
+
+
+	/**
+	 * Gets this user's fitness data from all past days and today.
+	 * 
+	 * @return historicalData
+	 */
+	public HistoricalFitnessData getHistoricalFitnessData()
+	{
+		return historicalData;
+	}
+    
 	
-/* private UserPreferences preferences; */
-private HistoricalFitnessData historicalData;
-private OneDaysWorthOfData todaysData;
+	/**
+	 * Gets this user's daily goals.
+	 *
+	 * @return dg
+	 */
+	public DailyGoals getDailyGoals() {
+		return this.dg;
+	}
 	
-/**
- *  Class constructor.
- */
-public User() {
-}
 
-
-
-/**
- * Gets this user's fitness data so far today.
- *
- * @return todaysData
- */
-public OneDaysWorthOfData getTodaysData() {
-	return todaysData;
-}
-
-/**
- * Gets this user's fitness data from all past days and today.
- * 
- * @return historicalData
- */
-public HistoricalFitnessData getHistoricalFitnessData(){
-	return historicalData;
-}
-
-/**
- * Gets this user's fitness goals and application configuration preferences.
- * 
- * @return preferences
- */
-/*
-public UserPreferences getPreferences() {
-	return preferences;
-}
-*/
-
+	/**
+	 * sets daily goals
+	 * @param dg
+	 */
+	public void setDailyGoals( DailyGoals dg ) {
+		this.dg = dg;
+	}
+	
 }

@@ -1,60 +1,94 @@
 package ca.uwo.csd.cs2212.team11;
 
 import org.json.JSONException;
+import ca.uwo.csd.cs2212.team11.RateLimitExceededException;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.util.Date;
+
 /**
- * Class that contains all numerical data for the dashboard & time series displays
+ * Class that contains all numerical data for the dashboard & time series displays (except lifetime an best days which is stored in HistoricalFitnessData)
+ * 
  * @author Alecia DeBoeck, James Walsh, Dara Amin, Abdi Ibrahim
  */
 public class OneDaysWorthOfData 
 {
 	private int year;
 	private int month;
-	private int dayOfMonth;
-	
-	private double todaysTotalCaloriesBurned;
-	private double[][] caloriesByTheMin = new double [24][60];
-	
+	private int dayOfMonth; //the date that this object encapsulates
+
+	private double todaysTotalCaloriesBurned; //the days total calories burned
+	private double[][] caloriesByTheMin; //a 2D array that will hold minute by minute values for calories
+
 	private double todaysTotalDistance;
-	private double[][] distanceByTheMin = new double [24][60];
-	
+	private double[][] distanceByTheMin;
+
 	private int todaysTotalSteps;
-	private int[][] stepsByTheMin = new int [24][60];
-	
+	private int[][] stepsByTheMin;
+
 	private int todaysTotalFloors;
-	private int[][] floorsByTheMin = new int [24][60];
-	
+	private int[][] floorsByTheMin;
+
 	private int todaysTotalActiveMins;
-	private int[][] activeMinsByTheMin = new int [24][60];
-	
+	private int[][] activeMinsByTheMin;
+
 	private int todaysTotalSedentaryMins;
-	private int[][] sedentaryMinsByTheMin = new int [24][60];
-	
-	private String lastUpdated;
+	private int[][] sedentaryMinsByTheMin;
+
+	private HeartRateDayOfData hrdod; //contains all data pertaining to heart rate
+
+	private Date lastUpdated; //not used, desktop to keep track itself
 
 
 	/**
-	 *  Class constructor.
+	 *  Class constructor. only exists for serialization purposes
 	 */
 	public OneDaysWorthOfData() 
 	{
-
 	}
-	
-	/**
-	 *  Class constructor.
-	 *  @param year the current year
-	 *  @param month the current month of the year
-	 *  @param dayOfMonth the current day of the month
 
+	/**
+	 *  Class constructor. sets all fitness values to -1 to show that they haven't been populated with live data.
+	 *  @param year the current year
+	 *  @param month the current month of the year (1 = jan, 12 = Dec)
+	 *  @param dayOfMonth the current day of the month
 	 */
 	public OneDaysWorthOfData(int year, int month, int dayOfMonth) 
 	{
 		this.year = year;
 		this.month = month;
-		this.dayOfMonth = dayOfMonth;
+		this.dayOfMonth = dayOfMonth;	
+		
+		this.todaysTotalCaloriesBurned = -1;			//initialize all fitness data attributes to -1 to indicate when they have not been populated without having to check for null
+		this.todaysTotalDistance = -1;
+		this.todaysTotalSteps = -1;
+		this.todaysTotalFloors = -1;
+		this.todaysTotalActiveMins = -1;
+		this.todaysTotalSedentaryMins = -1;
+		
+		this.caloriesByTheMin = new double [24][60]; //initialize the arrays
+		this.distanceByTheMin = new double [24][60];
+		this.stepsByTheMin = new int [24][60];
+		this.floorsByTheMin = new int [24][60];
+		this.activeMinsByTheMin = new int [24][60];
+		this.sedentaryMinsByTheMin = new int [24][60];
+		
+		for(int hour = 0; hour < 24; hour++)
+		{
+			for (int min = 0; min < 60; min++)
+			{
+				this.caloriesByTheMin[hour][min] = -1; //do the same for all minutes of time series data
+				this.distanceByTheMin[hour][min] = -1;
+				this.stepsByTheMin[hour][min] = -1;
+				this.floorsByTheMin[hour][min] = -1;
+				this.activeMinsByTheMin[hour][min] = -1;
+				this.sedentaryMinsByTheMin[hour][min] = -1;
+			}
+		}
+		
+		this.hrdod = new HeartRateDayOfData(this.buildDateAsString()); // create separate modularized sub-container for heart rate data
 	}
 
 	/** 
@@ -62,7 +96,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysCaloriesBurned the calories burned today by the user
 	 */
-	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned ) {
+	public void setTodaysTotalCaloriesBurned( double todaysCaloriesBurned )
+	{
 		this.todaysTotalCaloriesBurned = todaysCaloriesBurned;
 	}
 
@@ -99,7 +134,8 @@ public class OneDaysWorthOfData
 	 * 
 	 * @param todaysFloors the floors climbed today by the user
 	 */
-	public void setTodaysTotalFloors( int todaysFloors ) {
+	public void setTodaysTotalFloors( int todaysFloors ) 
+	{
 		this.todaysTotalFloors = todaysFloors;
 	}
 
@@ -119,15 +155,6 @@ public class OneDaysWorthOfData
 	 */
 	public void setTodaysTotalSedentaryMins( int todaysSedentaryMins ) {
 		this.todaysTotalSedentaryMins = todaysSedentaryMins;
-	}
-
-	/** 
-	 * Sets time of last update of this user's data.
-	 * 
-	 * @param lastUpdated the time when user's data was last updated
-	 */
-	public void setWhenUpdated( String lastUpdated ) {
-		this.lastUpdated = lastUpdated;
 	}
 
 	/** 
@@ -172,7 +199,7 @@ public class OneDaysWorthOfData
 	 * @param floorsByTheMin 
 	 * @param jo the JSON object that contains the data for floors
 	 * 
-	 * @throws JSONException if the JSON object cannot be found          
+	 * @throws JSONException if the JSON object cannot be parsed properly        
 	 */
 	public void setFloorsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -180,19 +207,19 @@ public class OneDaysWorthOfData
 		for (int count = 0; count < ja.length(); count++)
 		{
 			String time = ja.getJSONObject(count).getString("time");
-			
+
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			
+
 			this.floorsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
 		}
 	}
-	
-	
+
+
 	/**
 	 * sets the steps taken by the user in every minute
 	 * @param jo			the JSON object that contains the data for steps by the minute
-	 * @throws Exception 	if the object cannot be found
+	 * @throws JSONException 	if the JSON object cannot be parsed properly  
 	 */
 	public void setStepsByTheMin(JSONObject jo) throws JSONException 
 	{
@@ -200,10 +227,10 @@ public class OneDaysWorthOfData
 		for (int count = 0; count < ja.length(); count++)
 		{
 			String time = ja.getJSONObject(count).getString("time");
-			
+
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			
+
 			this.stepsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
 			//System.out.println(ja.getJSONObject(count).getString("time") + "|||" + this.stepsByTheMin[hour][min]);
 			//System.out.println("--------");
@@ -235,12 +262,13 @@ public class OneDaysWorthOfData
 	 * 
 	 * @return lastUpdated
 	 */
-	public String getWhenUpdated() {
-		String ret = this.lastUpdated;
+	public Date getWhenUpdated() {
+		Date ret = this.lastUpdated;
 		return ret;
 	}
 
 	/**
+	 * gets the year of this instance of the class
 	 * @return the year
 	 */
 	public int getYear() {
@@ -248,6 +276,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 *
 	 * @param year 
 	 * sets the current year
 	 */
@@ -256,6 +285,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * gets the month (jan =1 , dec = 12)
 	 * @return the current month
 	 */
 	public int getMonth() {
@@ -263,6 +293,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * 
 	 * @param month
 	 * sets the current month of the year
 	 */
@@ -271,6 +302,7 @@ public class OneDaysWorthOfData
 	}
 
 	/**
+	 * gets the day of the month
 	 * @return the dayOfMonth
 	 */
 	public int getDayOfMonth() {
@@ -304,10 +336,10 @@ public class OneDaysWorthOfData
 		for (int count = 0; count < ja.length(); count++)
 		{
 			String time = ja.getJSONObject(count).getString("time");
-			
+
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			
+
 			this.caloriesByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
 		}
 	}
@@ -332,11 +364,12 @@ public class OneDaysWorthOfData
 		for (int count = 0; count < ja.length(); count++)
 		{
 			String time = ja.getJSONObject(count).getString("time");
-			
+
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			
+
 			this.distanceByTheMin[hour][min] = ja.getJSONObject(count).getDouble("value");
+			this.distanceByTheMin[hour][min] = (this.distanceByTheMin[hour][min] * 1000); //convert from km to m
 		}
 	}
 
@@ -350,6 +383,7 @@ public class OneDaysWorthOfData
 
 
 	/**
+	 * 
 	 * @return the activeMinsByTheMin
 	 */
 	public int[][] getActiveMinsByTheMin() {
@@ -382,38 +416,202 @@ public class OneDaysWorthOfData
 		for (int count = 0; count < ja.length(); count++)
 		{
 			String time = ja.getJSONObject(count).getString("time");
-			
+
 			int hour = Integer.parseInt(time.substring(0, 2));
 			int min = Integer.parseInt(time.substring(3, 5));
-			
+
 			this.sedentaryMinsByTheMin[hour][min] = ja.getJSONObject(count).getInt("value");
 		}
 	}
 
 	/**
-	 * @return the time in which the user's data was last updated
+	 * @return the object that contains today's heart rate data
 	 */
-	public String getLastUpdated() {
-		return lastUpdated;
+	public HeartRateDayOfData getHeartRateDayOfData() {
+		return hrdod;
 	}
 
 	/**
-	 * sets the time when the user's data was last updated
-	 * @param lastUpdated 
+	 * @param hrdod the hrdod to set
 	 */
-	public void setLastUpdated(String lastUpdated) {
-		//TODO???
-		this.lastUpdated = lastUpdated;
+	public void setHrdod(HeartRateDayOfData hrdod) {
+		this.hrdod = hrdod;
 	}
+
+
 
 	/**
 	 * sets the floors the user has climbed in every minute
-	 * Method may be used later in the development
 	 * @param floorsByTheMin 
 	 */
 	public void setFloorsByTheMin(int[][] floorsByTheMin) {
 		this.floorsByTheMin = floorsByTheMin;
 	}
-	
 
-}
+
+
+
+	/**
+	 * Makes live server requests and sets the daily total attributes of this object to the live data
+	 * @throws RateLimitExceededException 
+	 * 
+	 */
+	public void populateTotals() throws RateLimitExceededException
+	{
+		String date = this.buildDateAsString();
+		//System.out.println("date string for populateTotals() : "+ date);
+
+		try
+		{
+			this.setTodaysTotalFloors(ResponseParser.parseDailyFloorsTotal(HttpClient.getSpecificDataDailyTotal("floors", date)));
+			this.setTodaysTotalSteps(ResponseParser.parseDailyStepsTotal(HttpClient.getSpecificDataDailyTotal("steps", date)));
+			this.setTodaysTotalCaloriesBurned(ResponseParser.parseDailyCaloriesTotal(HttpClient.getSpecificDataDailyTotal("calories",date)));
+			this.setTodaysTotalDistance(ResponseParser.parseDailyDistanceTotal(HttpClient.getSpecificDataDailyTotal("distance", date)));
+			this.setTodaysTotalSedentaryMins(ResponseParser.parseDailySedentaryMinsTotal(HttpClient.getSpecificDataDailyTotal("minutesSedentary", date)));
+
+			JSONObject joLA = HttpClient.getSpecificDataDailyTotal("minutesLightlyActive",date);
+			JSONObject joFA = HttpClient.getSpecificDataDailyTotal("minutesFairlyActive", date);
+			JSONObject joVA = HttpClient.getSpecificDataDailyTotal("minutesVeryActive", date);		
+			this.setTodaysTotalActiveMins(ResponseParser.parseDailyActiveMinsTotal(joLA, joFA, joVA));
+
+		}
+		catch (JSONException je)
+		{
+		}
+		catch (NullPointerException npe)
+		{
+		}
+	}
+
+	/**
+	 * Makes live server requests and sets the dby the min attributes of this object to the live data
+	 * @throws RateLimitExceededException 
+	 */
+	public void populateAllMins() throws RateLimitExceededException
+	{
+		String date = this.buildDateAsString();
+
+		try 
+		{
+			this.setStepsByTheMin(HttpClient.getSpecificDataByTheMin("steps",date, "1min", "00:00", "23:59"));
+			this.setCaloriesByTheMin(HttpClient.getSpecificDataByTheMin("calories",date, "1min", "00:00", "23:59"));
+			this.setDistanceByTheMin(HttpClient.getSpecificDataByTheMin("distance",date, "1min", "00:00", "23:59"));
+			this.setFloorsByTheMin(HttpClient.getSpecificDataByTheMin("floors",date, "1min", "00:00", "23:59"));
+			this.setSedentaryMinsByTheMin(HttpClient.getSpecificDataByTheMin("minutesSedentary", date, "1min", "00:00", "23:59"));
+
+			JSONObject joLA = HttpClient.getSpecificDataByTheMin("minutesLightlyActive", date, "1min", "00:00", "23:59");
+			JSONObject joFA = HttpClient.getSpecificDataByTheMin("minutesFairlyActive", date, "1min", "00:00", "23:59");
+			JSONObject joVA = HttpClient.getSpecificDataByTheMin("minutesVeryActive", date, "1min", "00:00", "23:59");		
+			this.setActiveMinsByTheMin(ResponseParser.parseActiveMinsByTheMin(joLA, joFA, joVA));
+
+			//System.out.println(HttpClient.getHeartRateZones(date).toString(2));
+
+			//TODO ResponseParser methods for minute setters(excluding activeMins which is done already) (optional but nice)
+		}
+		catch (JSONException je)
+		{
+		}
+		catch (NullPointerException npe)
+		{
+		}
+
+	}
+
+
+
+	/**
+	 * method that returns the int attributes of this obj to the format needed for the URL for server requests
+	 * @return
+	 */
+	public String buildDateAsString()
+	{
+		//System.out.println("Entered build date as string");
+		Integer yearObj = new Integer(year);
+		Integer monthObj = new Integer(month);
+		Integer dayObj = new Integer(dayOfMonth); //get the day of this object
+		String date;
+
+		if(dayOfMonth<10 && month <10)
+		{
+			//System.out.println("both < 10");
+			date = (yearObj.toString() + "-0" + monthObj.toString() + "-0" + dayObj.toString());
+		}
+		else if(dayOfMonth<10 && month >=10)
+		{
+			//System.out.println("day < 10");
+			date = (yearObj.toString() + "-" + monthObj.toString() + "-0" + dayObj.toString());
+		}
+		else if(dayOfMonth>=10 && month <10)
+		{
+			//System.out.println("month < 10");
+			date = (yearObj.toString() + "-0" + monthObj.toString() + "-" + dayObj.toString());
+		}
+		else
+		{
+			//System.out.println("neither < 10");
+			date = (yearObj.toString() + "-" + monthObj.toString() + "-" + dayObj.toString()); //format date string properly for URL
+		}
+
+		return date;
+	}
+
+	/**
+	 * Compares this date to another date for the purpose of ordering and retrieving historical fitness data.
+	 * 
+	 * @param odwod OneDaysWorthOfData object being compared by date to this object
+	 * @return relDate -1, 0, or 1 if this day is earlier than, the same as, or later than the input object's date
+	 */
+	public int compareTo( OneDaysWorthOfData odwod ) {
+		int relDate;
+		if (this.year < odwod.getYear())
+			relDate = -1;
+		else { 
+			if (this.year > odwod.getYear())
+				relDate = 1;
+			else { /* Days in same year */ 
+				if (this.month < odwod.getMonth())
+					relDate = -1;
+				else {
+					if (this.month > odwod.getMonth())
+						relDate = 1;
+					else { /* Days in same year and same month */
+						if (this.dayOfMonth < odwod.getDayOfMonth())
+							relDate = -1;
+						else {
+							if (this.dayOfMonth > odwod.getDayOfMonth())
+								relDate = 1;
+							else
+								relDate = 0;
+						}
+					}
+				}
+			}
+		}
+		return relDate;
+	}
+
+	/**
+	 * makes a string that shows the attributes of this object in an easy to read format
+	 * @param includeMins
+	 * @return
+	 */
+	public String toString(boolean includeMins)
+	{
+		String str = "\nTOTALS for "+ this.buildDateAsString() +"\n\n";
+
+		str = str.concat("Floors:\t\t\t" + this.getTodaysTotalFloors());
+		str = str.concat("\nSteps:\t\t\t" + this.getTodaysTotalSteps());
+		str = str.concat("\nCalories:\t\t" + this.getTodaysTotalCaloriesBurned());
+		str = str.concat("\nDistance:\t\t" + this.getTodaysTotalDistance());
+		str = str.concat("\nSedentaryMins:\t\t" + this.getTodaysTotalSedentaryMins());
+		str = str.concat("\nActiveMins:\t\t" + this.getTodaysTotalActiveMins());
+
+		if(includeMins)
+		{
+			//concat mins
+		}
+
+		return str;
+	}
+
+}// end of class
